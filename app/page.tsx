@@ -12,15 +12,14 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
+// SHIELD: our company values.
 const contourBadges = [
-  { label: "Clinical Excellence", className: "left-[6%] top-[18%]" },
-  { label: "Governance", className: "right-[8%] top-[30%]" },
-  { label: "Ethics", className: "left-[10%] top-[38%]" },
-  { label: "Transparency", className: "left-[4%] top-[58%]" },
-  { label: "Integrity", className: "right-[6%] top-[48%]" },
-  { label: "Sustainability", className: "right-[10%] top-[64%]" },
-  { label: "Safety", className: "left-[18%] bottom-[12%]" },
-  { label: "Augmented Intelligence", className: "right-[12%] bottom-[16%]" },
+  { label: "Safety", className: "left-[6%] top-[20%]" },
+  { label: "Integrity", className: "right-[8%] top-[32%]" },
+  { label: "Humanity", className: "left-[10%] top-[42%]" },
+  { label: "Excellence", className: "right-[6%] top-[54%]" },
+  { label: "Longevity", className: "right-[10%] bottom-[16%]" },
+  { label: "Duty", className: "left-[16%] bottom-[14%]" },
 ];
 
 const pillars = [
