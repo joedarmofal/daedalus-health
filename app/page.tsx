@@ -1,4 +1,5 @@
 import { CompassStar } from "@/components/compass-star";
+import { CoreValuesShield } from "@/components/core-values-shield";
 import { MapLegend } from "@/components/map-legend";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -11,16 +12,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-// SHIELD: our company values.
-const contourBadges = [
-  { label: "Safety", className: "left-[6%] top-[20%]" },
-  { label: "Integrity", className: "right-[8%] top-[32%]" },
-  { label: "Humanity", className: "left-[10%] top-[42%]" },
-  { label: "Excellence", className: "right-[6%] top-[54%]" },
-  { label: "Longevity", className: "right-[10%] bottom-[16%]" },
-  { label: "Duty", className: "left-[16%] bottom-[14%]" },
-];
 
 const pillars = [
   {
@@ -57,15 +48,6 @@ export default function Home() {
         <section className="relative overflow-hidden bg-[#1A2B3C]">
           <TopographicPattern className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(249,248,243,0.08),_transparent_58%)]" />
-
-          {contourBadges.map((badge) => (
-            <span
-              key={badge.label}
-              className={`pointer-events-none absolute hidden rounded-full border border-[#C4A574]/50 bg-[#1A2B3C]/40 px-3 py-1 text-[10px] font-medium tracking-[0.16em] text-[#F9F8F3]/85 uppercase backdrop-blur-[2px] lg:inline-flex ${badge.className}`}
-            >
-              {badge.label}
-            </span>
-          ))}
 
           <MapLegend className="absolute top-6 right-4 z-10 hidden w-48 sm:right-8 lg:block" />
 
@@ -113,6 +95,15 @@ export default function Home() {
               >
                 Schedule Executive Briefing
               </a>
+            </div>
+
+            <div className="mt-16 flex flex-col items-center border-t border-[#C4A574]/20 pt-14">
+              <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
+                CORE VALUES
+              </p>
+              <div className="mt-7">
+                <CoreValuesShield />
+              </div>
             </div>
           </div>
         </section>
