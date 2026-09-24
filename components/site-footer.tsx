@@ -11,8 +11,9 @@ export function SiteFooter() {
             DAEDALUS HEALTH
           </div>
           <p className="mt-3 text-sm leading-6 text-[#1A2B3C]/70">
-            Independent AI leadership for health systems. Governance, safety, and
-            clinical integration without vendor capture.
+            Independent AI leadership for health systems. Governance, safety,
+            and clinical integration that keeps human judgment at the
+            controls—without vendor capture.
           </p>
         </div>
 

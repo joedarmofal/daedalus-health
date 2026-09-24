@@ -24,25 +24,25 @@ const pillars = [
   {
     title: "Ethical AI Governance & Safety",
     description:
-      "Board-ready policies, risk registers, and decision rights that keep clinical AI accountable from procurement through production.",
+      "Board-ready policies, risk registers, and decision rights that keep clinical AI accountable from procurement through production, with meaningful human control preserved at every decision point.",
     icon: ShieldCheck,
   },
   {
     title: "Augmented Intelligence Integration",
     description:
-      "Design workflows where clinicians remain in command—models as copilots, never silent substitutes for professional judgment.",
+      "Engineer the human-machine interface so clinicians remain the pilot—models as copilots offering augmented intelligence, never silent substitutes for professional judgment.",
     icon: Brain,
   },
   {
     title: "Clinical Excellence & Validation",
     description:
-      "Evidence standards, local performance testing, and drift monitoring so every deployment earns its place at the bedside.",
+      "Evidence standards, local performance testing, and bias and drift surveillance so every deployment earns its place at the bedside instead of quietly eroding trust in it.",
     icon: HeartPulse,
   },
   {
     title: "Transparency, Trust & Integrity",
     description:
-      "Clear documentation, patient-facing disclosure, and independent counsel that vendors cannot provide for themselves.",
+      "Clear documentation, patient-facing disclosure, and independent counsel that vendors cannot provide for themselves—so the humans accountable for care can see what the system actually did.",
     icon: Scale,
   },
 ];
@@ -88,7 +88,8 @@ export default function Home() {
             <p className="mt-7 max-w-2xl text-base leading-8 text-[#F9F8F3]/78 sm:text-lg">
               Guiding health system executives and clinical leaders through AI
               governance, augmented intelligence, and safe clinical integration
-              with uncompromising safety, transparency, and trust.
+              with uncompromising safety, transparency, and trust—and human
+              judgment always at the controls.
             </p>
             <div className="mt-10 flex w-full flex-col justify-center gap-3 sm:flex-row">
               <Link
@@ -107,6 +108,28 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="border-t border-[#1A2B3C]/10 bg-[#1A2B3C]">
+          <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 sm:py-20">
+            <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
+              TWO TRUTHS
+            </p>
+            <p className="mx-auto mt-5 max-w-4xl font-serif text-2xl leading-relaxed text-[#F9F8F3] sm:text-3xl">
+              AI can help solve medicine&apos;s greatest challenges. It can
+              also introduce bias into a treatment plan, obscure who is
+              accountable for a decision, or fail catastrophically at the one
+              moment a patient can least afford it.
+            </p>
+            <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-[#F9F8F3]/75 sm:text-lg">
+              Both are true at once, and neither cancels the other out. The
+              variable that decides which truth an organization lives with is
+              not the model—it is the human-machine interface: who holds
+              meaningful control, what they can see into the system, and how
+              much authority is ceded before a clinician&apos;s judgment is
+              allowed to intervene.
+            </p>
+          </div>
+        </section>
+
         <section
           id="services"
           className="relative scroll-mt-24 overflow-hidden border-t border-[#1A2B3C]/10"
@@ -122,6 +145,11 @@ export default function Home() {
             <h2 className="mt-3 max-w-2xl font-serif text-3xl font-medium tracking-tight text-[#1A2B3C] sm:text-4xl">
               Principles that keep AI in service of care.
             </h2>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-[#1A2B3C]/70">
+              Every one of these pillars answers the same question: at the
+              human-machine interface, who is actually in command? These are
+              the wings we help you engineer—and the discipline to fly them.
+            </p>
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
               {pillars.map((pillar) => (
                 <article
@@ -158,6 +186,14 @@ export default function Home() {
                 A durable operating system for clinical AI.
               </h2>
               <p className="mt-4 text-base leading-7 text-[#1A2B3C]/70">
+                Every AI system is a human-machine interface before it is
+                anything else—the instrument panel where a clinician&apos;s
+                judgment meets a model&apos;s inference. We calibrate that
+                interface the way Daedalus calibrated his wings: enough lift
+                to reach real altitude, enough restraint that a human hand
+                never leaves the controls.
+              </p>
+              <p className="mt-4 text-base leading-7 text-[#1A2B3C]/70">
                 We install the committees, evidence bars, and escalation paths
                 that survive vendor turnover and model generations. Your
                 framework becomes an institutional asset—not a slide deck.
@@ -165,9 +201,9 @@ export default function Home() {
             </div>
             <ol className="space-y-4 text-sm text-[#1A2B3C]/80">
               {[
-                "Inventory and classify every model touching patients or operations.",
-                "Assign clinical, legal, and technical owners before go-live.",
-                "Validate locally, monitor continuously, retire without delay.",
+                "Inventory and classify every model touching patients or operations, and name the human accountable for each one.",
+                "Assign clinical, legal, and technical owners before go-live, with explicit authority to override the machine.",
+                "Validate locally, monitor for bias and drift continuously, and retire without delay the moment the interface fails.",
               ].map((item, index) => (
                 <li
                   key={item}
@@ -215,8 +251,17 @@ export default function Home() {
             <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
               Icarus, dazzled by the altitude ambition made possible, ignored
               the boundary and fell. Daedalus, flying the very same
-              invention with the same discipline, landed safely. The wings
-              were never the danger. The absence of governance was.
+              invention with the same discipline, landed safely. Same wings.
+              Same human-machine interface. The only difference was who kept
+              a hand on the controls.
+            </p>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+              This is the paradox at the center of medical AI, and it is why
+              we say two truths, not one. The same model that catches a
+              missed diagnosis can just as easily encode bias into a
+              treatment plan, or fail at the exact moment a patient can
+              least afford it. The wings were never the danger. The absence
+              of a human hand on the controls was.
             </p>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
@@ -226,8 +271,9 @@ export default function Home() {
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
                   AI adopted for the thrill of altitude: unproven models,
-                  unchecked pilots, no ceiling and no floor. It flies
-                  beautifully, right up until the moment it doesn&apos;t.
+                  an unmonitored interface, no clinician holding the
+                  controls. It flies beautifully, right up until the moment
+                  it doesn&apos;t.
                 </p>
               </div>
               <div className="rounded-sm border border-[#1F6A64]/40 bg-[#1A2B3C] p-6">
@@ -235,18 +281,19 @@ export default function Home() {
                   THE DAEDALUS PATH
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/80">
-                  AI engineered with a ceiling and a floor: guardrails built
-                  in from the first flight, so capability and control climb
-                  together.
+                  AI engineered with a ceiling and a floor, and a human
+                  pilot who never leaves the interface: capability and
+                  control climb together.
                 </p>
               </div>
             </div>
 
             <p className="mt-8 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
               Daedalus Health exists to build that discipline into your
-              organization—the wings, the boundaries, and the judgment to fly
-              the middle course—so your health system gains every bit of
-              altitude AI promises without ever losing sight of the ground.
+              organization—the wings, the boundaries, and the human judgment
+              to fly the middle course—so your health system gains every bit
+              of altitude AI promises without ever losing sight of the
+              ground, or the patient.
             </p>
           </div>
         </section>
