@@ -1,4 +1,5 @@
 import { CompassStar } from "@/components/compass-star";
+import { MapLegend } from "@/components/map-legend";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TopographicPattern } from "@/components/topographic-pattern";
@@ -64,6 +65,8 @@ export default function Home() {
               {badge.label}
             </span>
           ))}
+
+          <MapLegend className="absolute bottom-6 left-4 z-10 hidden w-48 sm:left-8 lg:block" />
 
           <div className="relative mx-auto flex max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:py-32">
             <Image
