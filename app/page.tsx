@@ -90,11 +90,16 @@ export default function Home() {
             <h1 className="mt-5 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-[#F9F8F3] sm:text-6xl lg:text-7xl">
               AI Leadership for Life
             </h1>
-            <p className="mt-7 max-w-2xl text-base leading-8 text-[#F9F8F3]/78 sm:text-lg">
-              Guiding health system executives and clinical leaders through AI
-              governance, augmented intelligence, and safe clinical integration
-              with uncompromising safety, transparency, and trust—and human
-              judgment always at the controls.
+            <p className="mt-8 text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
+              OUR MISSION
+            </p>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-[#F9F8F3]/78 sm:text-lg">
+              To safely guide healthcare leaders through the transformative
+              power of artificial intelligence, realizing its true operational
+              and clinical efficiencies while establishing compliant, ethical,
+              and human-centered governance to ensure organizational
+              sustainability, with humans always remaining at the heart of
+              health.
             </p>
             <div className="mt-10 flex w-full flex-col justify-center gap-3 sm:flex-row">
               <Link
