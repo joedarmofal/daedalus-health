@@ -191,14 +191,62 @@ export default function Home() {
             <p className="text-xs font-semibold tracking-[0.28em] text-[#1F6A64]">
               ABOUT
             </p>
-            <h2 className="mt-3 max-w-2xl font-serif text-3xl font-medium tracking-tight text-[#1A2B3C] sm:text-4xl">
-              Named for the architect who built the labyrinth—and the way out.
+            <h2 className="mt-3 max-w-3xl font-serif text-3xl font-medium tracking-tight text-[#1A2B3C] sm:text-4xl">
+              Named for the craftsman who built the labyrinth, the wings, and
+              the discipline to fly them.
             </h2>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
-              Health systems are asked to adopt AI faster than they can govern
-              it. Daedalus Health is the independent counsel at that
-              intersection: executives who need a north star, clinicians who
-              need a partner, and boards who need the truth.
+
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+              Daedalus was Crete&apos;s master engineer, commissioned to build
+              the Labyrinth—a structure so intricate that even its architect
+              could barely find his way through it. It is an old story with a
+              modern echo: the algorithms reshaping care today are our new
+              labyrinths, engineered by brilliant minds, yet increasingly
+              opaque even to the people who built them.
+            </p>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+              When the king who depended on his genius imprisoned him on the
+              island instead of freeing him, Daedalus didn&apos;t escape by
+              force. He engineered wings—feathers set in wax—and gave a
+              matching pair to his son, Icarus, with one instruction: fly the
+              middle course. Not so low that the sea dampens your feathers.
+              Not so high that the sun melts your wax.
+            </p>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+              Icarus, dazzled by the altitude ambition made possible, ignored
+              the boundary and fell. Daedalus, flying the very same
+              invention with the same discipline, landed safely. The wings
+              were never the danger. The absence of governance was.
+            </p>
+
+            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+              <div className="rounded-sm border border-[#C4A574]/40 bg-[#F9F8F3] p-6">
+                <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
+                  THE ICARUS PATH
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
+                  AI adopted for the thrill of altitude: unproven models,
+                  unchecked pilots, no ceiling and no floor. It flies
+                  beautifully, right up until the moment it doesn&apos;t.
+                </p>
+              </div>
+              <div className="rounded-sm border border-[#1F6A64]/40 bg-[#1A2B3C] p-6">
+                <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
+                  THE DAEDALUS PATH
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/80">
+                  AI engineered with a ceiling and a floor: guardrails built
+                  in from the first flight, so capability and control climb
+                  together.
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-8 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+              Daedalus Health exists to build that discipline into your
+              organization—the wings, the boundaries, and the judgment to fly
+              the middle course—so your health system gains every bit of
+              altitude AI promises without ever losing sight of the ground.
             </p>
           </div>
         </section>
