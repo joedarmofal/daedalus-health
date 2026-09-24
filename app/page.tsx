@@ -123,18 +123,18 @@ export default function Home() {
               TWO TRUTHS
             </p>
             <p className="mx-auto mt-5 max-w-4xl font-serif text-2xl leading-relaxed text-[#F9F8F3] sm:text-3xl">
-              AI can help solve medicine&apos;s greatest challenges. It can
-              also introduce bias into a treatment plan, obscure who is
-              accountable for a decision, or fail catastrophically at the one
-              moment a patient can least afford it.
+              Artificial intelligence holds the power to unlock
+              medicine’s greatest breakthroughs—and the potential to cause
+              unfathomable harm. Both truths coexist, and neither cancels
+              the other out.
             </p>
             <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-[#F9F8F3]/75 sm:text-lg">
-              Both are true at once, and neither cancels the other out. The
-              variable that decides which truth an organization lives with is
-              not the model—it is the human-machine interface: who holds
-              meaningful control, what they can see into the system, and how
-              much authority is ceded before a clinician&apos;s judgment is
-              allowed to intervene.
+              The variable that determines which truth your organization
+              experiences isn’t the algorithm—it’s the human-machine
+              interface. Like Daedalus’s creations, technology reflects
+              the wisdom of its operator: who retains meaningful control,
+              how transparent the system remains, and where human
+              judgment draws the line.
             </p>
           </div>
         </section>
