@@ -14,9 +14,11 @@ import Link from "next/link";
 
 const contourBadges = [
   { label: "Clinical Excellence", className: "left-[6%] top-[18%]" },
-  { label: "Governance", className: "right-[8%] top-[14%]" },
+  { label: "Governance", className: "right-[8%] top-[30%]" },
+  { label: "Ethics", className: "left-[10%] top-[38%]" },
   { label: "Transparency", className: "left-[4%] top-[58%]" },
   { label: "Integrity", className: "right-[6%] top-[48%]" },
+  { label: "Sustainability", className: "right-[10%] top-[64%]" },
   { label: "Safety", className: "left-[18%] bottom-[12%]" },
   { label: "Augmented Intelligence", className: "right-[12%] bottom-[16%]" },
 ];
@@ -66,7 +68,7 @@ export default function Home() {
             </span>
           ))}
 
-          <MapLegend className="absolute bottom-6 left-4 z-10 hidden w-48 sm:left-8 lg:block" />
+          <MapLegend className="absolute top-6 right-4 z-10 hidden w-48 sm:right-8 lg:block" />
 
           <div className="relative mx-auto flex max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:py-32">
             <Image
