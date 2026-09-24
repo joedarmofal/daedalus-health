@@ -30,19 +30,21 @@ export function CoreValuesShield({ className }: { className?: string }) {
           strokeOpacity="0.45"
         />
       </svg>
-      <ul className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 px-9 pb-12 text-center">
-        {VALUES.map((v) => (
-          <li
-            key={v.letter}
-            className="flex items-baseline gap-2 text-[13px] tracking-wide text-[#F9F8F3]/85"
-          >
-            <span className="font-serif text-lg font-semibold text-[#C4A574]">
-              {v.letter}
-            </span>
-            <span>{v.word}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="absolute inset-0 flex items-center justify-center pb-6">
+        <ul className="flex w-fit flex-col gap-3">
+          {VALUES.map((v) => (
+            <li
+              key={v.letter}
+              className="flex items-baseline gap-2.5 text-[15px] font-medium tracking-wide text-[#F9F8F3]"
+            >
+              <span className="w-5 shrink-0 text-center font-serif text-xl font-semibold text-[#C4A574]">
+                {v.letter}
+              </span>
+              <span>{v.word}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
