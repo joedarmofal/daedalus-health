@@ -76,7 +76,7 @@ export default function Home() {
               className="h-auto w-[160px] sm:w-[190px]"
             />
             <CompassStar className="mt-6 mb-8 size-16 text-[#C4A574]" />
-            <p className="font-serif text-sm font-semibold tracking-[0.42em] text-[#C4A574]">
+            <p className="font-serif text-3xl font-semibold tracking-[0.2em] text-[#C4A574] sm:text-4xl lg:text-5xl">
               DAEDALUS HEALTH
             </p>
             <p className="mt-4 text-[11px] font-medium tracking-[0.28em] text-[#F9F8F3]/70">
