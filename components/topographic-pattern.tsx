@@ -1,3 +1,136 @@
+type Point = [number, number];
+type Wobble = { freq: number; amp: number; phase: number };
+
+/**
+ * Converts a closed set of points into a smooth SVG path using a
+ * Catmull-Rom-to-Bezier conversion. Because every ring in a hill is simply
+ * a scaled copy of the same radius function around a shared center, the
+ * rings are guaranteed to nest without ever crossing one another—just like
+ * real elevation contour lines on a topographic survey.
+ */
+function smoothClosedPath(points: Point[]): string {
+  const n = points.length;
+  const at = (i: number) => points[((i % n) + n) % n];
+  const t = 1 / 6;
+
+  let d = `M${points[0][0].toFixed(1)},${points[0][1].toFixed(1)}`;
+  for (let i = 0; i < n; i++) {
+    const p0 = at(i - 1);
+    const p1 = at(i);
+    const p2 = at(i + 1);
+    const p3 = at(i + 2);
+    const c1: Point = [p1[0] + (p2[0] - p0[0]) * t, p1[1] + (p2[1] - p0[1]) * t];
+    const c2: Point = [p2[0] - (p3[0] - p1[0]) * t, p2[1] - (p3[1] - p1[1]) * t];
+    d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return `${d}Z`;
+}
+
+/** A smooth, low-frequency radius function makes a naturalistic, irregular
+ * (but always simple/non-self-intersecting) hill outline. */
+function organicRadii(base: number, wobble: Wobble[], points: number): number[] {
+  return Array.from({ length: points }, (_, i) => {
+    const angle = (i / points) * Math.PI * 2;
+    const factor = wobble.reduce(
+      (sum, w) => sum + w.amp * Math.cos(w.freq * angle + w.phase),
+      1,
+    );
+    return base * factor;
+  });
+}
+
+function ringPoints(cx: number, cy: number, radii: number[], scale: number): Point[] {
+  const n = radii.length;
+  return radii.map((r, i) => {
+    const angle = (i / n) * Math.PI * 2;
+    const radius = r * scale;
+    return [cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius];
+  });
+}
+
+function hillPaths(
+  cx: number,
+  cy: number,
+  radii: number[],
+  scales: number[],
+): string[] {
+  return scales.map((scale) => smoothClosedPath(ringPoints(cx, cy, radii, scale)));
+}
+
+const POINTS_PER_RING = 14;
+
+type Hill = {
+  cx: number;
+  cy: number;
+  base: number;
+  wobble: Wobble[];
+  scales: number[];
+};
+
+// Each hill is a family of concentric elevation contours: a single organic
+// radius function scaled down toward its own center. Hills are spaced far
+// enough apart that no two hills' rings ever touch, matching how contour
+// lines behave on a real topographic map.
+const HILLS: Hill[] = [
+  {
+    cx: 330,
+    cy: 290,
+    base: 195,
+    wobble: [
+      { freq: 2, amp: 0.14, phase: 0.4 },
+      { freq: 5, amp: 0.05, phase: 1.8 },
+    ],
+    scales: [1, 0.82, 0.65, 0.49, 0.35, 0.22],
+  },
+  {
+    cx: 1090,
+    cy: 250,
+    base: 155,
+    wobble: [
+      { freq: 3, amp: 0.12, phase: 1.1 },
+      { freq: 5, amp: 0.05, phase: 0.3 },
+    ],
+    scales: [1, 0.8, 0.6, 0.42, 0.26],
+  },
+  {
+    cx: 190,
+    cy: 700,
+    base: 95,
+    wobble: [
+      { freq: 2, amp: 0.13, phase: 2.2 },
+      { freq: 4, amp: 0.05, phase: 0.6 },
+    ],
+    scales: [1, 0.78, 0.58, 0.4],
+  },
+  {
+    cx: 1210,
+    cy: 660,
+    base: 122,
+    wobble: [
+      { freq: 3, amp: 0.11, phase: 0.7 },
+      { freq: 5, amp: 0.04, phase: 2.5 },
+    ],
+    scales: [1, 0.8, 0.62, 0.46, 0.3],
+  },
+  {
+    cx: 700,
+    cy: 800,
+    base: 82,
+    wobble: [
+      { freq: 2, amp: 0.12, phase: 1.5 },
+      { freq: 4, amp: 0.05, phase: 0.2 },
+    ],
+    scales: [1, 0.76, 0.54, 0.34],
+  },
+  {
+    cx: 1350,
+    cy: 110,
+    base: 63,
+    wobble: [{ freq: 3, amp: 0.13, phase: 0.9 }],
+    scales: [1, 0.74, 0.5],
+  },
+];
+
 export function TopographicPattern({
   className,
   tone = "gold",
@@ -18,25 +151,16 @@ export function TopographicPattern({
     >
       <g
         stroke={stroke}
-        strokeWidth="1"
+        strokeWidth="0.75"
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
       >
-        <path d="M90 470c80-190 230-330 430-330s350 140 430 330-70 360-270 360S10 660 90 470Z" />
-        <path d="M150 465c70-165 200-285 370-285s300 120 370 285-60 310-230 310S80 630 150 465Z" />
-        <path d="M210 460c60-140 175-245 310-245s250 105 310 245-50 265-195 265S150 600 210 460Z" />
-        <path d="M275 455c50-115 145-200 245-200s195 85 245 200-42 215-160 215S225 570 275 455Z" />
-        <path d="M340 450c40-90 115-155 180-155s140 65 180 155-32 165-115 165S300 540 340 450Z" />
-        <path d="M400 448c30-68 85-115 120-115s90 47 120 115-24 122-85 122S370 516 400 448Z" />
-        <path d="M455 445c18-42 48-70 65-70s47 28 65 70-14 72-47 72S437 487 455 445Z" />
-        <path d="M820 240c120-90 280-90 410 20 130 110 150 290 40 410-110 120-300 150-440 70-140-80-180-250-90-400 30-50 50-80 80-100Z" />
-        <path d="M860 280c95-70 220-68 320 18 100 86 118 228 32 322-86 94-235 118-345 55-110-63-142-196-70-314 22-38 38-62 63-81Z" />
-        <path d="M900 318c72-52 165-50 240 14 75 64 88 170 24 240-64 70-176 88-258 41-82-47-106-146-52-234 16-28 28-46 46-61Z" />
-        <path d="M70 720c180-40 360-20 520 70 160 90 250 140 420 110" />
-        <path d="M40 780c220-50 430-10 620 90 140 74 280 96 430 60" />
-        <path d="M-20 180c160 80 280 90 430 40 150-50 260-40 400 50 140 90 280 80 430 10" />
-        <path d="M200 80c120 40 220 30 340-20 160-66 300-40 480 40" />
-        <path d="M1100 80c-80 120-70 240 30 340 100 100 120 220 40 340" />
+        {HILLS.map((hill, hillIndex) => {
+          const radii = organicRadii(hill.base, hill.wobble, POINTS_PER_RING);
+          return hillPaths(hill.cx, hill.cy, radii, hill.scales).map(
+            (d, ringIndex) => <path key={`${hillIndex}-${ringIndex}`} d={d} />,
+          );
+        })}
       </g>
     </svg>
   );
