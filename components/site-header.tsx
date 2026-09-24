@@ -15,24 +15,24 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-[#1A2B3C]/10 bg-[#F9F8F3]/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-[13px] font-semibold tracking-[0.22em] text-[#f4efe4]"
+          className="flex items-center gap-2.5 font-serif text-[15px] font-semibold tracking-[0.28em] text-[#1A2B3C]"
         >
-          <span className="flex size-9 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-500/10 text-emerald-300">
-            <CompassStar className="size-4" />
+          <span className="flex size-9 items-center justify-center text-[#1F6A64]">
+            <CompassStar className="size-8" />
           </span>
           DAEDALUS HEALTH
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm text-stone-300 md:flex">
+        <nav className="hidden items-center gap-8 text-sm tracking-wide text-[#1A2B3C]/75 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-emerald-300"
+              className="transition-colors hover:text-[#1F6A64]"
             >
               {link.label}
             </Link>
@@ -42,7 +42,7 @@ export function SiteHeader() {
         <div className="hidden md:block">
           <Link
             href="/login"
-            className="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_24px_rgba(16,185,129,0.25)] transition hover:brightness-110"
+            className="inline-flex items-center rounded-sm bg-[#1F6A64] px-4 py-2 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574]"
           >
             Client Login
           </Link>
@@ -50,7 +50,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="inline-flex size-10 items-center justify-center rounded-lg border border-slate-800 text-stone-200 md:hidden"
+          className="inline-flex size-10 items-center justify-center rounded-sm border border-[#1A2B3C]/20 text-[#1A2B3C] md:hidden"
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((value) => !value)}
@@ -60,13 +60,13 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <div className="border-t border-slate-800 px-4 py-4 md:hidden">
-          <nav className="flex flex-col gap-3 text-sm text-stone-300">
+        <div className="border-t border-[#1A2B3C]/10 px-4 py-4 md:hidden">
+          <nav className="flex flex-col gap-3 text-sm text-[#1A2B3C]/80">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-2 py-2 hover:bg-slate-900 hover:text-emerald-300"
+                className="rounded-sm px-2 py-2 hover:bg-[#1A2B3C]/5 hover:text-[#1F6A64]"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -74,7 +74,7 @@ export function SiteHeader() {
             ))}
             <Link
               href="/login"
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2.5 font-semibold text-slate-950"
+              className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-4 py-2.5 font-medium text-[#F9F8F3] hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574]"
               onClick={() => setOpen(false)}
             >
               Client Login

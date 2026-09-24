@@ -1,6 +1,7 @@
 import { CompassStar } from "@/components/compass-star";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TopographicPattern } from "@/components/topographic-pattern";
 import type { Metadata } from "next";
 import { LoginForm } from "./login-form";
 
@@ -17,25 +18,28 @@ export default async function LoginPage({
   const { error } = await searchParams;
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-full flex-col bg-[#F7F5F0]">
       <SiteHeader />
       <main className="relative flex flex-1 items-center justify-center px-4 py-16 sm:px-6">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.12),_transparent_55%)]" />
-        <section className="relative w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/70 p-8 shadow-2xl shadow-emerald-950/30">
+        <TopographicPattern
+          tone="slate"
+          className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.07]"
+        />
+        <section className="relative w-full max-w-md rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-8 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.5)]">
           <div className="mb-6 flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-500/10 text-emerald-300">
-              <CompassStar className="size-5" />
+            <span className="flex size-10 items-center justify-center text-[#1F6A64]">
+              <CompassStar className="size-9" />
             </span>
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-emerald-300">
+              <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
                 CLIENT PORTAL
               </p>
-              <h1 className="text-xl font-semibold text-[#f4efe4]">
+              <h1 className="font-serif text-2xl font-medium text-[#1A2B3C]">
                 Executive sign in
               </h1>
             </div>
           </div>
-          <p className="mb-6 text-sm leading-6 text-[#d9cfc0]">
+          <p className="mb-6 text-sm leading-6 text-[#1A2B3C]/70">
             Access is reserved for Daedalus Health client organizations.
             Authenticate with your issued credentials or a one-time magic link.
           </p>

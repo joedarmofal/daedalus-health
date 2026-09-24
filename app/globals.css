@@ -1,14 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617;
-  --foreground: #f4efe4;
+  --background: #f7f5f0;
+  --foreground: #1a2b3c;
+  --slate: #1a2b3c;
+  --parchment: #f9f8f3;
+  --teal: #1f6a64;
+  --bronze: #c4a574;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-slate: var(--slate);
+  --color-parchment: var(--parchment);
+  --color-teal: var(--teal);
+  --color-bronze: var(--bronze);
+  --font-sans: var(--font-sans-body);
+  --font-serif: var(--font-serif-display);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -19,10 +28,10 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans-body), ui-sans-serif, system-ui, sans-serif;
 }
 
 ::selection {
-  background: rgb(16 185 129 / 0.35);
-  color: #ecfdf5;
+  background: rgb(31 106 100 / 0.22);
+  color: #1a2b3c;
 }

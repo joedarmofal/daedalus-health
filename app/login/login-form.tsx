@@ -7,6 +7,7 @@ import { type FormEvent, useState } from "react";
 
 const AUTH_ERRORS: Record<string, string> = {
   auth: "We could not complete sign in. Request a new magic link.",
+  "auth-failed": "We could not complete sign in. Request a new magic link.",
   missing_code: "This sign-in link is incomplete. Request a new magic link.",
   no_organization:
     "Your account is not assigned to a client organization. Contact your Daedalus administrator.",
@@ -92,7 +93,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
   return (
     <form onSubmit={handlePasswordSignIn} className="space-y-5">
       <div>
-        <label htmlFor="email" className="text-sm font-medium text-stone-200">
+        <label htmlFor="email" className="text-sm font-medium text-[#1A2B3C]">
           Work email
         </label>
         <input
@@ -103,13 +104,13 @@ export function LoginForm({ initialError }: { initialError?: string }) {
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-3.5 py-2.5 text-sm text-stone-100 outline-none ring-emerald-400/40 placeholder:text-stone-500 focus:border-emerald-400/50 focus:ring-2"
+          className="mt-2 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20"
           placeholder="you@healthsystem.org"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="text-sm font-medium text-stone-200">
+        <label htmlFor="password" className="text-sm font-medium text-[#1A2B3C]">
           Password
         </label>
         <input
@@ -119,18 +120,18 @@ export function LoginForm({ initialError }: { initialError?: string }) {
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-3.5 py-2.5 text-sm text-stone-100 outline-none ring-emerald-400/40 placeholder:text-stone-500 focus:border-emerald-400/50 focus:ring-2"
+          className="mt-2 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20"
           placeholder="••••••••"
         />
       </div>
 
       {error ? (
-        <p className="rounded-lg border border-red-900/60 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+        <p className="rounded-sm border border-red-800/30 bg-red-50 px-3 py-2 text-sm text-red-800">
           {error}
         </p>
       ) : null}
       {message ? (
-        <p className="rounded-lg border border-emerald-800/60 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-200">
+        <p className="rounded-sm border border-[#1F6A64]/25 bg-[#1F6A64]/10 px-3 py-2 text-sm text-[#1F6A64]">
           {message}
         </p>
       ) : null}
@@ -138,7 +139,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:brightness-110 disabled:opacity-60"
+        className="w-full rounded-sm bg-[#1F6A64] px-4 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574] disabled:opacity-60"
       >
         {status === "loading" ? "Authenticating…" : "Sign in"}
       </button>
@@ -147,7 +148,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
         type="button"
         disabled={status === "loading"}
         onClick={handleMagicLink}
-        className="w-full rounded-full border border-slate-700 px-4 py-2.5 text-sm font-semibold text-stone-100 transition hover:border-emerald-400/50 hover:text-emerald-200 disabled:opacity-60"
+        className="w-full rounded-sm border border-[#1A2B3C]/25 px-4 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:border-[#C4A574] hover:text-[#1F6A64] disabled:opacity-60"
       >
         Send Magic Link
       </button>
