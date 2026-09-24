@@ -11,6 +11,15 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
+const contourBadges = [
+  { label: "Clinical Excellence", className: "left-[6%] top-[18%]" },
+  { label: "Governance", className: "right-[8%] top-[14%]" },
+  { label: "Transparency", className: "left-[4%] top-[58%]" },
+  { label: "Integrity", className: "right-[6%] top-[48%]" },
+  { label: "Safety", className: "left-[18%] bottom-[12%]" },
+  { label: "Augmented Intelligence", className: "right-[12%] bottom-[16%]" },
+];
+
 const pillars = [
   {
     title: "Ethical AI Governance & Safety",
@@ -44,61 +53,56 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
         <section className="relative overflow-hidden bg-[#1A2B3C]">
-          <TopographicPattern
-            className="pointer-events-none absolute inset-0 h-full w-full opacity-40"
-          />
+          <TopographicPattern className="pointer-events-none absolute inset-0 h-full w-full opacity-35" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(249,248,243,0.08),_transparent_58%)]" />
 
-          <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.75fr_1.25fr] lg:gap-12 lg:py-24">
-            <div className="flex justify-center lg:justify-start">
-              <Image
-                src="/images/winged-figure.png"
-                alt="Classical winged figure, the emblem of Daedalus Health"
-                width={864}
-                height={1152}
-                priority
-                unoptimized
-                className="h-auto w-[240px] sm:w-[300px] lg:w-[360px]"
-              />
-            </div>
+          {contourBadges.map((badge) => (
+            <span
+              key={badge.label}
+              className={`pointer-events-none absolute hidden rounded-full border border-[#C4A574]/50 bg-[#1A2B3C]/40 px-3 py-1 text-[10px] font-medium tracking-[0.16em] text-[#F9F8F3]/85 uppercase backdrop-blur-[2px] lg:inline-flex ${badge.className}`}
+            >
+              {badge.label}
+            </span>
+          ))}
 
-            <div className="text-center lg:text-left">
-              <h1 className="font-serif leading-[0.95] tracking-tight">
-                <span className="block text-6xl font-semibold text-[#F9F8F3] sm:text-7xl lg:text-8xl">
-                  Daedalus
-                </span>
-                <span className="block text-6xl font-semibold text-[#1F6A64] sm:text-7xl lg:text-8xl">
-                  Health
-                </span>
-              </h1>
-              <p className="mt-4 font-serif text-2xl font-medium text-[#F9F8F3]/90 sm:text-3xl">
-                AI Leadership for Life
-              </p>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-[#F9F8F3]/80 sm:text-lg lg:mx-0">
-                Guiding health system executives and clinical leaders through AI
-                governance, augmented intelligence, and safe clinical integration
-                with uncompromising safety, transparency, and trust.
-              </p>
-              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-7 py-3 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#164f4b] hover:shadow-[inset_0_0_0_1px_#C4A574]"
-                >
-                  Client Portal Access
-                </Link>
-                <a
-                  href="mailto:briefings@daedalus.health?subject=Executive%20Briefing%20Request"
-                  className="inline-flex items-center justify-center rounded-sm border border-[#C4A574]/70 px-7 py-3 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:border-[#C4A574] hover:bg-[#C4A574]/10"
-                >
-                  Schedule Executive Briefing
-                </a>
-              </div>
-              <div className="mt-9 flex items-center justify-center gap-3 lg:justify-start">
-                <CompassStar className="size-7 text-[#C4A574]" />
-                <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
-                  YOUR NORTH STAR FOR ETHICAL AI
-                </p>
-              </div>
+          <div className="relative mx-auto flex max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:py-32">
+            <Image
+              src="/images/winged-figure.png"
+              alt="Classical winged figure, the emblem of Daedalus Health"
+              width={864}
+              height={1152}
+              priority
+              unoptimized
+              className="h-auto w-[160px] sm:w-[190px]"
+            />
+            <CompassStar className="mt-6 mb-8 size-16 text-[#C4A574]" />
+            <p className="font-serif text-sm font-semibold tracking-[0.42em] text-[#C4A574]">
+              DAEDALUS HEALTH
+            </p>
+            <p className="mt-4 text-[11px] font-medium tracking-[0.28em] text-[#F9F8F3]/70">
+              YOUR NORTH STAR FOR ETHICAL AI
+            </p>
+            <h1 className="mt-5 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-[#F9F8F3] sm:text-6xl lg:text-7xl">
+              AI Leadership for Life
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-8 text-[#F9F8F3]/78 sm:text-lg">
+              Guiding health system executives and clinical leaders through AI
+              governance, augmented intelligence, and safe clinical integration
+              with uncompromising safety, transparency, and trust.
+            </p>
+            <div className="mt-10 flex w-full flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-7 py-3 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#164f4b] hover:shadow-[inset_0_0_0_1px_#C4A574]"
+              >
+                Client Portal Access
+              </Link>
+              <a
+                href="mailto:briefings@daedalus.health?subject=Executive%20Briefing%20Request"
+                className="inline-flex items-center justify-center rounded-sm border border-[#C4A574]/70 px-7 py-3 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:border-[#C4A574] hover:bg-[#C4A574]/10"
+              >
+                Schedule Executive Briefing
+              </a>
             </div>
           </div>
         </section>
