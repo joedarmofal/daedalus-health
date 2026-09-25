@@ -4,7 +4,13 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function SignOutButton({ className }: { className?: string }) {
+export function SignOutButton({
+  className,
+  redirectTo = "/login",
+}: {
+  className?: string;
+  redirectTo?: string;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +18,7 @@ export function SignOutButton({ className }: { className?: string }) {
     setLoading(true);
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.replace("/login");
+    router.replace(redirectTo);
     router.refresh();
   }
 

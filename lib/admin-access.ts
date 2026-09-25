@@ -4,7 +4,7 @@ import { cache } from "react";
 
 export type AdminAccessResult =
   | { status: "unauthenticated" }
-  | { status: "forbidden" }
+  | { status: "forbidden"; user: User }
   | { status: "ok"; user: User };
 
 /**
@@ -31,7 +31,7 @@ export const getAdminAccess = cache(async (): Promise<AdminAccessResult> => {
   const isSuperAdmin = user.app_metadata?.is_super_admin === true;
 
   if (!isSuperAdmin) {
-    return { status: "forbidden" };
+    return { status: "forbidden", user };
   }
 
   return { status: "ok", user };

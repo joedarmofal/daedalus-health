@@ -1,6 +1,7 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 
 const RESERVED_SLUGS = new Set([
+  "admin",
   "login",
   "auth",
   "privacy",

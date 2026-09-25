@@ -12,12 +12,8 @@ export const metadata: Metadata = {
 export default async function AdminOrganizationsPage() {
   const access = await getAdminAccess();
 
-  if (access.status === "unauthenticated") {
-    redirect("/login");
-  }
-
-  if (access.status === "forbidden") {
-    redirect("/");
+  if (access.status !== "ok") {
+    redirect("/admin");
   }
 
   const supabase = await createClient();

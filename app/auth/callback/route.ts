@@ -49,5 +49,11 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth-failed`);
+  const failedNext = searchParams.get("next") ?? "";
+  const failedDest =
+    failedNext.startsWith("/admin") && !failedNext.startsWith("//")
+      ? "/admin?error=auth-failed"
+      : "/login?error=auth-failed";
+
+  return NextResponse.redirect(`${origin}${failedDest}`);
 }

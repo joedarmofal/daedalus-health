@@ -59,7 +59,7 @@ export function SiteHeader() {
         <div className="hidden items-center gap-3 md:flex">
           {isSuperAdmin ? (
             <Link
-              href="/admin/organizations"
+              href="/admin"
               className="rounded-full border border-[#C4A574]/50 bg-[#C4A574]/10 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-[#8a6d3d] transition hover:border-[#C4A574] hover:bg-[#C4A574]/20"
             >
               Admin
@@ -99,7 +99,7 @@ export function SiteHeader() {
             ))}
             {isSuperAdmin ? (
               <Link
-                href="/admin/organizations"
+                href="/admin"
                 className="rounded-sm px-2 py-2 text-[#8a6d3d] hover:bg-[#C4A574]/10"
                 onClick={() => setOpen(false)}
               >
