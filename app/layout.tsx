@@ -19,12 +19,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://daedalushealth.ai"),
   title: {
     default: "Daedalus Health — AI Leadership for Life",
     template: "%s · Daedalus Health",
   },
   description:
     "Guiding health system executives and clinical leaders through AI governance, augmented intelligence, and safe clinical integration.",
+  openGraph: {
+    title: "Daedalus Health — AI Leadership for Life",
+    description:
+      "Guiding health system executives and clinical leaders through AI governance, augmented intelligence, and safe clinical integration.",
+    url: "https://daedalushealth.ai",
+    siteName: "Daedalus Health",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Daedalus Health — AI Leadership for Life",
+    description:
+      "Guiding health system executives and clinical leaders through AI governance, augmented intelligence, and safe clinical integration.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
