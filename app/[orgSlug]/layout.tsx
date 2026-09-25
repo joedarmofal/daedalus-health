@@ -70,6 +70,14 @@ export default async function OrgLayout({ children, params }: LayoutProps) {
           </Link>
 
           <div className="flex items-center gap-4">
+            {user.app_metadata?.is_super_admin === true ? (
+              <Link
+                href="/admin/organizations"
+                className="rounded-full border border-[#C4A574]/50 bg-[#C4A574]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-[#8a6d3d] transition hover:border-[#C4A574] hover:bg-[#C4A574]/20"
+              >
+                Admin
+              </Link>
+            ) : null}
             <div className="text-right text-xs leading-tight">
               <div className="font-medium text-[#1A2B3C]">{user.email}</div>
               <div className="font-semibold uppercase tracking-[0.14em] text-[#1F6A64]">

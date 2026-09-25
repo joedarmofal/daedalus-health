@@ -1,9 +1,10 @@
 "use client";
 
 import { CompassStar } from "@/components/compass-star";
+import { createClient } from "@/utils/supabase/client";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/#services", label: "Services" },
@@ -13,6 +14,22 @@ const navLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const supabase = createClient();
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (!cancelled) {
+        setIsSuperAdmin(data.user?.app_metadata?.is_super_admin === true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#1A2B3C]/10 bg-[#F9F8F3]/90 backdrop-blur-md">
@@ -39,7 +56,15 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          {isSuperAdmin ? (
+            <Link
+              href="/admin/organizations"
+              className="rounded-full border border-[#C4A574]/50 bg-[#C4A574]/10 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-[#8a6d3d] transition hover:border-[#C4A574] hover:bg-[#C4A574]/20"
+            >
+              Admin
+            </Link>
+          ) : null}
           <Link
             href="/login"
             className="inline-flex items-center rounded-sm bg-[#1F6A64] px-4 py-2 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574]"
@@ -72,6 +97,15 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
+            {isSuperAdmin ? (
+              <Link
+                href="/admin/organizations"
+                className="rounded-sm px-2 py-2 text-[#8a6d3d] hover:bg-[#C4A574]/10"
+                onClick={() => setOpen(false)}
+              >
+                Admin
+              </Link>
+            ) : null}
             <Link
               href="/login"
               className="mt-2 inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-4 py-2.5 font-medium text-[#F9F8F3] hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574]"
