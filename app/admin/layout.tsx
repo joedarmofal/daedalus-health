@@ -54,6 +54,12 @@ export default async function AdminLayout({
                   Organizations
                 </Link>
               </nav>
+              <Link
+                href="/"
+                className="rounded-sm border border-[#C4A574]/50 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-[#C4A574] transition hover:border-[#C4A574] hover:bg-[#C4A574]/10"
+              >
+                Landing page
+              </Link>
               <span className="text-sm text-[#F9F8F3]/70">
                 {access.user.email}
               </span>
@@ -63,9 +69,12 @@ export default async function AdminLayout({
               />
             </div>
           ) : (
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]/80">
-              Operator access
-            </span>
+            <Link
+              href="/"
+              className="rounded-sm border border-[#C4A574]/50 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-[#C4A574] transition hover:border-[#C4A574] hover:bg-[#C4A574]/10"
+            >
+              Landing page
+            </Link>
           )}
         </div>
       </header>
@@ -79,7 +88,15 @@ export default async function AdminLayout({
             : "border-[#C4A574]/15 text-[#F9F8F3]/40"
         }`}
       >
-        Daedalus Health · Operator console
+        <Link
+          href="/"
+          className={
+            isAdmin ? "transition hover:text-[#1A2B3C]" : "transition hover:text-[#C4A574]"
+          }
+        >
+          Daedalus Health
+        </Link>
+        {" · Operator console"}
       </footer>
     </div>
   );

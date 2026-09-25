@@ -30,6 +30,14 @@ export default async function AdminHomePage({
             access.status === "forbidden" ? access.user.email : undefined
           }
         />
+        <p className="mt-8 text-center">
+          <Link
+            href="/"
+            className="text-sm font-medium text-[#C4A574] transition hover:text-[#F9F8F3]"
+          >
+            View the landing page →
+          </Link>
+        </p>
       </SignInPanel>
     );
   }
@@ -60,6 +68,20 @@ export default async function AdminHomePage({
           <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
             Create customer organizations and generate their portal invite
             links.
+          </p>
+        </Link>
+        <Link
+          href="/"
+          className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] transition hover:border-[#C4A574]/60 hover:shadow-[0_24px_60px_-28px_rgba(26,43,60,0.45)]"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
+            Public site
+          </p>
+          <h2 className="mt-2 font-serif text-xl font-medium text-[#1A2B3C]">
+            Landing page
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
+            Open the Daedalus Health website.
           </p>
         </Link>
       </div>
