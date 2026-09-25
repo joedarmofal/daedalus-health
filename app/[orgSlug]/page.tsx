@@ -1,5 +1,6 @@
 import { TopographicPattern } from "@/components/topographic-pattern";
 import { getOrgAccess } from "@/lib/org-access";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -44,6 +45,13 @@ export default async function OrgPortalPage({ params }: PageProps) {
 
   const { org, role, user } = access;
 
+  const supabase = await createClient();
+  const { data: intake } = await supabase
+    .from("organization_intake")
+    .select("organization_id")
+    .eq("organization_id", org.id)
+    .maybeSingle();
+
   return (
     <div className="relative">
       <TopographicPattern
@@ -67,6 +75,26 @@ export default async function OrgPortalPage({ params }: PageProps) {
           Role
           <span className="font-semibold text-[#1F6A64]">{role}</span>
         </div>
+
+        {!intake ? (
+          <Link
+            href={`/${org.slug}/intake`}
+            className="mt-8 flex flex-col gap-3 rounded-sm border border-[#C4A574]/50 bg-[#C4A574]/10 p-5 transition hover:border-[#C4A574] sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div>
+              <p className="text-sm font-semibold text-[#1A2B3C]">
+                Finish setting up {org.name}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-[#1A2B3C]/70">
+                A few quick details about your organization help us configure
+                your governance program correctly — about three minutes.
+              </p>
+            </div>
+            <span className="inline-flex shrink-0 items-center justify-center rounded-sm bg-[#1F6A64] px-5 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition group-hover:bg-[#1A2B3C]">
+              Complete setup →
+            </span>
+          </Link>
+        ) : null}
 
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {SECTION_CARDS.map((section) => (
