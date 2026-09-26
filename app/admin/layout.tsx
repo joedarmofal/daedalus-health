@@ -1,5 +1,6 @@
 import { CompassStar } from "@/components/compass-star";
 import { SignOutButton } from "@/components/sign-out-button";
+import { TopographicPattern } from "@/components/topographic-pattern";
 import { getAdminAccess } from "@/lib/admin-access";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -14,11 +15,16 @@ export default async function AdminLayout({
 
   return (
     <div
-      className={`flex min-h-screen flex-col ${
+      className={`relative flex min-h-screen flex-col ${
         isAdmin ? "bg-[#F7F5F0]" : "bg-[#1A2B3C] text-[#F9F8F3]"
       }`}
     >
-      {isAdmin ? null : (
+      {isAdmin ? (
+        <TopographicPattern
+          tone="gold"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-[0.14]"
+        />
+      ) : (
         <style>{`html, body { background: #1A2B3C; }`}</style>
       )}
       <header
@@ -79,10 +85,10 @@ export default async function AdminLayout({
         </div>
       </header>
 
-      <main className="flex flex-1 flex-col">{children}</main>
+      <main className="relative z-10 flex flex-1 flex-col">{children}</main>
 
       <footer
-        className={`border-t px-4 py-4 text-center text-xs tracking-wide ${
+        className={`relative z-10 border-t px-4 py-4 text-center text-xs tracking-wide ${
           isAdmin
             ? "border-[#1A2B3C]/10 text-[#1A2B3C]/45"
             : "border-[#C4A574]/15 text-[#F9F8F3]/40"

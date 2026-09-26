@@ -13,7 +13,7 @@ const SECTION_CARDS = [
     href: "dashboard",
     label: "Dashboard",
     description:
-      "Model inventory, governance status, and program telemetry at a glance.",
+      "Governance status, program telemetry, and an ROI tool for time and money returned.",
   },
   {
     href: "policy",
