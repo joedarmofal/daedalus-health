@@ -1,5 +1,7 @@
 import { getOrgAccess } from "@/lib/org-access";
+import { countAiTools } from "@/lib/ai-tools-directory";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -90,8 +92,33 @@ export default async function ToolkitPage({ params }: PageProps) {
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
         Practical templates and checklists that turn policy into practice
-        across each stage of the model lifecycle.
+        across each stage of the model lifecycle, plus a directory of
+        enterprise AI tools to evaluate.
       </p>
+
+      <section className="mt-10">
+        <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
+          AI Tools
+        </h2>
+        <Link
+          href={`/${org.slug}/toolkit/ai-tools`}
+          className="mt-5 flex flex-col gap-3 rounded-sm border border-[#C4A574]/50 bg-[#C4A574]/10 p-6 transition hover:border-[#C4A574] sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p className="font-serif text-lg font-medium text-[#1A2B3C]">
+              Enterprise AI directory
+            </p>
+            <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/70">
+              {countAiTools()} respected vendors, grouped by ambient scribes,
+              imaging, research, HR, legal, revenue cycle, and more — a
+              shopping list for {org.name} to explore enterprise-wide.
+            </p>
+          </div>
+          <span className="inline-flex shrink-0 items-center justify-center rounded-sm bg-[#1A2B3C] px-5 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3]">
+            Open AI Tools →
+          </span>
+        </Link>
+      </section>
 
       {PHASES.map((phase) => {
         const items = TOOLKIT.filter((item) => item.phase === phase);

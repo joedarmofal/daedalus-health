@@ -31,7 +31,7 @@ const SECTION_CARDS = [
     href: "toolkit",
     label: "Toolkit",
     description:
-      "Templates and checklists to operationalize risk assessment, validation, and monitoring.",
+      "Templates, checklists, and an enterprise AI tools directory to evaluate vendors.",
   },
 ];
 

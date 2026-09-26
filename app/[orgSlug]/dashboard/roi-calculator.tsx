@@ -147,9 +147,15 @@ export function RoiCalculator({ orgSlug }: { orgSlug: string }) {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <ResultCard
+              label="FTE savings"
+              value={`${formatFte(result.dailyFteSavings)} FTE`}
+              note={`${formatHours(result.dailyHoursSaved)} hours / day from people × time saved`}
+              emphasis="positive"
+            />
+            <ResultCard
               label="Hours returned / year"
               value={formatHours(result.annualHoursSaved)}
-              note={`${formatFte(result.fteEquivalent)} FTE equivalent`}
+              note={`${formatFte(result.fteEquivalent)} annual FTE equivalent`}
             />
             <ResultCard
               label="Labor dollars saved"
@@ -187,9 +193,10 @@ export function RoiCalculator({ orgSlug }: { orgSlug: string }) {
           </div>
 
           <p className="text-xs leading-5 text-[#1A2B3C]/50">
-            Hours = people × minutes per day × working days ÷ 60. Labor savings
-            = hours × hourly cost. ROI = (total benefit − investment) ÷
-            investment. One FTE is treated as 2,080 hours.
+            FTE savings = people × minutes saved per day ÷ 60 ÷ 8-hour day.
+            Annual hours = daily hours × working days. Labor savings = annual
+            hours × hourly cost. ROI = (total benefit − investment) ÷
+            investment. One annual FTE is 2,080 hours.
           </p>
         </div>
       </div>

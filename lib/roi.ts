@@ -8,6 +8,8 @@ export interface RoiInputs {
 }
 
 export interface RoiResult {
+  dailyHoursSaved: number;
+  dailyFteSavings: number;
   annualHoursSaved: number;
   fteEquivalent: number;
   laborSavings: number;
@@ -26,6 +28,7 @@ export const DEFAULT_ROI_INPUTS: RoiInputs = {
   annualInvestment: 150000,
 };
 
+const HOURS_PER_FTE_DAY = 8;
 const HOURS_PER_FTE_YEAR = 2080;
 
 function asNonNegative(value: number): number {
@@ -43,13 +46,17 @@ export function calculateRoi(inputs: RoiInputs): RoiResult {
   const extra = asNonNegative(inputs.additionalAnnualSavings);
   const investment = asNonNegative(inputs.annualInvestment);
 
-  const annualHoursSaved = (people * minutes * days) / 60;
+  const dailyHoursSaved = (people * minutes) / 60;
+  const dailyFteSavings = dailyHoursSaved / HOURS_PER_FTE_DAY;
+  const annualHoursSaved = dailyHoursSaved * days;
   const fteEquivalent = annualHoursSaved / HOURS_PER_FTE_YEAR;
   const laborSavings = annualHoursSaved * rate;
   const totalBenefit = laborSavings + extra;
   const netValue = totalBenefit - investment;
 
   return {
+    dailyHoursSaved,
+    dailyFteSavings,
     annualHoursSaved,
     fteEquivalent,
     laborSavings,
