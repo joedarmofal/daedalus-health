@@ -1,5 +1,5 @@
+import { fetchAiVendorDirectory } from "@/lib/ai-vendors";
 import { getOrgAccess } from "@/lib/org-access";
-import { countAiTools } from "@/lib/ai-tools-directory";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -22,6 +22,8 @@ export default async function AiToolsPage({ params }: PageProps) {
   }
 
   const { org } = access;
+  const categories = await fetchAiVendorDirectory();
+  const total = categories.reduce((sum, category) => sum + category.tools.length, 0);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -38,7 +40,7 @@ export default async function AiToolsPage({ params }: PageProps) {
         Enterprise AI directory for {org.name}
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
-        A working list of {countAiTools()} established vendors across ambient
+        A working list of {total} established vendors across ambient
         documentation, imaging, revenue cycle, operations, research, HR, and
         legal. Use it to shop categories, then run every shortlist through your
         vendor due-diligence checklist.
@@ -50,7 +52,7 @@ export default async function AiToolsPage({ params }: PageProps) {
       </p>
 
       <div className="mt-8">
-        <AiToolsDirectory />
+        <AiToolsDirectory categories={categories} />
       </div>
     </div>
   );

@@ -1,20 +1,21 @@
 "use client";
 
-import {
-  AI_TOOL_CATEGORIES,
-  countAiTools,
-  type AiToolCategory,
-} from "@/lib/ai-tools-directory";
+import { type AiToolCategory } from "@/lib/ai-tools-directory";
 import { useMemo, useState } from "react";
 
-export function AiToolsDirectory() {
+export function AiToolsDirectory({
+  categories,
+}: {
+  categories: AiToolCategory[];
+}) {
   const [query, setQuery] = useState("");
   const [activeId, setActiveId] = useState<string>("all");
+  const total = categories.reduce((sum, category) => sum + category.tools.length, 0);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
 
-    return AI_TOOL_CATEGORIES.map((category) => {
+    return categories.map((category) => {
       const tools = category.tools.filter((tool) => {
         if (activeId !== "all" && category.id !== activeId) {
           return false;
@@ -28,7 +29,7 @@ export function AiToolsDirectory() {
       });
       return { ...category, tools };
     }).filter((category) => category.tools.length > 0);
-  }, [activeId, query]);
+  }, [activeId, categories, query]);
 
   const visibleCount = filtered.reduce(
     (sum, category) => sum + category.tools.length,
@@ -51,11 +52,11 @@ export function AiToolsDirectory() {
         />
         <div className="mt-4 flex flex-wrap gap-2">
           <FilterChip
-            label={`All (${countAiTools()})`}
+            label={`All (${total})`}
             active={activeId === "all"}
             onClick={() => setActiveId("all")}
           />
-          {AI_TOOL_CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <FilterChip
               key={category.id}
               label={category.label}
@@ -65,7 +66,7 @@ export function AiToolsDirectory() {
           ))}
         </div>
         <p className="mt-3 text-xs text-[#1A2B3C]/50">
-          Showing {visibleCount} of {countAiTools()} tools
+          Showing {visibleCount} of {total} tools
         </p>
       </div>
 
@@ -119,7 +120,7 @@ function CategorySection({ category }: { category: AiToolCategory }) {
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {category.tools.map((tool) => (
           <article
-            key={tool.name}
+            key={tool.id ?? tool.name}
             className="flex flex-col rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.35)]"
           >
             <h3 className="font-serif text-lg font-medium text-[#1A2B3C]">

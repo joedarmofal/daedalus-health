@@ -1,6 +1,7 @@
 "use server";
 
 import { getAdminAccess } from "@/lib/admin-access";
+import { isReservedOrgSlug } from "@/lib/org";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
@@ -99,10 +100,10 @@ export async function createOrganizationAndInvite(
     };
   }
 
-  if (!SLUG_PATTERN.test(slug)) {
+  if (!SLUG_PATTERN.test(slug) || isReservedOrgSlug(slug)) {
     return {
       ok: false,
-      error: "Slug must be lowercase letters, numbers, and hyphens only.",
+      error: "Slug must be lowercase letters, numbers, and hyphens only, and cannot be a reserved path.",
     };
   }
 

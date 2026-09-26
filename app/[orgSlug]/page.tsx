@@ -33,6 +33,12 @@ const SECTION_CARDS = [
     description:
       "Templates, checklists, and an enterprise AI tools directory to evaluate vendors.",
   },
+  {
+    href: "legal",
+    label: "Legal / Compliance",
+    description:
+      "AI laws, common compliance situations, and a live feed of legal and regulatory news.",
+  },
 ];
 
 export default async function OrgPortalPage({ params }: PageProps) {

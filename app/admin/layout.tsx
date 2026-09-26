@@ -65,6 +65,12 @@ export default async function AdminLayout({
                 >
                   Organizations
                 </Link>
+                <Link
+                  href="/admin/vendors"
+                  className="transition hover:text-[#C4A574]"
+                >
+                  Vendors
+                </Link>
               </nav>
               <Link
                 href="/"

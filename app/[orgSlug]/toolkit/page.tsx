@@ -1,5 +1,5 @@
+import { fetchAiVendorDirectory } from "@/lib/ai-vendors";
 import { getOrgAccess } from "@/lib/org-access";
-import { countAiTools } from "@/lib/ai-tools-directory";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -81,6 +81,10 @@ export default async function ToolkitPage({ params }: PageProps) {
   }
 
   const { org } = access;
+  const vendorCount = (await fetchAiVendorDirectory()).reduce(
+    (sum, category) => sum + category.tools.length,
+    0,
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -109,7 +113,7 @@ export default async function ToolkitPage({ params }: PageProps) {
               Enterprise AI directory
             </p>
             <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/70">
-              {countAiTools()} respected vendors, grouped by ambient scribes,
+              {vendorCount} respected vendors, grouped by ambient scribes,
               imaging, research, HR, legal, revenue cycle, and more — a
               shopping list for {org.name} to explore enterprise-wide.
             </p>

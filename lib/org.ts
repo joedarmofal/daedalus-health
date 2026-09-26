@@ -8,7 +8,12 @@ const RESERVED_SLUGS = new Set([
   "about",
   "services",
   "api",
+  "legal",
 ]);
+
+export function isReservedOrgSlug(slug: string): boolean {
+  return RESERVED_SLUGS.has(slug);
+}
 
 function asSlug(value: unknown): string | null {
   if (typeof value !== "string") {

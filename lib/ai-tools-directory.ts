@@ -1,4 +1,5 @@
 export interface AiTool {
+  id?: string;
   name: string;
   url: string;
   summary: string;

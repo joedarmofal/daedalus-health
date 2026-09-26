@@ -9,6 +9,7 @@ const SECTIONS = [
   { href: "/policy", label: "Policy" },
   { href: "/governance", label: "Governance" },
   { href: "/toolkit", label: "Toolkit" },
+  { href: "/legal", label: "Legal / Compliance" },
 ];
 
 export function PortalNav({ orgSlug }: { orgSlug: string }) {
