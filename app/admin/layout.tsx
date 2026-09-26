@@ -51,7 +51,13 @@ export default async function AdminLayout({
             <div className="flex items-center gap-5">
               <nav className="hidden items-center gap-5 text-sm text-[#F9F8F3]/70 sm:flex">
                 <Link href="/admin" className="transition hover:text-[#C4A574]">
-                  Home
+                  Mission Control
+                </Link>
+                <Link
+                  href="/admin/proforma"
+                  className="transition hover:text-[#C4A574]"
+                >
+                  Proforma
                 </Link>
                 <Link
                   href="/admin/organizations"
@@ -102,7 +108,7 @@ export default async function AdminLayout({
         >
           Daedalus Health
         </Link>
-        {" · Operator console"}
+        {" · Mission Control"}
       </footer>
     </div>
   );

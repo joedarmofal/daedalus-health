@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AdminLoginForm } from "./admin-login-form";
 
 export const metadata: Metadata = {
-  title: "Admin",
+  title: "Mission Control",
   description: "Daedalus Health operator console.",
 };
 
@@ -48,13 +48,28 @@ export default async function AdminHomePage({
         Operator console
       </span>
       <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
-        Home
+        Mission Control
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
         Signed in as {access.user.email}. Choose a destination below.
       </p>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <Link
+          href="/admin/proforma"
+          className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] transition hover:border-[#C4A574]/60 hover:shadow-[0_24px_60px_-28px_rgba(26,43,60,0.45)]"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
+            Proforma development
+          </p>
+          <h2 className="mt-2 font-serif text-xl font-medium text-[#1A2B3C]">
+            Program proformas
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
+            Build an Air Medical Program Proforma from rotor, fixed wing, and
+            ground volume, labor, leases, and operating costs.
+          </p>
+        </Link>
         <Link
           href="/admin/organizations"
           className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] transition hover:border-[#C4A574]/60 hover:shadow-[0_24px_60px_-28px_rgba(26,43,60,0.45)]"
