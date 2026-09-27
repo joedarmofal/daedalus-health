@@ -1,8 +1,6 @@
 const HEXDB_REG = "https://hexdb.io/reg-hex";
 const HEXDB_TYPE = "https://hexdb.io/hex-type";
-const ADSB_AIRPORT = "https://api.adsb.lol/api/0/airport";
 const ADSB_REG = "https://api.adsb.lol/v2/reg";
-const ADSB_POINT = "https://api.adsb.lol/v2/point";
 const OPENSKY_API = "https://opensky-network.org/api";
 const OPENSKY_TOKEN =
   "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
@@ -79,35 +77,22 @@ export async function searchFlights(
   const range = parseDateRange(input.dateFrom, input.dateTo);
 
   if (!range.ok) return range;
-  if (!tail && airportInputs.length === 0) {
+  if (!tail) {
     return {
       ok: false,
-      error: "Enter an aircraft tail number, airport codes, or both.",
+      error: "Enter an aircraft tail number to run the report.",
     };
   }
 
-  const airports = (
-    await Promise.all(airportInputs.map((code) => resolveAirport(code)))
-  ).filter((airport): airport is FlightAirport => airport !== null);
-
-  if (airportInputs.length > 0 && airports.length === 0) {
+  const aircraft = await resolveAircraft(tail);
+  if (!aircraft) {
     return {
       ok: false,
-      error:
-        "Those airport codes were not recognized. Try ICAO (KCPR, KAPA) or IATA (CPR, APA).",
+      error: `No ADS-B identity was found for tail ${tail}. Check the registration and try again.`,
     };
   }
 
-  let aircraft: FlightAircraft | null = null;
-  if (tail) {
-    aircraft = await resolveAircraft(tail);
-    if (!aircraft) {
-      return {
-        ok: false,
-        error: `No ADS-B identity was found for tail ${tail}. Check the registration and try again.`,
-      };
-    }
-  }
+  const airports = airportInputs.map((code) => airportFromCode(code));
 
   const historical = await searchHistoricalFlights({
     aircraft,
@@ -116,7 +101,7 @@ export async function searchFlights(
     end: range.end,
   });
 
-  const live = await searchLiveFlights({ aircraft, airports });
+  const live = await searchLiveFlights({ aircraft });
   const flights = dedupeFlights([...historical.flights, ...live]);
 
   const notice = [
@@ -209,89 +194,38 @@ async function resolveAircraft(tail: string): Promise<FlightAircraft | null> {
   };
 }
 
-async function resolveAirport(code: string): Promise<FlightAirport | null> {
+function airportFromCode(code: string): FlightAirport {
   const known = KNOWN_AIRPORTS[code];
   if (known) {
     return { ...known, input: code };
   }
-
-  const candidates =
-    code.length === 4 ? [code] : [`K${code}`, `C${code}`, `P${code}`, `T${code}`];
-
-  for (const icao of candidates) {
-    const mapped = KNOWN_AIRPORTS[icao];
-    if (mapped) {
-      return { ...mapped, input: code };
-    }
-    const data = await fetchJson<AdsbAirport>(`${ADSB_AIRPORT}/${icao}`);
-    if (data?.icao) {
-      return {
-        input: code,
-        icao: data.icao,
-        iata: data.iata ?? null,
-        name: data.name ?? null,
-      };
-    }
-  }
-
   if (code.length === 3) {
-    return {
-      input: code,
-      icao: `K${code}`,
-      iata: code,
-      name: null,
-    };
+    return { input: code, icao: `K${code}`, iata: code, name: null };
   }
-  if (code.length === 4) {
-    return { input: code, icao: code, iata: null, name: null };
-  }
-
-  return null;
+  return { input: code, icao: code, iata: null, name: null };
 }
 
 async function searchHistoricalFlights(input: {
-  aircraft: FlightAircraft | null;
+  aircraft: FlightAircraft;
   airports: FlightAirport[];
   begin: number;
   end: number;
 }): Promise<{ flights: TrackedFlight[]; notice: string | null; source: string }> {
   const headers = await openSkyHeaders();
-  const icaoSet = new Set(input.airports.map((airport) => airport.icao));
   const windows = chunkUnixRange(input.begin, input.end, TWO_DAYS - 1);
   const raw: OpenSkyFlight[] = [];
   let blocked = false;
   let unauthorized = false;
 
   try {
-    if (input.aircraft) {
-      for (const window of windows) {
-        const flights = await openSkyFlights(
-          `/flights/aircraft?icao24=${input.aircraft.icao24}&begin=${window.begin}&end=${window.end}`,
-          headers,
-        );
-        if (flights === "blocked") blocked = true;
-        else if (flights === "unauthorized") unauthorized = true;
-        else raw.push(...flights);
-      }
-    } else {
-      for (const airport of input.airports) {
-        for (const window of windows) {
-          const arrivals = await openSkyFlights(
-            `/flights/arrival?airport=${airport.icao}&begin=${window.begin}&end=${window.end}`,
-            headers,
-          );
-          const departures = await openSkyFlights(
-            `/flights/departure?airport=${airport.icao}&begin=${window.begin}&end=${window.end}`,
-            headers,
-          );
-          if (arrivals === "blocked" || departures === "blocked") blocked = true;
-          if (arrivals === "unauthorized" || departures === "unauthorized") {
-            unauthorized = true;
-          }
-          if (Array.isArray(arrivals)) raw.push(...arrivals);
-          if (Array.isArray(departures)) raw.push(...departures);
-        }
-      }
+    for (const window of windows) {
+      const flights = await openSkyFlights(
+        `/flights/aircraft?icao24=${input.aircraft.icao24}&begin=${window.begin}&end=${window.end}`,
+        headers,
+      );
+      if (flights === "blocked") blocked = true;
+      else if (flights === "unauthorized") unauthorized = true;
+      else raw.push(...flights);
     }
   } catch (error) {
     return {
@@ -305,61 +239,43 @@ async function searchHistoricalFlights(input: {
   }
 
   const flights = raw
-    .map((flight) => toTrackedFlight(flight, input.aircraft?.registration ?? null))
-    .filter((flight) => {
-      if (icaoSet.size === 0) return true;
-      return (
-        (flight.departureIcao && icaoSet.has(flight.departureIcao)) ||
-        (flight.arrivalIcao && icaoSet.has(flight.arrivalIcao))
-      );
-    });
+    .map((flight) => toTrackedFlight(flight, input.aircraft.registration))
+    .filter((flight) => matchesOptionalAirports(flight, input.airports));
 
   let notice: string | null = null;
   if (unauthorized || blocked) {
     notice = process.env.OPENSKY_CLIENT_ID
       ? "OpenSky rejected the historical query. Check OPENSKY_CLIENT_ID and OPENSKY_CLIENT_SECRET."
-      : "Historical flight lists come from the OpenSky Network. Add a free OpenSky API client (OPENSKY_CLIENT_ID and OPENSKY_CLIENT_SECRET) in Vercel Production to unlock date-range results. Live matches are still shown when the aircraft or airport is active now.";
+      : "Historical flight lists come from the OpenSky Network. Add a free OpenSky API client (OPENSKY_CLIENT_ID and OPENSKY_CLIENT_SECRET) in Vercel Production to unlock date-range results. Live matches are still shown when the aircraft is active now.";
   }
 
   return { flights, notice, source: "OpenSky Network · ADS-B" };
 }
 
+function matchesOptionalAirports(
+  flight: TrackedFlight,
+  airports: FlightAirport[],
+): boolean {
+  if (airports.length === 0) return true;
+  return airports.some((airport) => {
+    const codes = new Set(
+      [airport.input, airport.icao, airport.iata].filter(Boolean),
+    );
+    return (
+      (flight.departureIcao && codes.has(flight.departureIcao)) ||
+      (flight.arrivalIcao && codes.has(flight.arrivalIcao))
+    );
+  });
+}
+
 async function searchLiveFlights(input: {
-  aircraft: FlightAircraft | null;
-  airports: FlightAirport[];
+  aircraft: FlightAircraft;
 }): Promise<TrackedFlight[]> {
-  const flights: TrackedFlight[] = [];
-
-  if (input.aircraft) {
-    const live = await fetchJson<AdsbAircraftResponse>(
-      `${ADSB_REG}/${encodeURIComponent(input.aircraft.registration)}`,
-    );
-    const row = live?.ac?.[0];
-    if (row) {
-      flights.push(liveAircraftToFlight(row, input.aircraft.registration));
-    }
-  }
-
-  for (const airport of input.airports) {
-    if (airport.icao === "") continue;
-    const meta = await fetchJson<AdsbAirport>(`${ADSB_AIRPORT}/${airport.icao}`);
-    if (meta?.lat == null || meta.lon == null) continue;
-    const nearby = await fetchJson<AdsbAircraftResponse>(
-      `${ADSB_POINT}/${meta.lat}/${meta.lon}/20`,
-    );
-    for (const row of nearby?.ac ?? []) {
-      if (
-        input.aircraft &&
-        row.hex?.toLowerCase() !== input.aircraft.icao24 &&
-        normalizeTail(row.r) !== input.aircraft.registration
-      ) {
-        continue;
-      }
-      flights.push(liveAircraftToFlight(row, normalizeTail(row.r)));
-    }
-  }
-
-  return flights;
+  const live = await fetchJson<AdsbAircraftResponse>(
+    `${ADSB_REG}/${encodeURIComponent(input.aircraft.registration)}`,
+  );
+  const row = live?.ac?.[0];
+  return row ? [liveAircraftToFlight(row, input.aircraft.registration)] : [];
 }
 
 function liveAircraftToFlight(
@@ -533,14 +449,6 @@ interface OpenSkyFlight {
   estDepartureAirport: string | null;
   estArrivalAirport: string | null;
   callsign: string | null;
-}
-
-interface AdsbAirport {
-  icao?: string;
-  iata?: string;
-  name?: string;
-  lat?: number;
-  lon?: number;
 }
 
 interface AdsbAircraft {

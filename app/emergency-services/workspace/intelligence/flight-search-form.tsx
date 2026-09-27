@@ -57,6 +57,7 @@ export function FlightSearchForm() {
             <input
               id="tailNumber"
               name="tailNumber"
+              required
               className={inputClass}
               placeholder="N851MB"
               autoComplete="off"
@@ -64,7 +65,7 @@ export function FlightSearchForm() {
           </div>
           <div>
             <label htmlFor="airports" className="text-sm font-medium text-[#1A2B3C]">
-              Airport codes
+              Airport codes <span className="font-normal text-[#1A2B3C]/45">(optional)</span>
             </label>
             <input
               id="airports"
@@ -74,7 +75,7 @@ export function FlightSearchForm() {
               autoComplete="off"
             />
             <p className="mt-1.5 text-xs text-[#1A2B3C]/45">
-              IATA or ICAO, comma-separated. Matches origin or destination.
+              Optional filter only. The report runs on tail number and dates.
             </p>
           </div>
           <div>

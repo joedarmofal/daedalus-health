@@ -17,10 +17,9 @@ export default async function BusinessIntelligencePage() {
         Flight tracking
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
-        Research public ADS-B activity for {access.org.name}. Search by tail
-        number (for example N851MB), date range, and airport codes such as CPR
-        or APA. Results come from OpenSky Network historical flights and live
-        community ADS-B feeds.
+        Research public ADS-B activity for {access.org.name}. Enter a tail
+        number and date range to list that aircraft’s flights. Airport codes
+        are optional.
       </p>
       <div className="mt-8">
         <FlightSearchForm />

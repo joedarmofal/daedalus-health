@@ -99,8 +99,8 @@ export default async function AccreditationWorkspacePage() {
             Flight tracking
           </h2>
           <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
-            Query public ADS-B data by tail number, date range, and airport
-            codes to list matching flights.
+            Query public ADS-B data by tail number and date range to list
+            matching flights.
           </p>
         </Link>
         <Link
