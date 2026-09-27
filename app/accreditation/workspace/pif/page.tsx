@@ -27,7 +27,8 @@ export default async function PifIndexPage() {
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
         Work section by section. Each item holds the narrative you will paste
-        into the official PIF, plus evidence still to collect.
+        into the official PIF, plus evidence still to collect. You can draft
+        from a short prompt or uploaded policies — then review and save.
       </p>
 
       <div className="mt-8 space-y-3">

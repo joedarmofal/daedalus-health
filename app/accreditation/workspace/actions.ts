@@ -5,7 +5,12 @@ import {
   ensureAccreditationProgram,
 } from "@/lib/accreditation-data";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { PIF_STATUSES, type PifStatus } from "@/lib/camts-pif";
+import { getCamtsItem, PIF_STATUSES, type PifStatus } from "@/lib/camts-pif";
+import {
+  draftPifFromMaterials,
+  extractPifMaterials,
+  isPifAiConfigured,
+} from "@/lib/pif-ai";
 import { revalidatePath } from "next/cache";
 
 function field(formData: FormData, key: string): string {
@@ -108,4 +113,76 @@ export async function savePifItem(
   revalidatePath("/accreditation/workspace/gaps");
   revalidatePath("/accreditation/workspace/export");
   return { ok: true };
+}
+
+export async function draftPifItem(
+  formData: FormData,
+): Promise<
+  | { ok: true; narrative: string; evidenceNotes: string }
+  | { ok: false; error: string }
+> {
+  const access = await getAccreditationAccess();
+  if (access.status !== "ok") {
+    return { ok: false, error: "Sign in to draft PIF language." };
+  }
+
+  if (!isPifAiConfigured()) {
+    return {
+      ok: false,
+      error:
+        "PIF drafting is not configured on this server. Add OPENAI_API_KEY in Vercel Production environment variables, then redeploy.",
+    };
+  }
+
+  const standardId = field(formData, "standard_id");
+  const found = getCamtsItem(standardId);
+  if (!found) {
+    return { ok: false, error: "That PIF item was not found." };
+  }
+
+  const program = await ensureAccreditationProgram(access.org.id, access.org.name);
+  if (!program) {
+    return {
+      ok: false,
+      error:
+        "The accreditation tables are not in Supabase yet. Run supabase-migrations/007_accreditation.sql in the SQL Editor.",
+    };
+  }
+
+  const files = formData
+    .getAll("materials")
+    .filter((value): value is File => value instanceof File && value.size > 0);
+
+  const extracted = await extractPifMaterials(files);
+  if (!extracted.ok) {
+    return extracted;
+  }
+
+  const notes = optional(formData, "ai_notes") ?? "";
+  const existingNarrative = optional(formData, "existing_narrative") ?? "";
+
+  if (!notes && !existingNarrative && extracted.materials.length === 0) {
+    return {
+      ok: false,
+      error:
+        "Add a short prompt, keep some existing narrative, or upload a policy / SOP before drafting.",
+    };
+  }
+
+  try {
+    const draft = await draftPifFromMaterials({
+      program,
+      section: found.section,
+      item: found.item,
+      notes,
+      existingNarrative,
+      materials: extracted.materials,
+    });
+    return { ok: true, ...draft };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "The draft could not be written.",
+    };
+  }
 }

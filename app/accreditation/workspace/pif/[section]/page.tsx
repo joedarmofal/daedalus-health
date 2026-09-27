@@ -41,6 +41,11 @@ export default async function PifSectionPage({
         {section.title}
       </h1>
       <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">{section.summary}</p>
+      <p className="mt-3 text-sm leading-6 text-[#1A2B3C]/60">
+        Each item can draft from a short prompt or uploaded policies. Review
+        every [TO CONFIRM] before you treat language as survey-ready. Do not
+        upload patient records.
+      </p>
 
       <div className="mt-8 space-y-5">
         {section.items.map((item) => (

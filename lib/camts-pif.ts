@@ -511,6 +511,17 @@ export function getCamtsSection(sectionId: string): CamtsSection | null {
   return CAMTS_SECTIONS.find((section) => section.id === sectionId) ?? null;
 }
 
+export function getCamtsItem(standardId: string): {
+  section: CamtsSection;
+  item: CamtsStandard;
+} | null {
+  for (const section of CAMTS_SECTIONS) {
+    const item = section.items.find((entry) => entry.id === standardId);
+    if (item) return { section, item };
+  }
+  return null;
+}
+
 export function pifStatusLabel(status: string): string {
   return PIF_STATUSES.find((item) => item.id === status)?.label ?? status;
 }
