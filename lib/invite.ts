@@ -68,6 +68,13 @@ export async function destinationAfterInvite(
     candidates.push(resolved);
   }
 
+  if (needsPasswordSetup(user)) {
+    const slug = candidates[0];
+    return slug
+      ? `${origin}/auth/set-password?org=${encodeURIComponent(slug)}`
+      : `${origin}/auth/set-password`;
+  }
+
   for (const slug of candidates) {
     const { data: org } = await supabase
       .from("organizations")
@@ -77,10 +84,6 @@ export async function destinationAfterInvite(
       .maybeSingle();
 
     if (!org?.slug) continue;
-
-    if (needsPasswordSetup(user)) {
-      return `${origin}/auth/set-password?org=${encodeURIComponent(org.slug)}`;
-    }
 
     const { data: intake } = await supabase
       .from("organization_intake")

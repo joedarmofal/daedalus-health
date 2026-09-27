@@ -1,5 +1,6 @@
 import { parseInviteType } from "@/lib/invite";
 import { resolveOrgSlug } from "@/lib/org";
+import { needsPasswordSetup } from "@/lib/password-setup";
 import { publicAppUrl, safeAppPath } from "@/lib/public-url";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
@@ -94,14 +95,26 @@ async function destinationForNext(
   next: string,
   origin: string,
 ): Promise<string> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const safeNext = safeAppPath(next);
+
+  if (
+    needsPasswordSetup(user) &&
+    !safeNext.startsWith("/auth/set-password") &&
+    !safeNext.startsWith("/auth/update-password")
+  ) {
+    const orgSlug = await resolveOrgSlug(supabase, user);
+    return orgSlug
+      ? `${origin}/auth/set-password?org=${encodeURIComponent(orgSlug)}`
+      : `${origin}/auth/set-password`;
+  }
+
   if (safeNext !== "/") {
     return `${origin}${safeNext}`;
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
   const orgSlug = await resolveOrgSlug(supabase, user);
   return orgSlug ? `${origin}/${orgSlug}` : `${origin}/`;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { MIN_PASSWORD_LENGTH } from "@/lib/password-setup";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { submitIntake } from "./actions";
@@ -33,9 +34,13 @@ const USE_CASES = [
 
 export function IntakeForm({
   orgSlug,
+  email,
+  requirePassword,
   initialData,
 }: {
   orgSlug: string;
+  email: string;
+  requirePassword: boolean;
   initialData: IntakeFormData | null;
 }) {
   const router = useRouter();
@@ -96,6 +101,71 @@ export function IntakeForm({
       onSubmit={handleSubmit}
       className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] sm:p-8"
     >
+      {requirePassword ? (
+        <div className="mb-8 rounded-sm border border-[#1F6A64]/25 bg-[#1F6A64]/5 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1F6A64]">
+            Create your login
+          </p>
+          <h3 className="mt-2 font-serif text-lg font-medium text-[#1A2B3C]">
+            Choose a password for the portal
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
+            You will use this email and password to sign in after today.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className="text-sm font-medium text-[#1A2B3C]">
+                Login email
+              </label>
+              <input
+                type="email"
+                value={email}
+                readOnly
+                autoComplete="username"
+                className={`${inputClass} text-[#1A2B3C]/70`}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-[#1A2B3C]"
+              >
+                Create a password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                minLength={MIN_PASSWORD_LENGTH}
+                autoComplete="new-password"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="text-sm font-medium text-[#1A2B3C]"
+              >
+                Confirm password
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                minLength={MIN_PASSWORD_LENGTH}
+                autoComplete="new-password"
+                className={inputClass}
+              />
+              <p className="mt-1.5 text-xs text-[#1A2B3C]/45">
+                At least {MIN_PASSWORD_LENGTH} characters.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium text-[#1A2B3C]">

@@ -2,7 +2,7 @@
 
 import { destinationAfterInvite, parseInviteType } from "@/lib/invite";
 import { parseOrgSlug } from "@/lib/org";
-import { publicAppUrl } from "@/lib/public-url";
+import { needsPasswordSetup } from "@/lib/password-setup";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -10,7 +10,6 @@ export async function acceptInvite(formData: FormData) {
   const tokenHash = String(formData.get("token_hash") ?? "").trim();
   const type = parseInviteType(formData.get("type")) ?? "invite";
   const org = parseOrgSlug(formData.get("org"));
-  const origin = publicAppUrl();
 
   if (!tokenHash) {
     redirect("/auth/invite-callback?error=missing");
@@ -30,5 +29,9 @@ export async function acceptInvite(formData: FormData) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  redirect(await destinationAfterInvite(supabase, user, org, origin));
+  if (type === "invite" || type === "signup" || needsPasswordSetup(user)) {
+    redirect(org ? `/${org}/intake` : "/auth/set-password");
+  }
+
+  redirect(await destinationAfterInvite(supabase, user, org, ""));
 }

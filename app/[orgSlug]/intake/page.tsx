@@ -1,4 +1,5 @@
 import { getOrgAccess } from "@/lib/org-access";
+import { needsPasswordSetup } from "@/lib/password-setup";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -38,13 +39,16 @@ export default async function IntakePage({ params }: PageProps) {
         Tell us about {access.org.name}
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
-        A few details to set up your governance program correctly — takes
-        about three minutes. You can come back and update this later.
+        {!existing || needsPasswordSetup(access.user)
+          ? "Create your portal password, then a few details to set up your governance program."
+          : "A few details to set up your governance program correctly — takes about three minutes. You can come back and update this later."}
       </p>
 
       <div className="mt-8">
         <IntakeForm
           orgSlug={access.org.slug}
+          email={access.user.email ?? ""}
+          requirePassword={!existing || needsPasswordSetup(access.user)}
           initialData={(existing as IntakeFormData | null) ?? null}
         />
       </div>

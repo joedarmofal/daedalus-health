@@ -1,8 +1,7 @@
 "use server";
 
 import { destinationAfterInvite } from "@/lib/invite";
-import { validateNewPassword } from "@/lib/password-setup";
-import { publicAppUrl } from "@/lib/public-url";
+import { passwordSetMetadata, validateNewPassword } from "@/lib/password-setup";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -31,10 +30,7 @@ export async function updateCustomerPassword(
 
   const { error } = await supabase.auth.updateUser({
     password,
-    data: {
-      ...(user.user_metadata ?? {}),
-      password_set_at: new Date().toISOString(),
-    },
+    data: passwordSetMetadata(user.user_metadata),
   });
 
   if (error) {
@@ -51,7 +47,7 @@ export async function updateCustomerPassword(
       supabase,
       refreshed ?? user,
       null,
-      publicAppUrl(),
+      "",
       "/login",
     ),
   );

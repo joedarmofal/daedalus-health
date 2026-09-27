@@ -2,7 +2,6 @@ import { CompassStar } from "@/components/compass-star";
 import { destinationAfterInvite } from "@/lib/invite";
 import { parseOrgSlug } from "@/lib/org";
 import { needsPasswordSetup } from "@/lib/password-setup";
-import { publicAppUrl } from "@/lib/public-url";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -31,9 +30,7 @@ export default async function SetPasswordPage({
   }
 
   if (!needsPasswordSetup(user)) {
-    redirect(
-      await destinationAfterInvite(supabase, user, org, publicAppUrl()),
-    );
+    redirect(await destinationAfterInvite(supabase, user, org, ""));
   }
 
   return (

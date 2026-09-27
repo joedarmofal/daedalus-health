@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getOrgAccess } from "@/lib/org-access";
 import { needsPasswordSetup } from "@/lib/password-setup";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
@@ -54,7 +55,10 @@ export default async function OrgLayout({ children, params }: LayoutProps) {
 
   const { org, role, user } = access;
 
-  if (needsPasswordSetup(user)) {
+  const pathname = (await headers()).get("x-daedalus-pathname") ?? "";
+  const onIntake = pathname === `/${org.slug}/intake`;
+
+  if (needsPasswordSetup(user) && !onIntake) {
     redirect(`/auth/set-password?org=${encodeURIComponent(org.slug)}`);
   }
 

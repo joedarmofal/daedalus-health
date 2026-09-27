@@ -1,6 +1,11 @@
 "use server";
 
 import { getOrgAccess } from "@/lib/org-access";
+import {
+  needsPasswordSetup,
+  passwordSetMetadata,
+  validateNewPassword,
+} from "@/lib/password-setup";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
@@ -20,6 +25,32 @@ export async function submitIntake(
   }
 
   const supabase = await createClient();
+  const { data: existingIntake } = await supabase
+    .from("organization_intake")
+    .select("organization_id")
+    .eq("organization_id", access.org.id)
+    .maybeSingle();
+
+  if (needsPasswordSetup(access.user) || !existingIntake) {
+    const password = String(formData.get("password") ?? "");
+    const confirm = String(formData.get("confirmPassword") ?? "");
+    const validationError = validateNewPassword(
+      password,
+      confirm,
+      access.user.email,
+    );
+    if (validationError) {
+      return { ok: false, error: validationError };
+    }
+
+    const { error: passwordError } = await supabase.auth.updateUser({
+      password,
+      data: passwordSetMetadata(access.user.user_metadata),
+    });
+    if (passwordError) {
+      return { ok: false, error: passwordError.message };
+    }
+  }
 
   const primaryUseCases = formData.getAll("primaryUseCases").map(String);
 

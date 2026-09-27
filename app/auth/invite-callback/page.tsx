@@ -113,7 +113,7 @@ export default function InviteCallbackPage() {
       if (cancelled) return;
 
       if (needsPasswordSetup(data.user)) {
-        router.replace(`/auth/set-password?org=${encodeURIComponent(orgSlug)}`);
+        router.replace(`/${orgSlug}/intake`);
         return;
       }
 

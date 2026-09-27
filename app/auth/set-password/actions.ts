@@ -4,9 +4,9 @@ import { destinationAfterInvite } from "@/lib/invite";
 import { parseOrgSlug } from "@/lib/org";
 import {
   needsPasswordSetup,
+  passwordSetMetadata,
   validateNewPassword,
 } from "@/lib/password-setup";
-import { publicAppUrl } from "@/lib/public-url";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -33,10 +33,7 @@ export async function setCustomerPassword(
 
   const { error } = await supabase.auth.updateUser({
     password,
-    data: {
-      ...(user.user_metadata ?? {}),
-      password_set_at: new Date().toISOString(),
-    },
+    data: passwordSetMetadata(user.user_metadata),
   });
 
   if (error) {
@@ -53,18 +50,12 @@ export async function setCustomerPassword(
         ...refreshed,
         user_metadata: {
           ...(refreshed.user_metadata ?? {}),
-          password_set_at:
-            typeof refreshed.user_metadata?.password_set_at === "string"
-              ? refreshed.user_metadata.password_set_at
-              : new Date().toISOString(),
+          ...passwordSetMetadata(refreshed.user_metadata),
         },
       }
     : {
         ...user,
-        user_metadata: {
-          ...(user.user_metadata ?? {}),
-          password_set_at: new Date().toISOString(),
-        },
+        user_metadata: passwordSetMetadata(user.user_metadata),
       };
 
   if (needsPasswordSetup(confirmed)) {
@@ -75,6 +66,6 @@ export async function setCustomerPassword(
   }
 
   redirect(
-    await destinationAfterInvite(supabase, confirmed, org, publicAppUrl()),
+    await destinationAfterInvite(supabase, confirmed, org, ""),
   );
 }

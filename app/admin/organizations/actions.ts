@@ -117,6 +117,7 @@ async function generateInviteLink(
   const userData = {
     ...(fullName ? { full_name: fullName } : {}),
     org_slug: org.slug,
+    must_set_password: true,
   };
 
   let linkType: "invite" | "magiclink" = "invite";
