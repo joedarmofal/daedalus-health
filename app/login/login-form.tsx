@@ -119,6 +119,9 @@ export function LoginForm({ initialError }: { initialError?: string }) {
         >
           Password
         </label>
+        <p className="mt-1 text-xs text-[#F9F8F3]/40">
+          Use the password you created after your invite.
+        </p>
         <input
           id="password"
           name="password"

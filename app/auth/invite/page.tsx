@@ -55,8 +55,8 @@ export default async function InvitePage({
       </h1>
       <p className="mt-3 max-w-sm text-sm leading-6 text-[#1A2B3C]/70">
         {org
-          ? `You have been invited to the ${org} workspace. Continue to finish a short setup form and open your portal.`
-          : "You have been invited to a Daedalus Health workspace. Continue to open your portal."}
+          ? `You have been invited to the ${org} workspace. Continue to create your login, then a short setup form.`
+          : "You have been invited to a Daedalus Health workspace. Continue to create your login."}
       </p>
       <form action={acceptInvite}>
         <input type="hidden" name="token_hash" value={tokenHash} />

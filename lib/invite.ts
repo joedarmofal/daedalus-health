@@ -1,4 +1,5 @@
 import { parseOrgSlug, resolveOrgSlug } from "@/lib/org";
+import { needsPasswordSetup } from "@/lib/password-setup";
 import type { EmailOtpType, SupabaseClient, User } from "@supabase/supabase-js";
 
 const VERIFY_TYPES = new Set<string>([
@@ -76,6 +77,10 @@ export async function destinationAfterInvite(
       .maybeSingle();
 
     if (!org?.slug) continue;
+
+    if (needsPasswordSetup(user)) {
+      return `${origin}/auth/set-password?org=${encodeURIComponent(org.slug)}`;
+    }
 
     const { data: intake } = await supabase
       .from("organization_intake")

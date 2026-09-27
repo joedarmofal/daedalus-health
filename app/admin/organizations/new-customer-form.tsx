@@ -81,8 +81,9 @@ export function NewCustomerForm() {
       </h2>
       <p className="mt-1.5 text-sm leading-6 text-[#1A2B3C]/65">
         Creates the organization and generates a one-time daedalushealth.ai
-        sign-in link for their primary contact. No email is sent automatically
-        — copy the link and send it yourself.
+        sign-in link for their primary contact. They will create a login and
+        password, then complete setup. No email is sent automatically — copy
+        the link and send it yourself.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -173,7 +174,7 @@ export function NewCustomerForm() {
           </p>
           <InviteLinkResult
             inviteLink={result.inviteLink}
-            description={`This is a daedalushealth.ai link. It signs them into their portal at daedalushealth.ai/${result.orgSlug} and asks them to complete a short setup form. It expires after first use or a limited time window — generate a new one from the list below if needed.`}
+            description={`This is a daedalushealth.ai link. It signs them in, asks them to create a password, then takes them to setup at daedalushealth.ai/${result.orgSlug}. It expires after first use or a limited time window — generate a new one from the list below if needed.`}
           />
         </div>
       ) : null}

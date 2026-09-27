@@ -4,6 +4,7 @@ import { SignOutButton } from "@/components/sign-out-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getOrgAccess } from "@/lib/org-access";
+import { needsPasswordSetup } from "@/lib/password-setup";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
@@ -52,6 +53,10 @@ export default async function OrgLayout({ children, params }: LayoutProps) {
   }
 
   const { org, role, user } = access;
+
+  if (needsPasswordSetup(user)) {
+    redirect(`/auth/set-password?org=${encodeURIComponent(org.slug)}`);
+  }
 
   return (
     <div className="flex min-h-full flex-col bg-[#F7F5F0]">

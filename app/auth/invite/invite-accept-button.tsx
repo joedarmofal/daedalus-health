@@ -14,7 +14,7 @@ export function InviteAcceptButton({ hasOrg }: { hasOrg: boolean }) {
       {pending
         ? "Opening your workspace…"
         : hasOrg
-          ? "Continue to setup"
+          ? "Continue to create your login"
           : "Continue"}
     </button>
   );

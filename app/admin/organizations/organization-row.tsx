@@ -119,7 +119,7 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
           {inviteLink ? (
             <InviteLinkResult
               inviteLink={inviteLink}
-              description={`Send this daedalushealth.ai link. It signs them into /${org.slug} and asks them to finish setup if they have not already.`}
+              description={`Send this daedalushealth.ai link. It signs them into /${org.slug}, asks them to create a login and password, then finish setup if they have not already.`}
             />
           ) : null}
         </div>

@@ -2,6 +2,7 @@
 
 import { CompassStar } from "@/components/compass-star";
 import { resolveOrgSlug } from "@/lib/org";
+import { needsPasswordSetup } from "@/lib/password-setup";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -109,6 +110,13 @@ export default function InviteCallbackPage() {
         .select("id")
         .eq("slug", orgSlug)
         .maybeSingle();
+
+      if (cancelled) return;
+
+      if (needsPasswordSetup(data.user)) {
+        router.replace(`/auth/set-password?org=${encodeURIComponent(orgSlug)}`);
+        return;
+      }
 
       if (org?.id) {
         const { data: intake } = await supabase
