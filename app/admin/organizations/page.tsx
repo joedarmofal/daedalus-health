@@ -18,21 +18,35 @@ export default async function AdminOrganizationsPage() {
 
   const supabase = await createClient();
 
-  const [{ data: orgs }, { data: members }, { data: intakes }] = await Promise.all([
+  const [{ data: orgs }, membersResult, { data: intakes }] = await Promise.all([
     supabase
       .from("organizations")
       .select("id, name, slug, primary_contact_email")
       .order("name", { ascending: true }),
-    supabase.from("organization_members").select("organization_id"),
+    supabase.from("organization_members").select("organization_id, full_name"),
     supabase.from("organization_intake").select("organization_id"),
   ]);
 
+  const members = membersResult.error
+    ? (await supabase.from("organization_members").select("organization_id")).data
+    : membersResult.data;
+
   const memberCounts = new Map<string, number>();
+  const memberNames = new Map<string, string[]>();
   for (const member of members ?? []) {
     memberCounts.set(
       member.organization_id,
       (memberCounts.get(member.organization_id) ?? 0) + 1,
     );
+    const fullName =
+      "full_name" in member && typeof member.full_name === "string"
+        ? member.full_name.trim()
+        : "";
+    if (fullName) {
+      const names = memberNames.get(member.organization_id) ?? [];
+      if (!names.includes(fullName)) names.push(fullName);
+      memberNames.set(member.organization_id, names);
+    }
   }
 
   const intakeCompleted = new Set((intakes ?? []).map((i) => i.organization_id));
@@ -42,6 +56,7 @@ export default async function AdminOrganizationsPage() {
     name: org.name,
     slug: org.slug,
     primaryContactEmail: org.primary_contact_email ?? null,
+    memberNames: memberNames.get(org.id) ?? [],
     memberCount: memberCounts.get(org.id) ?? 0,
     intakeCompleted: intakeCompleted.has(org.id),
   }));
@@ -55,8 +70,8 @@ export default async function AdminOrganizationsPage() {
         Organizations
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
-        Create new customer organizations and generate the sign-in link that
-        gets them into their portal.
+        Create new customer organizations. A welcome email goes out from
+        joe@daedalushealth.org with their sign-in link.
       </p>
 
       <div className="mt-8">

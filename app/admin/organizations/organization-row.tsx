@@ -11,6 +11,7 @@ export interface OrganizationRowData {
   name: string;
   slug: string;
   primaryContactEmail: string | null;
+  memberNames: string[];
   memberCount: number;
   intakeCompleted: boolean;
 }
@@ -21,13 +22,21 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
   const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailedTo, setEmailedTo] = useState<string | null>(null);
 
   async function handleGenerate() {
     setStatus("loading");
     setError(null);
     setInviteLink(null);
+    setEmailSent(false);
+    setEmailedTo(null);
 
-    const response = await resendInviteLink(org.id, email, "");
+    const response = await resendInviteLink(
+      org.id,
+      email,
+      org.memberNames[0] ?? "",
+    );
     setStatus("idle");
 
     if (!response.ok) {
@@ -43,6 +52,11 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
     }
 
     setInviteLink(response.inviteLink);
+    setEmailSent(response.emailSent === true);
+    setEmailedTo(response.emailedTo ?? email);
+    if (!response.emailSent) {
+      setError(response.error ?? "The welcome email could not be sent.");
+    }
   }
 
   return (
@@ -66,6 +80,7 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
           <p className="mt-1 text-xs font-mono text-[#1A2B3C]/45">
             /{org.slug} · {org.memberCount}{" "}
             {org.memberCount === 1 ? "member" : "members"}
+            {org.memberNames.length > 0 ? ` · ${org.memberNames.join(", ")}` : ""}
             {org.primaryContactEmail ? ` · ${org.primaryContactEmail}` : ""}
           </p>
         </div>
@@ -82,7 +97,7 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
             onClick={() => setExpanded((value) => !value)}
             className="text-sm font-medium text-[#1A2B3C]/60 hover:text-[#1A2B3C]"
           >
-            {expanded ? "Close" : "Send invite link"}
+            {expanded ? "Close" : "Send welcome email"}
           </button>
         </div>
       </div>
@@ -106,7 +121,7 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
               disabled={status === "loading" || !email}
               className="inline-flex shrink-0 items-center justify-center rounded-sm bg-[#1F6A64] px-5 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] disabled:opacity-60"
             >
-              {status === "loading" ? "Generating…" : "Generate link"}
+              {status === "loading" ? "Sending…" : "Send welcome email"}
             </button>
           </div>
 
@@ -116,10 +131,15 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
             </p>
           ) : null}
 
-          {inviteLink ? (
+          {emailSent ? (
+            <p className="mt-3 text-xs leading-5 text-[#1A2B3C]/55">
+              Welcome email sent to {emailedTo} from joe@daedalushealth.org.
+            </p>
+          ) : null}
+          {inviteLink && !emailSent ? (
             <InviteLinkResult
               inviteLink={inviteLink}
-              description={`Send this daedalushealth.ai link. It signs them into /${org.slug}, asks them to create a login and password, then finish setup if they have not already.`}
+              description={`The email did not send. Copy this backup link only if you need to send it yourself.`}
             />
           ) : null}
         </div>

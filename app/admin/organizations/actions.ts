@@ -2,6 +2,7 @@
 
 import { getAdminAccess } from "@/lib/admin-access";
 import { tokenFromGenerateLink } from "@/lib/invite";
+import { sendWelcomeEmail } from "@/lib/mail";
 import { isReservedOrgSlug } from "@/lib/org";
 import { isCustomerFacingUrl, publicAppUrl, publicInviteUrl } from "@/lib/public-url";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -10,10 +11,46 @@ import { revalidatePath } from "next/cache";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+async function writeMembership(
+  admin: SupabaseClient,
+  row: {
+    organization_id: string;
+    user_id: string;
+    role: string;
+    full_name?: string | null;
+  },
+  existingId?: string,
+) {
+  if (existingId) {
+    const { error } = await admin
+      .from("organization_members")
+      .update(row.full_name ? { full_name: row.full_name } : {})
+      .eq("id", existingId);
+    return error;
+  }
+
+  const { error } = await admin.from("organization_members").insert(row);
+  if (
+    error &&
+    row.full_name &&
+    /full_name|schema cache|PGRST204/i.test(error.message)
+  ) {
+    const withoutName = {
+      organization_id: row.organization_id,
+      user_id: row.user_id,
+      role: row.role,
+    };
+    const retry = await admin.from("organization_members").insert(withoutName);
+    return retry.error;
+  }
+  return error;
+}
+
 async function ensureOrgMembership(
   admin: SupabaseClient,
   orgId: string,
   userId: string,
+  fullName?: string,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
   const { data: existing, error: selectError } = await admin
     .from("organization_members")
@@ -22,10 +59,6 @@ async function ensureOrgMembership(
     .eq("user_id", userId)
     .maybeSingle();
 
-  if (existing) {
-    return { ok: true };
-  }
-
   if (selectError) {
     return {
       ok: false,
@@ -33,17 +66,22 @@ async function ensureOrgMembership(
     };
   }
 
-  const { error: insertError } = await admin.from("organization_members").insert({
-    organization_id: orgId,
-    user_id: userId,
-    role: "admin",
-  });
+  const writeError = await writeMembership(
+    admin,
+    {
+      organization_id: orgId,
+      user_id: userId,
+      role: "admin",
+      ...(fullName ? { full_name: fullName } : {}),
+    },
+    existing?.id,
+  );
 
   // 23505 = already a member (race or unique constraint). Treat as success.
-  if (insertError && insertError.code !== "23505") {
+  if (writeError && writeError.code !== "23505") {
     return {
       ok: false,
-      error: `Invite link was created, but adding the membership failed: ${insertError.message}`,
+      error: `Invite link was created, but adding the membership failed: ${writeError.message}`,
     };
   }
 
@@ -55,6 +93,8 @@ export interface OrgActionResult {
   error?: string;
   inviteLink?: string;
   orgSlug?: string;
+  emailSent?: boolean;
+  emailedTo?: string;
 }
 
 /**
@@ -66,10 +106,13 @@ export interface OrgActionResult {
  */
 async function generateInviteLink(
   admin: SupabaseClient,
-  org: { id: string; slug: string },
+  org: { id: string; slug: string; name: string },
   email: string,
   fullName: string,
-): Promise<{ ok: true; inviteLink: string } | { ok: false; error: string }> {
+): Promise<
+  | { ok: true; inviteLink: string; emailSent: boolean; emailError?: string }
+  | { ok: false; error: string }
+> {
   const redirectTo = `${publicAppUrl()}/auth/invite`;
   const userData = {
     ...(fullName ? { full_name: fullName } : {}),
@@ -103,7 +146,12 @@ async function generateInviteLink(
     };
   }
 
-  const membership = await ensureOrgMembership(admin, org.id, linkData.user.id);
+  const membership = await ensureOrgMembership(
+    admin,
+    org.id,
+    linkData.user.id,
+    fullName,
+  );
   if (!membership.ok) {
     return membership;
   }
@@ -127,7 +175,20 @@ async function generateInviteLink(
     };
   }
 
-  return { ok: true, inviteLink };
+  const emailResult = await sendWelcomeEmail({
+    to: email,
+    contactName: fullName,
+    orgName: org.name,
+    orgSlug: org.slug,
+    inviteLink,
+  });
+
+  return {
+    ok: true,
+    inviteLink,
+    emailSent: emailResult.ok,
+    emailError: emailResult.ok ? undefined : emailResult.error,
+  };
 }
 
 export async function createOrganizationAndInvite(
@@ -147,10 +208,10 @@ export async function createOrganizationAndInvite(
     .toLowerCase();
   const contactName = String(formData.get("contactName") ?? "").trim();
 
-  if (!name || !slug || !contactEmail) {
+  if (!name || !slug || !contactEmail || !contactName) {
     return {
       ok: false,
-      error: "Organization name, slug, and contact email are required.",
+      error: "Organization name, slug, contact name, and contact email are required.",
     };
   }
 
@@ -179,7 +240,7 @@ export async function createOrganizationAndInvite(
       primary_contact_email: contactEmail,
       created_by: access.user.id,
     })
-    .select("id, slug")
+    .select("id, slug, name")
     .single();
 
   if (orgError || !org) {
@@ -194,7 +255,7 @@ export async function createOrganizationAndInvite(
 
   const linkResult = await generateInviteLink(
     admin,
-    { id: org.id, slug: org.slug },
+    { id: org.id, slug: org.slug, name: org.name ?? name },
     contactEmail,
     contactName,
   );
@@ -205,7 +266,16 @@ export async function createOrganizationAndInvite(
     return { ok: false, error: linkResult.error, orgSlug: org.slug };
   }
 
-  return { ok: true, inviteLink: linkResult.inviteLink, orgSlug: org.slug };
+  return {
+    ok: true,
+    inviteLink: linkResult.inviteLink,
+    orgSlug: org.slug,
+    emailSent: linkResult.emailSent,
+    emailedTo: contactEmail,
+    error: linkResult.emailSent
+      ? undefined
+      : linkResult.emailError ?? "The welcome email could not be sent.",
+  };
 }
 
 export async function resendInviteLink(
@@ -235,7 +305,7 @@ export async function resendInviteLink(
 
   const { data: org, error: orgError } = await admin
     .from("organizations")
-    .select("id, slug")
+    .select("id, slug, name")
     .eq("id", orgId)
     .single();
 
@@ -243,11 +313,36 @@ export async function resendInviteLink(
     return { ok: false, error: orgError?.message ?? "Organization not found." };
   }
 
-  const linkResult = await generateInviteLink(admin, org, normalizedEmail, fullName);
+  let resolvedName = fullName.trim();
+  if (!resolvedName) {
+    const { data: member } = await admin
+      .from("organization_members")
+      .select("full_name")
+      .eq("organization_id", org.id)
+      .not("full_name", "is", null)
+      .limit(1)
+      .maybeSingle();
+    resolvedName = member?.full_name?.trim() ?? "";
+  }
+
+  const linkResult = await generateInviteLink(
+    admin,
+    org,
+    normalizedEmail,
+    resolvedName,
+  );
 
   if (!linkResult.ok) {
     return { ok: false, error: linkResult.error };
   }
 
-  return { ok: true, inviteLink: linkResult.inviteLink };
+  return {
+    ok: true,
+    inviteLink: linkResult.inviteLink,
+    emailSent: linkResult.emailSent,
+    emailedTo: normalizedEmail,
+    error: linkResult.emailSent
+      ? undefined
+      : linkResult.emailError ?? "The welcome email could not be sent.",
+  };
 }

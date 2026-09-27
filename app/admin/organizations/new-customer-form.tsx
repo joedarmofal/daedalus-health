@@ -29,6 +29,9 @@ export function NewCustomerForm() {
   const [result, setResult] = useState<{
     inviteLink: string;
     orgSlug: string;
+    emailSent: boolean;
+    emailedTo?: string;
+    emailError?: string;
   } | null>(null);
 
   function handleNameChange(value: string) {
@@ -51,7 +54,7 @@ export function NewCustomerForm() {
     if (!response.ok) {
       setError(
         response.orgSlug
-          ? `${response.error ?? "The invite link could not be created."} ${response.orgSlug} was still created — generate a new link from the list below.`
+          ? `${response.error ?? "The invite could not be completed."} ${response.orgSlug} was still created — send a welcome email from the list below.`
           : (response.error ?? "Something went wrong."),
       );
       return;
@@ -65,7 +68,13 @@ export function NewCustomerForm() {
         router.refresh();
         return;
       }
-      setResult({ inviteLink: response.inviteLink, orgSlug: response.orgSlug });
+      setResult({
+        inviteLink: response.inviteLink,
+        orgSlug: response.orgSlug,
+        emailSent: response.emailSent === true,
+        emailedTo: response.emailedTo,
+        emailError: response.emailSent ? undefined : response.error,
+      });
       setName("");
       setSlug("");
       setSlugTouched(false);
@@ -80,10 +89,9 @@ export function NewCustomerForm() {
         New customer
       </h2>
       <p className="mt-1.5 text-sm leading-6 text-[#1A2B3C]/65">
-        Creates the organization and generates a one-time daedalushealth.ai
-        sign-in link for their primary contact. They will create a login and
-        password, then complete setup. No email is sent automatically — copy
-        the link and send it yourself.
+        Creates the organization and emails a welcome from
+        joe@daedalushealth.org with a one-time sign-in link. They will create
+        a login and password, then complete setup.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -131,6 +139,7 @@ export function NewCustomerForm() {
           <input
             id="contactName"
             name="contactName"
+            required
             placeholder="Jordan Ellis"
             className={inputClass}
           />
@@ -162,7 +171,7 @@ export function NewCustomerForm() {
             disabled={status === "loading"}
             className="inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-6 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574] disabled:opacity-60"
           >
-            {status === "loading" ? "Creating…" : "Create organization & generate link"}
+            {status === "loading" ? "Creating…" : "Create organization & send welcome"}
           </button>
         </div>
       </form>
@@ -170,12 +179,22 @@ export function NewCustomerForm() {
       {result ? (
         <div className="mt-6 rounded-sm border border-[#1F6A64]/30 bg-[#1F6A64]/10 p-5">
           <p className="text-sm font-medium text-[#1A2B3C]">
-            {result.orgSlug} is ready. Send this link to your contact:
+            {result.emailSent
+              ? `${result.orgSlug} is ready. A welcome email was sent to ${result.emailedTo} from joe@daedalushealth.org.`
+              : `${result.orgSlug} is ready, but the welcome email did not send.`}
           </p>
-          <InviteLinkResult
-            inviteLink={result.inviteLink}
-            description={`This is a daedalushealth.ai link. It signs them in, asks them to create a password, then takes them to setup at daedalushealth.ai/${result.orgSlug}. It expires after first use or a limited time window — generate a new one from the list below if needed.`}
-          />
+          {result.emailSent ? (
+            <p className="mt-2 text-xs leading-5 text-[#1A2B3C]/55">
+              They will create a login and complete setup at
+              daedalushealth.ai/{result.orgSlug}. Send another welcome from
+              the list below if they need a new link.
+            </p>
+          ) : (
+            <InviteLinkResult
+              inviteLink={result.inviteLink}
+              description={`${result.emailError ?? "The email could not be sent."} Copy this backup link only if you need to send it yourself.`}
+            />
+          )}
         </div>
       ) : null}
     </div>

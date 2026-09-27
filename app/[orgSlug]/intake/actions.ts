@@ -52,8 +52,18 @@ export async function submitIntake(
     return { ok: false, error: error.message };
   }
 
+  const contactName = payload.primary_contact_name;
+  if (contactName) {
+    await supabase
+      .from("organization_members")
+      .update({ full_name: contactName })
+      .eq("organization_id", access.org.id)
+      .eq("user_id", access.user.id);
+  }
+
   revalidatePath(`/${orgSlug}`);
   revalidatePath(`/${orgSlug}/intake`);
+  revalidatePath("/admin/organizations");
 
   return { ok: true };
 }
