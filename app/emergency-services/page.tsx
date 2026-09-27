@@ -9,9 +9,9 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "CAMTS Accreditation",
+  title: "Emergency Services",
   description:
-    "Sign in to organize a CAMTS Program Information Form for EMS and air medical programs.",
+    "Sign in for EMS and HEMS program tools, including CAMTS PIF preparation and related emergency services work.",
 };
 
 export default async function AccreditationLoginPage({
@@ -21,7 +21,7 @@ export default async function AccreditationLoginPage({
 }) {
   const access = await getAccreditationAccess();
   if (access.status === "ok" || access.status === "no_organization") {
-    redirect("/accreditation/workspace");
+    redirect("/emergency-services/workspace");
   }
   if (access.status === "need_password") {
     redirect("/auth/set-password");
@@ -43,27 +43,27 @@ export default async function AccreditationLoginPage({
             </span>
             <span>DAEDALUS HEALTH</span>
             <span className="text-[#F9F8F3]/30">/</span>
-            <span className="text-[#C4A574]">ACCREDITATION</span>
+            <span className="text-[#C4A574]">EMERGENCY SERVICES</span>
           </Link>
           <span className="hidden text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]/80 sm:inline">
-            CAMTS · EMS · Air medical
+            EMS · HEMS · CAMTS
           </span>
         </div>
       </header>
 
       <main className="flex flex-1 flex-col">
         <SignInPanel
-          eyebrow="CAMTS ACCREDITATION"
+          eyebrow="EMERGENCY SERVICES"
           title="Program sign in"
-          description="For EMS and air medical programs building a CAMTS Program Information Form and preparing for survey."
+          description="For EMS and HEMS programs — CAMTS PIF work, survey preparation, and other emergency services needs."
         >
           <LoginForm
             initialError={error}
-            afterSignIn="/accreditation/workspace"
-            magicLinkNext="/accreditation/workspace"
-            submitLabel="Enter accreditation workspace"
+            afterSignIn="/emergency-services/workspace"
+            magicLinkNext="/emergency-services/workspace"
+            submitLabel="Enter emergency services workspace"
             magicLinkLabel="Send Magic Link"
-            successMessage="Check your inbox for a secure magic link to the accreditation workspace."
+            successMessage="Check your inbox for a secure magic link to the emergency services workspace."
           />
           <p className="mt-6 text-center text-sm leading-6 text-[#F9F8F3]/50">
             Same login as the client portal.{" "}
@@ -75,7 +75,7 @@ export default async function AccreditationLoginPage({
       </main>
 
       <footer className="border-t border-[#C4A574]/15 px-4 py-4 text-center text-xs tracking-wide text-[#F9F8F3]/40">
-        Daedalus Health · CAMTS accreditation workspace
+        Daedalus Health · Emergency services workspace
       </footer>
     </div>
   );

@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/accreditation/workspace", label: "Overview", exact: true },
-  { href: "/accreditation/workspace/pif", label: "PIF builder" },
-  { href: "/accreditation/workspace/standards", label: "Standards map" },
-  { href: "/accreditation/workspace/gaps", label: "Gaps" },
-  { href: "/accreditation/workspace/export", label: "PIF outline" },
+  { href: "/emergency-services/workspace", label: "Overview", exact: true },
+  { href: "/emergency-services/workspace/pif", label: "PIF builder" },
+  { href: "/emergency-services/workspace/standards", label: "Standards map" },
+  { href: "/emergency-services/workspace/gaps", label: "Gaps" },
+  { href: "/emergency-services/workspace/export", label: "PIF outline" },
 ];
 
 export function AccreditationNav() {

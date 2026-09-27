@@ -34,7 +34,7 @@ export default function StandardsMapPage() {
                 </h2>
               </div>
               <Link
-                href={`/accreditation/workspace/pif/${section.id}`}
+                href={`/emergency-services/workspace/pif/${section.id}`}
                 className="text-sm font-medium text-[#1F6A64]"
               >
                 Open in PIF builder →

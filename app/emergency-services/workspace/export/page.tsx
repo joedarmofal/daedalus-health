@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 export default async function PifExportPage() {
   const access = await getAccreditationAccess();
   if (access.status !== "ok") {
-    redirect("/accreditation/workspace");
+    redirect("/emergency-services/workspace");
   }
 
   const program = await ensureAccreditationProgram(access.org.id, access.org.name);

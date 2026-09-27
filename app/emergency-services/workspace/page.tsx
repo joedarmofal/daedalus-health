@@ -15,7 +15,7 @@ export default async function AccreditationWorkspacePage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
-          CAMTS ACCREDITATION
+          EMERGENCY SERVICES
         </p>
         <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
           No program is linked yet
@@ -47,16 +47,16 @@ export default async function AccreditationWorkspacePage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
-        CAMTS ACCREDITATION
+        EMERGENCY SERVICES
       </p>
       <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C] sm:text-4xl">
         {program?.program_name ?? `${access.org.name} Medical Transport`}
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
-        Organize the Program Information Form by CAMTS work area, assign
-        owners, capture evidence, and see what is still a gap before survey.
-        Use your licensed CAMTS edition for official standard language. This
-        workspace is a {CAMTS_EDITION_LABEL.toLowerCase()}.
+        Tools for EMS and HEMS programs. Start with the CAMTS Program
+        Information Form: assign owners, capture evidence, and close gaps
+        before survey. Use your licensed CAMTS edition for official standard
+        language. This workspace is a {CAMTS_EDITION_LABEL.toLowerCase()}.
       </p>
 
       {tableMissing ? (
@@ -97,7 +97,7 @@ export default async function AccreditationWorkspacePage() {
           return (
             <Link
               key={section.id}
-              href={`/accreditation/workspace/pif/${section.id}`}
+              href={`/emergency-services/workspace/pif/${section.id}`}
               className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-5 transition hover:border-[#C4A574]/60"
             >
               <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">

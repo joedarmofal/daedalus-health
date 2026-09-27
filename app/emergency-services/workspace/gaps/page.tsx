@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 export default async function GapsPage() {
   const access = await getAccreditationAccess();
   if (access.status !== "ok") {
-    redirect("/accreditation/workspace");
+    redirect("/emergency-services/workspace");
   }
 
   const program = await ensureAccreditationProgram(access.org.id, access.org.name);
@@ -61,7 +61,7 @@ export default async function GapsPage() {
                 <tr key={row.item.id} className="border-t border-[#1A2B3C]/8">
                   <td className="px-4 py-3">
                     <Link
-                      href={`/accreditation/workspace/pif/${row.section.id}`}
+                      href={`/emergency-services/workspace/pif/${row.section.id}`}
                       className="font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
                     >
                       {row.item.id} {row.item.title}

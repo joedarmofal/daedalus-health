@@ -7,6 +7,20 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "4mb",
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/accreditation",
+        destination: "/emergency-services",
+        permanent: true,
+      },
+      {
+        source: "/accreditation/:path*",
+        destination: "/emergency-services/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

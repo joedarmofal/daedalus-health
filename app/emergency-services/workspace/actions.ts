@@ -60,7 +60,7 @@ export async function saveAccreditationProgram(
     return { ok: false, error: error.message };
   }
 
-  revalidatePath("/accreditation/workspace");
+  revalidatePath("/emergency-services/workspace");
   return { ok: true };
 }
 
@@ -108,10 +108,10 @@ export async function savePifItem(
     return { ok: false, error: error.message };
   }
 
-  revalidatePath("/accreditation/workspace");
-  revalidatePath("/accreditation/workspace/pif");
-  revalidatePath("/accreditation/workspace/gaps");
-  revalidatePath("/accreditation/workspace/export");
+  revalidatePath("/emergency-services/workspace");
+  revalidatePath("/emergency-services/workspace/pif");
+  revalidatePath("/emergency-services/workspace/gaps");
+  revalidatePath("/emergency-services/workspace/export");
   return { ok: true };
 }
 

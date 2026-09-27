@@ -30,8 +30,8 @@ export function SiteFooter() {
           <Link href="/privacy" className="hover:text-[#1F6A64]">
             Privacy Policy
           </Link>
-          <Link href="/accreditation" className="hover:text-[#1F6A64]">
-            Accreditation
+          <Link href="/emergency-services" className="hover:text-[#1F6A64]">
+            Emergency Services
           </Link>
           <Link href="/login" className="hover:text-[#1F6A64]">
             Client Portal

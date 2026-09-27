@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 export default async function PifIndexPage() {
   const access = await getAccreditationAccess();
   if (access.status !== "ok") {
-    redirect("/accreditation/workspace");
+    redirect("/emergency-services/workspace");
   }
 
   const program = await ensureAccreditationProgram(access.org.id, access.org.name);
@@ -37,7 +37,7 @@ export default async function PifIndexPage() {
           return (
             <Link
               key={section.id}
-              href={`/accreditation/workspace/pif/${section.id}`}
+              href={`/emergency-services/workspace/pif/${section.id}`}
               className="flex flex-col justify-between gap-3 rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-5 sm:flex-row sm:items-center"
             >
               <div>

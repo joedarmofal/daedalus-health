@@ -20,7 +20,7 @@ export default async function PifSectionPage({
 
   const access = await getAccreditationAccess();
   if (access.status !== "ok") {
-    redirect("/accreditation/workspace");
+    redirect("/emergency-services/workspace");
   }
 
   const program = await ensureAccreditationProgram(access.org.id, access.org.name);
@@ -29,7 +29,7 @@ export default async function PifSectionPage({
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <Link
-        href="/accreditation/workspace/pif"
+        href="/emergency-services/workspace/pif"
         className="text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
       >
         ← All PIF sections

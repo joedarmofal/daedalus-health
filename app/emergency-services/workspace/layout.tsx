@@ -11,7 +11,7 @@ import { AccreditationNav } from "./accreditation-nav";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "CAMTS Accreditation workspace",
+  title: "Emergency Services workspace",
 };
 
 export default async function AccreditationWorkspaceLayout({
@@ -22,7 +22,7 @@ export default async function AccreditationWorkspaceLayout({
   const access = await getAccreditationAccess();
 
   if (access.status === "unauthenticated") {
-    redirect("/accreditation");
+    redirect("/emergency-services");
   }
 
   if (access.status === "need_password") {
@@ -30,7 +30,7 @@ export default async function AccreditationWorkspaceLayout({
   }
 
   const orgName =
-    access.status === "ok" ? access.org.name : "Accreditation workspace";
+    access.status === "ok" ? access.org.name : "Emergency services workspace";
   const email = access.user.email;
   const role = access.status === "ok" ? access.role : "member";
 
@@ -39,7 +39,7 @@ export default async function AccreditationWorkspaceLayout({
       <header className="sticky top-0 z-50 border-b border-[#1A2B3C]/10 bg-[#F9F8F3]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <Link
-            href="/accreditation/workspace"
+            href="/emergency-services/workspace"
             className="flex items-center gap-2.5 font-serif text-[15px] font-semibold tracking-[0.22em] text-[#1A2B3C]"
           >
             <span className="flex size-9 items-center justify-center text-[#1F6A64]">
@@ -47,7 +47,7 @@ export default async function AccreditationWorkspaceLayout({
             </span>
             <span className="hidden sm:inline">DAEDALUS HEALTH</span>
             <span className="text-[#1A2B3C]/30">/</span>
-            <span className="text-[#1F6A64]">ACCREDITATION</span>
+            <span className="text-[#1F6A64]">EMERGENCY SERVICES</span>
           </Link>
 
           <div className="flex items-center gap-4">
@@ -65,7 +65,7 @@ export default async function AccreditationWorkspaceLayout({
                 {orgName} · {role}
               </div>
             </div>
-            <SignOutButton redirectTo="/accreditation" />
+            <SignOutButton redirectTo="/emergency-services" />
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-4 pb-3 sm:px-6">

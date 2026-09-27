@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const navLinks = [
   { href: "/#services", label: "Services" },
   { href: "/#governance", label: "AI Governance Framework" },
-  { href: "/accreditation", label: "Accreditation" },
+  { href: "/emergency-services", label: "Emergency Services" },
   { href: "/#about", label: "About" },
 ];
 

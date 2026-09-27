@@ -40,10 +40,10 @@ const SECTION_CARDS = [
       "AI laws, common compliance situations, and a live feed of legal and regulatory news.",
   },
   {
-    href: "/accreditation/workspace",
-    label: "CAMTS Accreditation",
+    href: "/emergency-services/workspace",
+    label: "Emergency Services",
     description:
-      "Build and organize the Program Information Form for EMS and air medical survey.",
+      "EMS and HEMS program tools, including CAMTS PIF preparation and survey work.",
     absolute: true,
   },
 ];
