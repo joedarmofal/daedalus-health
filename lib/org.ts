@@ -15,6 +15,10 @@ export function isReservedOrgSlug(slug: string): boolean {
   return RESERVED_SLUGS.has(slug);
 }
 
+export function parseOrgSlug(value: unknown): string | null {
+  return asSlug(value);
+}
+
 function asSlug(value: unknown): string | null {
   if (typeof value !== "string") {
     return null;

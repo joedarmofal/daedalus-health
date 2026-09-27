@@ -2,10 +2,18 @@
 
 import { CompassStar } from "@/components/compass-star";
 import { resolveOrgSlug } from "@/lib/org";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+const SEARCH_ERRORS: Record<string, string> = {
+  missing: "This invite link is incomplete. Ask your administrator to send a new one.",
+  expired:
+    "This invite link has expired or was already used. Ask your administrator to send a new one.",
+  no_organization:
+    "You're signed in, but no organization is linked to your account yet. Contact your administrator.",
+};
 
 export default function InviteCallbackPage() {
   const router = useRouter();
@@ -16,6 +24,22 @@ export default function InviteCallbackPage() {
     let cancelled = false;
 
     async function run() {
+      const searchParams = new URLSearchParams(window.location.search);
+      const searchError = searchParams.get("error");
+      if (searchError) {
+        setStatus("error");
+        setMessage(SEARCH_ERRORS[searchError] ?? SEARCH_ERRORS.expired);
+        return;
+      }
+
+      const tokenHash = searchParams.get("token_hash");
+      if (tokenHash) {
+        const next = new URL("/auth/invite", window.location.origin);
+        searchParams.forEach((value, key) => next.searchParams.set(key, value));
+        router.replace(`${next.pathname}${next.search}`);
+        return;
+      }
+
       const rawHash = window.location.hash.startsWith("#")
         ? window.location.hash.slice(1)
         : window.location.hash;
@@ -24,7 +48,6 @@ export default function InviteCallbackPage() {
       const refreshToken = hashParams.get("refresh_token");
       const hashError = hashParams.get("error_description");
 
-      const searchParams = new URLSearchParams(window.location.search);
       const code = searchParams.get("code");
 
       // Some Supabase configurations issue a PKCE-style ?code= instead of the
@@ -78,6 +101,24 @@ export default function InviteCallbackPage() {
         setMessage(
           "You're signed in, but no organization is linked to your account yet. Contact your administrator.",
         );
+        return;
+      }
+
+      const { data: org } = await supabase
+        .from("organizations")
+        .select("id")
+        .eq("slug", orgSlug)
+        .maybeSingle();
+
+      if (org?.id) {
+        const { data: intake } = await supabase
+          .from("organization_intake")
+          .select("organization_id")
+          .eq("organization_id", org.id)
+          .maybeSingle();
+
+        if (cancelled) return;
+        router.replace(intake ? `/${orgSlug}` : `/${orgSlug}/intake`);
         return;
       }
 

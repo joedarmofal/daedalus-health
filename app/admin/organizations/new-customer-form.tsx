@@ -1,8 +1,10 @@
 "use client";
 
+import { isCustomerFacingUrl } from "@/lib/public-url";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { createOrganizationAndInvite } from "./actions";
+import { InviteLinkResult } from "./invite-link-result";
 
 function slugify(value: string): string {
   return value
@@ -28,7 +30,6 @@ export function NewCustomerForm() {
     inviteLink: string;
     orgSlug: string;
   } | null>(null);
-  const [copied, setCopied] = useState(false);
 
   function handleNameChange(value: string) {
     setName(value);
@@ -42,18 +43,28 @@ export function NewCustomerForm() {
     setStatus("loading");
     setError(null);
     setResult(null);
-    setCopied(false);
 
     const formData = new FormData(event.currentTarget);
     const response = await createOrganizationAndInvite(formData);
     setStatus("idle");
 
     if (!response.ok) {
-      setError(response.error ?? "Something went wrong.");
+      setError(
+        response.orgSlug
+          ? `${response.error ?? "The invite link could not be created."} ${response.orgSlug} was still created — generate a new link from the list below.`
+          : (response.error ?? "Something went wrong."),
+      );
       return;
     }
 
     if (response.inviteLink && response.orgSlug) {
+      if (!isCustomerFacingUrl(response.inviteLink)) {
+        setError(
+          `${response.orgSlug} was created, but the invite link was not a public daedalushealth.ai URL. Do not send it — generate a new one from the list below.`,
+        );
+        router.refresh();
+        return;
+      }
       setResult({ inviteLink: response.inviteLink, orgSlug: response.orgSlug });
       setName("");
       setSlug("");
@@ -63,22 +74,15 @@ export function NewCustomerForm() {
     }
   }
 
-  async function handleCopy() {
-    if (!result) return;
-    await navigator.clipboard.writeText(result.inviteLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
   return (
     <div className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] sm:p-8">
       <h2 className="font-serif text-lg font-medium text-[#1A2B3C]">
         New customer
       </h2>
       <p className="mt-1.5 text-sm leading-6 text-[#1A2B3C]/65">
-        Creates the organization and generates a one-time sign-in link for
-        their primary contact. No email is sent automatically — copy the link
-        and send it yourself.
+        Creates the organization and generates a one-time daedalushealth.ai
+        sign-in link for their primary contact. No email is sent automatically
+        — copy the link and send it yourself.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -167,28 +171,10 @@ export function NewCustomerForm() {
           <p className="text-sm font-medium text-[#1A2B3C]">
             {result.orgSlug} is ready. Send this link to your contact:
           </p>
-          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-            <input
-              readOnly
-              value={result.inviteLink}
-              onFocus={(event) => event.currentTarget.select()}
-              className="flex-1 rounded-sm border border-[#1A2B3C]/20 bg-[#F9F8F3] px-3 py-2 text-xs text-[#1A2B3C]/80"
-            />
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="inline-flex shrink-0 items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-4 py-2 text-sm font-medium text-[#1A2B3C] transition hover:border-[#1F6A64] hover:text-[#1F6A64]"
-            >
-              {copied ? "Copied" : "Copy link"}
-            </button>
-          </div>
-          <p className="mt-3 text-xs leading-5 text-[#1A2B3C]/55">
-            This link signs them in directly and drops them into their portal
-            at daedalushealth.ai/{result.orgSlug}, where they&rsquo;ll be
-            prompted to complete a short setup form. It expires after first
-            use or a limited time window — generate a new one from the list
-            below if needed.
-          </p>
+          <InviteLinkResult
+            inviteLink={result.inviteLink}
+            description={`This is a daedalushealth.ai link. It signs them into their portal at daedalushealth.ai/${result.orgSlug} and asks them to complete a short setup form. It expires after first use or a limited time window — generate a new one from the list below if needed.`}
+          />
         </div>
       ) : null}
     </div>

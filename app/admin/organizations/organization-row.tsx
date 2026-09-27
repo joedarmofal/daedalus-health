@@ -1,8 +1,10 @@
 "use client";
 
+import { isCustomerFacingUrl } from "@/lib/public-url";
 import Link from "next/link";
 import { useState } from "react";
 import { resendInviteLink } from "./actions";
+import { InviteLinkResult } from "./invite-link-result";
 
 export interface OrganizationRowData {
   id: string;
@@ -19,7 +21,6 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
   const [inviteLink, setInviteLink] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   async function handleGenerate() {
     setStatus("loading");
@@ -34,14 +35,14 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
       return;
     }
 
-    setInviteLink(response.inviteLink ?? null);
-  }
+    if (!response.inviteLink || !isCustomerFacingUrl(response.inviteLink)) {
+      setError(
+        "The invite was created, but the generated link was not a public daedalushealth.ai URL. Do not send it — try generating again.",
+      );
+      return;
+    }
 
-  async function handleCopy() {
-    if (!inviteLink) return;
-    await navigator.clipboard.writeText(inviteLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setInviteLink(response.inviteLink);
   }
 
   return (
@@ -116,21 +117,10 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
           ) : null}
 
           {inviteLink ? (
-            <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-              <input
-                readOnly
-                value={inviteLink}
-                onFocus={(event) => event.currentTarget.select()}
-                className="flex-1 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3 py-2 text-xs text-[#1A2B3C]/80"
-              />
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="inline-flex shrink-0 items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-4 py-2 text-sm font-medium text-[#1A2B3C] transition hover:border-[#1F6A64] hover:text-[#1F6A64]"
-              >
-                {copied ? "Copied" : "Copy link"}
-              </button>
-            </div>
+            <InviteLinkResult
+              inviteLink={inviteLink}
+              description={`Send this daedalushealth.ai link. It signs them into /${org.slug} and asks them to finish setup if they have not already.`}
+            />
           ) : null}
         </div>
       ) : null}

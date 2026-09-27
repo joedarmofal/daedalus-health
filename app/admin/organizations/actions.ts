@@ -2,16 +2,52 @@
 
 import { getAdminAccess } from "@/lib/admin-access";
 import { isReservedOrgSlug } from "@/lib/org";
+import { isCustomerFacingUrl, publicAppUrl, publicInviteUrl } from "@/lib/public-url";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
-const SITE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://daedalushealth.ai"
-    : "http://localhost:3000";
-
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+async function ensureOrgMembership(
+  admin: SupabaseClient,
+  orgId: string,
+  userId: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const { data: existing, error: selectError } = await admin
+    .from("organization_members")
+    .select("id")
+    .eq("organization_id", orgId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (existing) {
+    return { ok: true };
+  }
+
+  if (selectError) {
+    return {
+      ok: false,
+      error: `Could not check organization membership: ${selectError.message}`,
+    };
+  }
+
+  const { error: insertError } = await admin.from("organization_members").insert({
+    organization_id: orgId,
+    user_id: userId,
+    role: "admin",
+  });
+
+  // 23505 = already a member (race or unique constraint). Treat as success.
+  if (insertError && insertError.code !== "23505") {
+    return {
+      ok: false,
+      error: `Invite link was created, but adding the membership failed: ${insertError.message}`,
+    };
+  }
+
+  return { ok: true };
+}
 
 export interface OrgActionResult {
   ok: boolean;
@@ -29,22 +65,28 @@ export interface OrgActionResult {
  */
 async function generateInviteLink(
   admin: SupabaseClient,
-  orgId: string,
+  org: { id: string; slug: string },
   email: string,
   fullName: string,
 ): Promise<{ ok: true; inviteLink: string } | { ok: false; error: string }> {
-  const redirectTo = `${SITE_URL}/auth/invite-callback`;
+  const redirectTo = `${publicAppUrl()}/auth/invite`;
+  const userData = {
+    ...(fullName ? { full_name: fullName } : {}),
+    org_slug: org.slug,
+  };
 
+  let linkType: "invite" | "magiclink" = "invite";
   let { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
     type: "invite",
     email,
     options: {
-      data: fullName ? { full_name: fullName } : undefined,
+      data: userData,
       redirectTo,
     },
   });
 
   if (linkError && /already been registered|already exists|already registered/i.test(linkError.message)) {
+    linkType = "magiclink";
     ({ data: linkData, error: linkError } = await admin.auth.admin.generateLink({
       type: "magiclink",
       email,
@@ -52,28 +94,43 @@ async function generateInviteLink(
     }));
   }
 
-  if (linkError || !linkData?.properties?.action_link || !linkData.user) {
+  const hashedToken = linkData?.properties?.hashed_token;
+  if (linkError || !hashedToken || !linkData?.user) {
     return {
       ok: false,
       error: linkError?.message ?? "Could not generate an invite link.",
     };
   }
 
-  const { error: membershipError } = await admin
-    .from("organization_members")
-    .upsert(
-      { organization_id: orgId, user_id: linkData.user.id, role: "admin" },
-      { onConflict: "organization_id,user_id", ignoreDuplicates: true },
-    );
+  const membership = await ensureOrgMembership(admin, org.id, linkData.user.id);
+  if (!membership.ok) {
+    return membership;
+  }
 
-  if (membershipError) {
+  // Convenience for resolveOrgSlug; membership is the source of truth.
+  await admin.auth.admin.updateUserById(linkData.user.id, {
+    user_metadata: {
+      ...((linkData.user.user_metadata as Record<string, unknown> | undefined) ?? {}),
+      ...userData,
+    },
+  });
+
+  // Never hand customers Supabase's action_link — it embeds whatever Site URL
+  // is configured in the project (often http://localhost:3000).
+  const inviteLink = publicInviteUrl({
+    tokenHash: hashedToken,
+    type: linkType,
+    orgSlug: org.slug,
+  });
+
+  if (!isCustomerFacingUrl(inviteLink)) {
     return {
       ok: false,
-      error: `Invite link was created, but adding the membership failed: ${membershipError.message}`,
+      error: "Refused to issue a non-public invite link. The customer would not be able to open it.",
     };
   }
 
-  return { ok: true, inviteLink: linkData.properties.action_link };
+  return { ok: true, inviteLink };
 }
 
 export async function createOrganizationAndInvite(
@@ -138,7 +195,12 @@ export async function createOrganizationAndInvite(
     };
   }
 
-  const linkResult = await generateInviteLink(admin, org.id, contactEmail, contactName);
+  const linkResult = await generateInviteLink(
+    admin,
+    { id: org.id, slug: org.slug },
+    contactEmail,
+    contactName,
+  );
 
   revalidatePath("/admin/organizations");
 
@@ -174,7 +236,17 @@ export async function resendInviteLink(
     };
   }
 
-  const linkResult = await generateInviteLink(admin, orgId, normalizedEmail, fullName);
+  const { data: org, error: orgError } = await admin
+    .from("organizations")
+    .select("id, slug")
+    .eq("id", orgId)
+    .single();
+
+  if (orgError || !org) {
+    return { ok: false, error: orgError?.message ?? "Organization not found." };
+  }
+
+  const linkResult = await generateInviteLink(admin, org, normalizedEmail, fullName);
 
   if (!linkResult.ok) {
     return { ok: false, error: linkResult.error };
