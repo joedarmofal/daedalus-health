@@ -1,13 +1,21 @@
 import { publicAppUrl } from "@/lib/public-url";
 import nodemailer from "nodemailer";
 
-const FROM_EMAIL =
-  process.env.GOOGLE_WORKSPACE_SMTP_USER?.trim() || "joe@daedalushealth.org";
-const FROM_PASSWORD = process.env.GOOGLE_WORKSPACE_SMTP_PASSWORD?.trim();
 const FROM_NAME = "Joe at Daedalus Health";
 
+function smtpUser(): string {
+  return process.env.GOOGLE_WORKSPACE_SMTP_USER?.trim() || "joe@daedalushealth.org";
+}
+
+function smtpPassword(): string {
+  // Google shows app passwords as four groups of four. Spaces must be removed.
+  return (process.env.GOOGLE_WORKSPACE_SMTP_PASSWORD ?? "")
+    .trim()
+    .replace(/[\s-]/g, "");
+}
+
 export function isWelcomeMailConfigured(): boolean {
-  return Boolean(FROM_EMAIL && FROM_PASSWORD);
+  return smtpPassword().length > 0;
 }
 
 export interface WelcomeEmailInput {
@@ -21,11 +29,14 @@ export interface WelcomeEmailInput {
 export async function sendWelcomeEmail(
   input: WelcomeEmailInput,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!FROM_PASSWORD) {
+  const fromEmail = smtpUser();
+  const fromPassword = smtpPassword();
+
+  if (!fromPassword) {
     return {
       ok: false,
       error:
-        "Welcome email is not configured. Add GOOGLE_WORKSPACE_SMTP_PASSWORD (a Google Workspace app password for joe@daedalushealth.org) to the server environment.",
+        "Welcome email is not configured on this server. Add GOOGLE_WORKSPACE_SMTP_PASSWORD in Vercel Project Settings → Environment Variables (Production), then redeploy. Pushing .env.local does not send it to the live site.",
     };
   }
 
@@ -47,7 +58,7 @@ export async function sendWelcomeEmail(
     "",
     "Joe",
     "Daedalus Health",
-    FROM_EMAIL,
+    fromEmail,
   ].join("\n");
 
   const html = `
@@ -77,7 +88,7 @@ export async function sendWelcomeEmail(
         </p>
         <p style="margin:28px 0 0;font-size:16px;line-height:1.6;">
           Joe<br />
-          <span style="font-family:Arial,sans-serif;font-size:13px;color:rgba(26,43,60,0.65);">Daedalus Health · ${escapeHtml(FROM_EMAIL)}</span>
+          <span style="font-family:Arial,sans-serif;font-size:13px;color:rgba(26,43,60,0.65);">Daedalus Health · ${escapeHtml(fromEmail)}</span>
         </p>
       </div>
     </div>
@@ -89,15 +100,15 @@ export async function sendWelcomeEmail(
       port: 587,
       secure: false,
       auth: {
-        user: FROM_EMAIL,
-        pass: FROM_PASSWORD,
+        user: fromEmail,
+        pass: fromPassword,
       },
     });
 
     await transporter.sendMail({
-      from: `${FROM_NAME} <${FROM_EMAIL}>`,
+      from: `${FROM_NAME} <${fromEmail}>`,
       to: input.to,
-      replyTo: FROM_EMAIL,
+      replyTo: fromEmail,
       subject: `Welcome to Daedalus Health — your ${input.orgName} workspace`,
       text,
       html,
@@ -105,10 +116,15 @@ export async function sendWelcomeEmail(
 
     return { ok: true };
   } catch (err) {
+    const message = err instanceof Error ? err.message : "";
+    const rejected = /535|BadCredentials|Username and Password not accepted/i.test(
+      message,
+    );
     return {
       ok: false,
-      error:
-        err instanceof Error
+      error: rejected
+        ? "Google rejected the mailbox login. Create a Google Workspace app password for joe@daedalushealth.org (not the regular account password), then set GOOGLE_WORKSPACE_SMTP_PASSWORD in Vercel Production environment variables and redeploy."
+        : err instanceof Error
           ? err.message
           : "The welcome email could not be sent.",
     };
