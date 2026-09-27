@@ -39,6 +39,13 @@ const SECTION_CARDS = [
     description:
       "AI laws, common compliance situations, and a live feed of legal and regulatory news.",
   },
+  {
+    href: "/accreditation/workspace",
+    label: "CAMTS Accreditation",
+    description:
+      "Build and organize the Program Information Form for EMS and air medical survey.",
+    absolute: true,
+  },
 ];
 
 export default async function OrgPortalPage({ params }: PageProps) {
@@ -106,7 +113,11 @@ export default async function OrgPortalPage({ params }: PageProps) {
           {SECTION_CARDS.map((section) => (
             <Link
               key={section.href}
-              href={`/${org.slug}/${section.href}`}
+              href={
+                "absolute" in section && section.absolute
+                  ? section.href
+                  : `/${org.slug}/${section.href}`
+              }
               className="group rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] transition hover:border-[#C4A574]/60 hover:shadow-[0_24px_60px_-30px_rgba(26,43,60,0.55)]"
             >
               <h2 className="font-serif text-lg font-medium text-[#1A2B3C] transition group-hover:text-[#1F6A64]">

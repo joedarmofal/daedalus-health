@@ -15,7 +15,21 @@ const AUTH_ERRORS: Record<string, string> = {
     "Your account is not assigned to a client organization. Contact your Daedalus administrator.",
 };
 
-export function LoginForm({ initialError }: { initialError?: string }) {
+export function LoginForm({
+  initialError,
+  afterSignIn,
+  magicLinkNext,
+  submitLabel = "Enter portal",
+  magicLinkLabel = "Send Magic Link",
+  successMessage = "Check your inbox for a secure magic link to the client portal.",
+}: {
+  initialError?: string;
+  afterSignIn?: string;
+  magicLinkNext?: string;
+  submitLabel?: string;
+  magicLinkLabel?: string;
+  successMessage?: string;
+}) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,7 +73,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
       return;
     }
 
-    router.replace(`/${orgSlug}`);
+    router.replace(afterSignIn ?? `/${orgSlug}`);
     router.refresh();
   }
 
@@ -78,7 +92,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: publicAuthCallbackUrl(),
+        emailRedirectTo: publicAuthCallbackUrl(magicLinkNext),
       },
     });
 
@@ -89,7 +103,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
       return;
     }
 
-    setMessage("Check your inbox for a secure magic link to the client portal.");
+    setMessage(successMessage);
   }
 
   return (
@@ -160,7 +174,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
         disabled={status === "loading"}
         className="w-full rounded-sm bg-[#C4A574] px-4 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
       >
-        {status === "loading" ? "Authenticating…" : "Enter portal"}
+        {status === "loading" ? "Authenticating…" : submitLabel}
       </button>
 
       <button
@@ -169,7 +183,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
         onClick={handleMagicLink}
         className="w-full rounded-sm border border-[#C4A574]/40 px-4 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:border-[#C4A574] hover:text-[#C4A574] disabled:opacity-60"
       >
-        Send Magic Link
+        {magicLinkLabel}
       </button>
     </form>
   );

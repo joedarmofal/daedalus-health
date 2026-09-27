@@ -10,6 +10,7 @@ const SECTIONS = [
   { href: "/governance", label: "Governance" },
   { href: "/toolkit", label: "Toolkit" },
   { href: "/legal", label: "Legal / Compliance" },
+  { href: "/accreditation/workspace", label: "Accreditation", absolute: true },
 ];
 
 export function PortalNav({ orgSlug }: { orgSlug: string }) {
@@ -19,9 +20,10 @@ export function PortalNav({ orgSlug }: { orgSlug: string }) {
   return (
     <nav className="flex gap-1 overflow-x-auto pb-1">
       {SECTIONS.map((section) => {
-        const href = `${base}${section.href}`;
-        const isActive =
-          section.href === ""
+        const href = section.absolute ? section.href : `${base}${section.href}`;
+        const isActive = section.absolute
+          ? pathname.startsWith("/accreditation")
+          : section.href === ""
             ? pathname === base
             : pathname === href || pathname.startsWith(`${href}/`);
 
