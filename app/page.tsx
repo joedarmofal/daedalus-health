@@ -89,12 +89,12 @@ export default function Home() {
               >
                 Client Portal Access
               </Link>
-              <a
-                href="mailto:briefings@daedalus.health?subject=Executive%20Briefing%20Request"
+              <Link
+                href="/request-information"
                 className="inline-flex items-center justify-center rounded-sm border border-[#C4A574]/70 px-7 py-3 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:border-[#C4A574] hover:bg-[#C4A574]/10"
               >
-                Schedule Executive Briefing
-              </a>
+                Request Information
+              </Link>
             </div>
 
             <div className="mt-16 flex flex-col items-center border-t border-[#C4A574]/20 pt-14">

@@ -2,6 +2,8 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { resolveOrgSlug } from "@/lib/org";
+import { publicAuthCallbackUrl } from "@/lib/public-url";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
@@ -76,7 +78,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: publicAuthCallbackUrl(),
       },
     });
 
@@ -132,6 +134,14 @@ export function LoginForm({ initialError }: { initialError?: string }) {
           className="mt-2 w-full rounded-sm border border-[#C4A574]/30 bg-[#12202e] px-3.5 py-2.5 text-sm text-[#F9F8F3] outline-none placeholder:text-[#F9F8F3]/35 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/25"
           placeholder="••••••••"
         />
+        <p className="mt-2 text-right">
+          <Link
+            href="/auth/reset-password"
+            className="text-xs font-medium text-[#C4A574] transition hover:text-[#F9F8F3]"
+          >
+            Forgot password?
+          </Link>
+        </p>
       </div>
 
       {error ? (

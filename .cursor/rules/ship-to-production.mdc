@@ -1,0 +1,12 @@
+---
+description: Ship completed work to production unless the user says otherwise
+alwaysApply: true
+---
+
+# Ship to production
+
+After finishing work in this repo, commit, push to `main`, and deploy production (`npx vercel --prod --yes` if git push does not already trigger it). Do not wait to be asked.
+
+Skip the commit/push/deploy only when the user explicitly says not to, or asks to keep the work local / on a branch / in a PR first.
+
+Customer-facing auth links (invites, magic links, password reset) must use `publicAppUrl()` / `publicAuthCallbackUrl()` — never `window.location.origin`, `NODE_ENV`, request Host, or `NEXT_PUBLIC_SITE_URL`.

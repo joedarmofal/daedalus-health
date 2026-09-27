@@ -94,6 +94,101 @@ export async function sendWelcomeEmail(
     </div>
   `;
 
+  return sendTransactionalEmail({
+    to: input.to,
+    replyTo: fromEmail,
+    subject: `Welcome to Daedalus Health — your ${input.orgName} workspace`,
+    text,
+    html,
+  });
+}
+
+export interface InformationRequestEmailInput {
+  fullName: string;
+  email: string;
+  phone: string | null;
+  title: string | null;
+  organizationName: string;
+  organizationType: string | null;
+  organizationSize: string | null;
+  state: string | null;
+  interest: string | null;
+  notes: string | null;
+}
+
+export async function sendInformationRequestEmail(
+  input: InformationRequestEmailInput,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const inbox = smtpUser();
+  const rows: Array<[string, string]> = [
+    ["Name", input.fullName],
+    ["Email", input.email],
+    ["Phone", input.phone ?? ""],
+    ["Title", input.title ?? ""],
+    ["Organization", input.organizationName],
+    ["Organization type", input.organizationType ?? ""],
+    ["Organization size", input.organizationSize ?? ""],
+    ["State / region", input.state ?? ""],
+    ["Interest", input.interest ?? ""],
+    ["Notes", input.notes ?? ""],
+  ];
+
+  const text = [
+    "A potential customer submitted a Request Information form on daedalushealth.ai.",
+    "",
+    ...rows.map(([label, value]) => `${label}: ${value || "—"}`),
+  ].join("\n");
+
+  const htmlRows = rows
+    .map(
+      ([label, value]) =>
+        `<tr>
+          <td style="padding:8px 12px 8px 0;font-family:Arial,sans-serif;font-size:13px;color:rgba(26,43,60,0.6);vertical-align:top;">${escapeHtml(label)}</td>
+          <td style="padding:8px 0;font-family:Arial,sans-serif;font-size:14px;color:#1A2B3C;">${escapeHtml(value || "—")}</td>
+        </tr>`,
+    )
+    .join("");
+
+  const html = `
+    <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
+      <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#1F6A64;font-family:Arial,sans-serif;">Daedalus Health</p>
+        <h1 style="margin:16px 0 0;font-size:26px;font-weight:500;line-height:1.2;">New information request</h1>
+        <p style="margin:16px 0 20px;font-size:15px;line-height:1.7;font-family:Arial,sans-serif;">
+          ${escapeHtml(input.fullName)} submitted a request on daedalushealth.ai.
+        </p>
+        <table style="width:100%;border-collapse:collapse;">${htmlRows}</table>
+      </div>
+    </div>
+  `;
+
+  return sendTransactionalEmail({
+    to: inbox,
+    replyTo: input.email,
+    subject: `Information request — ${input.organizationName}`,
+    text,
+    html,
+  });
+}
+
+async function sendTransactionalEmail(input: {
+  to: string;
+  replyTo: string;
+  subject: string;
+  text: string;
+  html: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const fromEmail = smtpUser();
+  const fromPassword = smtpPassword();
+
+  if (!fromPassword) {
+    return {
+      ok: false,
+      error:
+        "Email is not configured on this server. Add GOOGLE_WORKSPACE_SMTP_PASSWORD in Vercel Production environment variables.",
+    };
+  }
+
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -108,10 +203,10 @@ export async function sendWelcomeEmail(
     await transporter.sendMail({
       from: `${FROM_NAME} <${fromEmail}>`,
       to: input.to,
-      replyTo: fromEmail,
-      subject: `Welcome to Daedalus Health — your ${input.orgName} workspace`,
-      text,
-      html,
+      replyTo: input.replyTo,
+      subject: input.subject,
+      text: input.text,
+      html: input.html,
     });
 
     return { ok: true };
@@ -123,10 +218,10 @@ export async function sendWelcomeEmail(
     return {
       ok: false,
       error: rejected
-        ? "Google rejected the mailbox login. Create a Google Workspace app password for joe@daedalushealth.org (not the regular account password), then set GOOGLE_WORKSPACE_SMTP_PASSWORD in Vercel Production environment variables and redeploy."
+        ? "Google rejected the mailbox login. Check GOOGLE_WORKSPACE_SMTP_PASSWORD."
         : err instanceof Error
           ? err.message
-          : "The welcome email could not be sent.",
+          : "The email could not be sent.",
     };
   }
 }

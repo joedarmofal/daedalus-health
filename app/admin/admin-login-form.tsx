@@ -1,6 +1,7 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
+import { publicAuthCallbackUrl } from "@/lib/public-url";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
@@ -79,7 +80,7 @@ export function AdminLoginForm({
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/admin`,
+        emailRedirectTo: publicAuthCallbackUrl("/admin"),
       },
     });
 

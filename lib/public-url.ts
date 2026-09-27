@@ -48,6 +48,14 @@ export function publicAppUrl(): string {
   return PRODUCTION_ORIGIN;
 }
 
+export function publicAuthCallbackUrl(next?: string): string {
+  const url = new URL("/auth/callback", PRODUCTION_ORIGIN);
+  if (next && next.startsWith("/") && !next.startsWith("//")) {
+    url.searchParams.set("next", next);
+  }
+  return url.toString();
+}
+
 export function publicInviteUrl(input: {
   tokenHash: string;
   type: string;
