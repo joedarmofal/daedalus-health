@@ -48,10 +48,34 @@ export function publicAppUrl(): string {
   return PRODUCTION_ORIGIN;
 }
 
+export function safeAppPath(next?: string | null): string {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+    return "/";
+  }
+  return next;
+}
+
 export function publicAuthCallbackUrl(next?: string): string {
   const url = new URL("/auth/callback", PRODUCTION_ORIGIN);
-  if (next && next.startsWith("/") && !next.startsWith("//")) {
-    url.searchParams.set("next", next);
+  const path = safeAppPath(next);
+  if (path !== "/") {
+    url.searchParams.set("next", path);
+  }
+  return url.toString();
+}
+
+/** One-time magic-link / recovery URL we send ourselves — never Supabase's Site URL. */
+export function publicAuthVerifyUrl(input: {
+  tokenHash: string;
+  type: string;
+  next?: string;
+}): string {
+  const url = new URL("/auth/callback", PRODUCTION_ORIGIN);
+  url.searchParams.set("token_hash", input.tokenHash);
+  url.searchParams.set("type", input.type);
+  const path = safeAppPath(input.next);
+  if (path !== "/") {
+    url.searchParams.set("next", path);
   }
   return url.toString();
 }

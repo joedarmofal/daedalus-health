@@ -35,9 +35,8 @@ export default function InviteCallbackPage() {
 
       const tokenHash = searchParams.get("token_hash");
       if (tokenHash) {
-        const next = new URL("/auth/invite", window.location.origin);
-        searchParams.forEach((value, key) => next.searchParams.set(key, value));
-        router.replace(`${next.pathname}${next.search}`);
+        const next = new URLSearchParams(searchParams);
+        router.replace(`/auth/invite?${next.toString()}`);
         return;
       }
 

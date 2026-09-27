@@ -1,71 +1,121 @@
+import { parseInviteType } from "@/lib/invite";
 import { resolveOrgSlug } from "@/lib/org";
-import { publicAppUrl } from "@/lib/public-url";
+import { publicAppUrl, safeAppPath } from "@/lib/public-url";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+type PendingCookie = {
+  name: string;
+  value: string;
+  options: Parameters<Awaited<ReturnType<typeof cookies>>["set"]>[2];
+};
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
+  const tokenHash = (
+    searchParams.get("token_hash") ??
+    searchParams.get("token") ??
+    ""
+  ).trim();
+  const otpType = parseInviteType(searchParams.get("type"));
   const next = searchParams.get("next") ?? "/";
   const origin = publicAppUrl();
 
+  if (tokenHash && otpType) {
+    const { supabase, pendingCookies } = await callbackClient();
+    const { error } = await supabase.auth.verifyOtp({
+      type: otpType,
+      token_hash: tokenHash,
+    });
+
+    if (!error) {
+      return redirectWithSession(
+        await destinationForNext(supabase, next, origin),
+        pendingCookies,
+      );
+    }
+
+    return NextResponse.redirect(`${origin}${failedPath(next)}`);
+  }
+
   if (code) {
-    const cookieStore = await cookies();
-    const pendingCookies: Array<{
-      name: string;
-      value: string;
-      options: Parameters<typeof cookieStore.set>[2];
-    }> = [];
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet, _headers) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options);
-              pendingCookies.push({ name, value, options });
-            });
-          },
-        },
-      },
-    );
-
+    const { supabase, pendingCookies } = await callbackClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const safeNext =
-        next.startsWith("/") && !next.startsWith("//") ? next : "/";
-
-      let destination = `${origin}${safeNext}`;
-      if (safeNext === "/") {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        const orgSlug = await resolveOrgSlug(supabase, user);
-        destination = orgSlug ? `${origin}/${orgSlug}` : `${origin}${safeNext}`;
-      }
-
-      const response = NextResponse.redirect(destination);
-      for (const cookie of pendingCookies) {
-        response.cookies.set(cookie.name, cookie.value, cookie.options);
-      }
-      return response;
+      return redirectWithSession(
+        await destinationForNext(supabase, next, origin),
+        pendingCookies,
+      );
     }
   }
 
-  const failedNext = searchParams.get("next") ?? "";
-  const failedDest =
-    failedNext.startsWith("/admin") && !failedNext.startsWith("//")
-      ? "/admin?error=auth-failed"
-      : failedNext.startsWith("/auth/update-password")
-        ? "/auth/reset-password"
-        : "/login?error=auth-failed";
+  return NextResponse.redirect(`${origin}${failedPath(next)}`);
+}
 
-  return NextResponse.redirect(`${origin}${failedDest}`);
+async function callbackClient() {
+  const cookieStore = await cookies();
+  const pendingCookies: PendingCookie[] = [];
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet, _headers) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+            pendingCookies.push({ name, value, options });
+          });
+        },
+      },
+    },
+  );
+
+  return { supabase, pendingCookies };
+}
+
+function redirectWithSession(destination: string, pendingCookies: PendingCookie[]) {
+  const response = NextResponse.redirect(destination);
+  for (const cookie of pendingCookies) {
+    response.cookies.set(cookie.name, cookie.value, cookie.options);
+  }
+  return response;
+}
+
+async function destinationForNext(
+  supabase: SupabaseClient,
+  next: string,
+  origin: string,
+): Promise<string> {
+  const safeNext = safeAppPath(next);
+  if (safeNext !== "/") {
+    return `${origin}${safeNext}`;
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const orgSlug = await resolveOrgSlug(supabase, user);
+  return orgSlug ? `${origin}/${orgSlug}` : `${origin}/`;
+}
+
+function failedPath(next: string): string {
+  const safeNext = safeAppPath(next);
+  if (safeNext.startsWith("/admin")) {
+    return "/admin?error=auth-failed";
+  }
+  if (safeNext.startsWith("/auth/update-password")) {
+    return "/auth/reset-password";
+  }
+  if (safeNext.startsWith("/emergency-services")) {
+    return "/emergency-services?error=auth-failed";
+  }
+  return "/login?error=auth-failed";
 }

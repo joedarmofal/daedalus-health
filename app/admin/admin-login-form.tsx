@@ -1,7 +1,7 @@
 "use client";
 
+import { requestMagicLink } from "@/app/login/actions";
 import { createClient } from "@/utils/supabase/client";
-import { publicAuthCallbackUrl } from "@/lib/public-url";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
@@ -76,18 +76,15 @@ export function AdminLoginForm({
       return;
     }
 
-    const supabase = createClient();
-    const { error: otpError } = await supabase.auth.signInWithOtp({
+    const result = await requestMagicLink({
       email,
-      options: {
-        emailRedirectTo: publicAuthCallbackUrl("/admin"),
-      },
+      next: "/admin",
     });
 
     setStatus("idle");
 
-    if (otpError) {
-      setError(otpError.message);
+    if (!result.ok) {
+      setError(result.error);
       return;
     }
 
