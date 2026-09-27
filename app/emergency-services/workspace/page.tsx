@@ -87,7 +87,23 @@ export default async function AccreditationWorkspacePage() {
         ))}
       </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <Link
+        href="/emergency-services/workspace/policies"
+        className="mt-10 block rounded-sm border border-[#C4A574]/40 bg-[#F9F8F3] p-5 transition hover:border-[#C4A574]"
+      >
+        <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
+          POLICY LIBRARY
+        </p>
+        <h2 className="mt-1 font-serif text-lg text-[#1A2B3C]">
+          Clinical and administrative policies
+        </h2>
+        <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
+          Draft with the AI assistant from a prompt or uploaded SOP, then keep
+          the adopted policy in this organization’s library.
+        </p>
+      </Link>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {CAMTS_SECTIONS.map((section) => {
           const progress = sectionProgress(section.id, items);
           const pct =
