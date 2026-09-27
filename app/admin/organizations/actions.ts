@@ -1,6 +1,7 @@
 "use server";
 
 import { getAdminAccess } from "@/lib/admin-access";
+import { tokenFromGenerateLink } from "@/lib/invite";
 import { isReservedOrgSlug } from "@/lib/org";
 import { isCustomerFacingUrl, publicAppUrl, publicInviteUrl } from "@/lib/public-url";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -94,8 +95,8 @@ async function generateInviteLink(
     }));
   }
 
-  const hashedToken = linkData?.properties?.hashed_token;
-  if (linkError || !hashedToken || !linkData?.user) {
+  const token = tokenFromGenerateLink(linkData?.properties);
+  if (linkError || !token || !linkData?.user) {
     return {
       ok: false,
       error: linkError?.message ?? "Could not generate an invite link.",
@@ -107,19 +108,15 @@ async function generateInviteLink(
     return membership;
   }
 
-  // Convenience for resolveOrgSlug; membership is the source of truth.
-  await admin.auth.admin.updateUserById(linkData.user.id, {
-    user_metadata: {
-      ...((linkData.user.user_metadata as Record<string, unknown> | undefined) ?? {}),
-      ...userData,
-    },
-  });
+  // Do not call updateUserById here — mutating the user voids the one-time
+  // token that generateLink just created. New-user metadata is already set
+  // via generateLink's `data` option; membership + ?org= is enough otherwise.
 
   // Never hand customers Supabase's action_link — it embeds whatever Site URL
   // is configured in the project (often http://localhost:3000).
   const inviteLink = publicInviteUrl({
-    tokenHash: hashedToken,
-    type: linkType,
+    tokenHash: token.tokenHash,
+    type: token.type || linkType,
     orgSlug: org.slug,
   });
 
