@@ -14,7 +14,7 @@ const SECTION_CARDS = [
     href: "dashboard",
     label: "Dashboard",
     description:
-      "Governance status, program telemetry, and an ROI tool for time and money returned.",
+      "Governance status, an ROI tool, and an air medical program proforma.",
   },
   {
     href: "policy",

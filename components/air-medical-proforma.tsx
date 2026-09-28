@@ -12,7 +12,7 @@ import {
 } from "@/lib/air-medical-proforma";
 import { useEffect, useMemo, useState } from "react";
 
-const STORAGE_KEY = "daedalus-air-medical-proforma";
+const DEFAULT_STORAGE_KEY = "daedalus-air-medical-proforma";
 
 const inputClass =
   "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
@@ -98,24 +98,28 @@ function Line({
   );
 }
 
-export function AirMedicalProforma() {
+export function AirMedicalProforma({
+  storageKey = DEFAULT_STORAGE_KEY,
+}: {
+  storageKey?: string;
+}) {
   const [inputs, setInputs] = useState<AirMedicalProformaInputs>(
     DEFAULT_AIR_MEDICAL_INPUTS,
   );
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = parseStored(window.localStorage.getItem(STORAGE_KEY));
+    const stored = parseStored(window.localStorage.getItem(storageKey));
     if (stored) {
       setInputs(stored);
     }
     setHydrated(true);
-  }, []);
+  }, [storageKey]);
 
   useEffect(() => {
     if (!hydrated) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(inputs));
-  }, [hydrated, inputs]);
+    window.localStorage.setItem(storageKey, JSON.stringify(inputs));
+  }, [hydrated, inputs, storageKey]);
 
   const result = useMemo(() => calculateAirMedicalProforma(inputs), [inputs]);
 

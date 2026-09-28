@@ -1,3 +1,4 @@
+import { AirMedicalProforma } from "@/components/air-medical-proforma";
 import { TopographicPattern } from "@/components/topographic-pattern";
 import { getOrgAccess } from "@/lib/org-access";
 import type { Metadata } from "next";
@@ -56,8 +57,8 @@ export default async function TenantDashboardPage({ params }: PageProps) {
             {org.name}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
-            Monitor governance status, then quantify how much time and money
-            your AI program is returning to {org.name}.
+            Monitor governance status, quantify time and money returned, and
+            build an air medical program proforma for {org.name}.
           </p>
         </div>
 
@@ -85,6 +86,25 @@ export default async function TenantDashboardPage({ params }: PageProps) {
         <div className="mt-6">
           <RoiCalculator orgSlug={org.slug} />
         </div>
+
+        <section className="mt-6">
+          <div className="mb-6 rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
+              Program proforma
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-medium text-[#1A2B3C]">
+              Air Medical Program Proforma
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#1A2B3C]/65">
+              Rotor, fixed wing, and ground transports with a role-based labor
+              calculator and aircraft lease, benefits, and operating expenses.
+              Values stay in this browser for {org.name}.
+            </p>
+          </div>
+          <AirMedicalProforma
+            storageKey={`daedalus-air-medical-proforma:${org.slug}`}
+          />
+        </section>
       </div>
     </div>
   );

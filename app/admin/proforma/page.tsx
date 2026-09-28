@@ -1,7 +1,7 @@
 import { getAdminAccess } from "@/lib/admin-access";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AirMedicalProforma } from "./air-medical-proforma";
+import { AirMedicalProforma } from "@/components/air-medical-proforma";
 
 export const metadata: Metadata = {
   title: "Admin · Proforma",
