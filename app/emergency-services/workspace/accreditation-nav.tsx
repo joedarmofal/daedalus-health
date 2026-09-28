@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/emergency-services/workspace", label: "Overview", exact: true },
   { href: "/emergency-services/workspace/policies", label: "Policies" },
-  { href: "/emergency-services/workspace/intelligence", label: "Business Intelligence" },
   { href: "/emergency-services/workspace/pif", label: "PIF builder" },
   { href: "/emergency-services/workspace/standards", label: "Standards map" },
   { href: "/emergency-services/workspace/gaps", label: "Gaps" },

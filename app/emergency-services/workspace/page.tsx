@@ -89,21 +89,6 @@ export default async function AccreditationWorkspacePage() {
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         <Link
-          href="/emergency-services/workspace/intelligence"
-          className="block rounded-sm border border-[#C4A574]/40 bg-[#F9F8F3] p-5 transition hover:border-[#C4A574]"
-        >
-          <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
-            BUSINESS INTELLIGENCE
-          </p>
-          <h2 className="mt-1 font-serif text-lg text-[#1A2B3C]">
-            Flight tracking
-          </h2>
-          <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
-            Query public ADS-B data by tail number and date range to list
-            matching flights.
-          </p>
-        </Link>
-        <Link
           href="/emergency-services/workspace/policies"
           className="block rounded-sm border border-[#C4A574]/40 bg-[#F9F8F3] p-5 transition hover:border-[#C4A574]"
         >
