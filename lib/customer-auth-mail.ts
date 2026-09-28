@@ -28,7 +28,7 @@ function unknownUserOrRateLimit(message: string): "unknown" | "wait" | "other" {
 
 /**
  * Builds a production magic-link or recovery URL and emails it from
- * joe@daedalushealth.org. Never forwards Supabase's action_link — that
+ * welcome@daedalushealth.ai. Never forwards Supabase's action_link — that
  * embeds the project's Site URL, which is often localhost.
  */
 export async function sendCustomerAuthLink(input: {

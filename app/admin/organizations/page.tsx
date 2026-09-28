@@ -1,4 +1,5 @@
 import { getAdminAccess } from "@/lib/admin-access";
+import { customerMailFromAddress } from "@/lib/mail";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -70,12 +71,12 @@ export default async function AdminOrganizationsPage() {
         Organizations
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
-        Create new customer organizations. A welcome email goes out from
-        joe@daedalushealth.org with their sign-in link.
+        Create new customer organizations. A welcome email goes out from{" "}
+        {customerMailFromAddress()} with their sign-in link.
       </p>
 
       <div className="mt-8">
-        <NewCustomerForm />
+        <NewCustomerForm fromEmail={customerMailFromAddress()} />
       </div>
 
       <h2 className="mt-12 font-serif text-xl font-medium text-[#1A2B3C]">
@@ -87,7 +88,13 @@ export default async function AdminOrganizationsPage() {
             No organizations yet — create your first one above.
           </p>
         ) : (
-          rows.map((org) => <OrganizationRow key={org.id} org={org} />)
+          rows.map((org) => (
+            <OrganizationRow
+              key={org.id}
+              org={org}
+              fromEmail={customerMailFromAddress()}
+            />
+          ))
         )}
       </div>
     </div>

@@ -1,17 +1,56 @@
 import { publicAppUrl } from "@/lib/public-url";
 import nodemailer from "nodemailer";
 
-const FROM_NAME = "Joe at Daedalus Health";
+const CUSTOMER_FROM_NAME = "Daedalus Health";
+const JOE_FROM_NAME = "Joe at Daedalus Health";
+export const DEFAULT_MAIL_INBOX = "joedarmofal@daedalushealth.ai";
+export const DEFAULT_CUSTOMER_MAIL_FROM = "welcome@daedalushealth.ai";
+
+/** Joe's primary mailbox — SMTP login and inbound notifications. */
+export function mailInboxAddress(): string {
+  return (
+    process.env.SMTP_INBOX?.trim() ||
+    process.env.SMTP_USER?.trim() ||
+    DEFAULT_MAIL_INBOX
+  );
+}
+
+/** Alias used as the From address on automated customer emails. */
+export function customerMailFromAddress(): string {
+  return process.env.SMTP_FROM?.trim() || DEFAULT_CUSTOMER_MAIL_FROM;
+}
+
+/** @deprecated Use customerMailFromAddress() for customer mail, mailInboxAddress() for Joe. */
+export function mailFromAddress(): string {
+  return customerMailFromAddress();
+}
 
 function smtpUser(): string {
-  return process.env.GOOGLE_WORKSPACE_SMTP_USER?.trim() || "joe@daedalushealth.org";
+  return (
+    process.env.SMTP_USER?.trim() ||
+    process.env.ZOHO_SMTP_USER?.trim() ||
+    DEFAULT_MAIL_INBOX
+  );
 }
 
 function smtpPassword(): string {
-  // Google shows app passwords as four groups of four. Spaces must be removed.
-  return (process.env.GOOGLE_WORKSPACE_SMTP_PASSWORD ?? "")
+  return (
+    process.env.SMTP_PASSWORD ??
+    process.env.ZOHO_SMTP_PASSWORD ??
+    process.env.GOOGLE_WORKSPACE_SMTP_PASSWORD ??
+    ""
+  )
     .trim()
     .replace(/[\s-]/g, "");
+}
+
+function smtpHost(): string {
+  return process.env.SMTP_HOST?.trim() || "smtppro.zoho.com";
+}
+
+function smtpPort(): number {
+  const port = Number(process.env.SMTP_PORT);
+  return Number.isFinite(port) && port > 0 ? port : 465;
 }
 
 export function isWelcomeMailConfigured(): boolean {
@@ -29,14 +68,15 @@ export interface WelcomeEmailInput {
 export async function sendWelcomeEmail(
   input: WelcomeEmailInput,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const fromEmail = smtpUser();
+  const fromEmail = customerMailFromAddress();
+  const replyTo = mailInboxAddress();
   const fromPassword = smtpPassword();
 
   if (!fromPassword) {
     return {
       ok: false,
       error:
-        "Welcome email is not configured on this server. Add GOOGLE_WORKSPACE_SMTP_PASSWORD in Vercel Project Settings → Environment Variables (Production), then redeploy. Pushing .env.local does not send it to the live site.",
+        "Welcome email is not configured on this server. Add SMTP_PASSWORD in Vercel Project Settings → Environment Variables (Production), then redeploy. Pushing .env.local does not send it to the live site.",
     };
   }
 
@@ -96,7 +136,8 @@ export async function sendWelcomeEmail(
 
   return sendTransactionalEmail({
     to: input.to,
-    replyTo: fromEmail,
+    from: fromEmail,
+    replyTo,
     subject: `Welcome to Daedalus Health — your ${input.orgName} workspace`,
     text,
     html,
@@ -119,7 +160,7 @@ export interface InformationRequestEmailInput {
 export async function sendInformationRequestEmail(
   input: InformationRequestEmailInput,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const inbox = smtpUser();
+  const inbox = mailInboxAddress();
   const rows: Array<[string, string]> = [
     ["Name", input.fullName],
     ["Email", input.email],
@@ -164,6 +205,8 @@ export async function sendInformationRequestEmail(
 
   return sendTransactionalEmail({
     to: inbox,
+    from: mailInboxAddress(),
+    fromName: JOE_FROM_NAME,
     replyTo: input.email,
     subject: `Information request — ${input.organizationName}`,
     text,
@@ -175,7 +218,8 @@ export async function sendMagicLinkEmail(input: {
   to: string;
   signInLink: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  const fromEmail = smtpUser();
+  const fromEmail = customerMailFromAddress();
+  const replyTo = mailInboxAddress();
   const loginUrl = `${publicAppUrl()}/login`;
 
   const text = [
@@ -201,7 +245,8 @@ export async function sendMagicLinkEmail(input: {
 
   return sendTransactionalEmail({
     to: input.to,
-    replyTo: fromEmail,
+    from: fromEmail,
+    replyTo,
     subject: "Your Daedalus Health sign-in link",
     text,
     html,
@@ -212,7 +257,8 @@ export async function sendPasswordResetEmail(input: {
   to: string;
   resetLink: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  const fromEmail = smtpUser();
+  const fromEmail = customerMailFromAddress();
+  const replyTo = mailInboxAddress();
   const loginUrl = `${publicAppUrl()}/login`;
 
   const text = [
@@ -238,7 +284,8 @@ export async function sendPasswordResetEmail(input: {
 
   return sendTransactionalEmail({
     to: input.to,
-    replyTo: fromEmail,
+    from: fromEmail,
+    replyTo,
     subject: "Reset your Daedalus Health password",
     text,
     html,
@@ -252,7 +299,7 @@ function brandedAuthEmail(input: {
   buttonHref: string;
   footer: string;
 }): string {
-  const fromEmail = smtpUser();
+  const fromEmail = customerMailFromAddress();
   return `
     <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
       <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
@@ -276,35 +323,42 @@ function brandedAuthEmail(input: {
 
 async function sendTransactionalEmail(input: {
   to: string;
+  from?: string;
+  fromName?: string;
   replyTo: string;
   subject: string;
   text: string;
   html: string;
 }): Promise<{ ok: true } | { ok: false; error: string }> {
-  const fromEmail = smtpUser();
+  const authUser = smtpUser();
+  const fromEmail = input.from ?? customerMailFromAddress();
+  const fromName = input.fromName ?? CUSTOMER_FROM_NAME;
   const fromPassword = smtpPassword();
 
   if (!fromPassword) {
     return {
       ok: false,
       error:
-        "Email is not configured on this server. Add GOOGLE_WORKSPACE_SMTP_PASSWORD in Vercel Production environment variables.",
+        "Email is not configured on this server. Add SMTP_PASSWORD in Vercel Production environment variables.",
     };
   }
 
+  const host = smtpHost();
+  const port = smtpPort();
+
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      host,
+      port,
+      secure: port === 465,
       auth: {
-        user: fromEmail,
+        user: authUser,
         pass: fromPassword,
       },
     });
 
     await transporter.sendMail({
-      from: `${FROM_NAME} <${fromEmail}>`,
+      from: `${fromName} <${fromEmail}>`,
       to: input.to,
       replyTo: input.replyTo,
       subject: input.subject,
@@ -315,13 +369,14 @@ async function sendTransactionalEmail(input: {
     return { ok: true };
   } catch (err) {
     const message = err instanceof Error ? err.message : "";
-    const rejected = /535|BadCredentials|Username and Password not accepted/i.test(
-      message,
-    );
+    const rejected =
+      /535|534|553|BadCredentials|Username and Password not accepted|authentication failed/i.test(
+        message,
+      );
     return {
       ok: false,
       error: rejected
-        ? "Google rejected the mailbox login. Check GOOGLE_WORKSPACE_SMTP_PASSWORD."
+        ? "Zoho rejected the mailbox login. Check SMTP_USER and SMTP_PASSWORD (use a Zoho app password if two-factor is on)."
         : err instanceof Error
           ? err.message
           : "The email could not be sent.",

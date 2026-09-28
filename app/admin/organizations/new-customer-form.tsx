@@ -19,7 +19,7 @@ function slugify(value: string): string {
 const inputClass =
   "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
 
-export function NewCustomerForm() {
+export function NewCustomerForm({ fromEmail }: { fromEmail: string }) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -89,9 +89,9 @@ export function NewCustomerForm() {
         New customer
       </h2>
       <p className="mt-1.5 text-sm leading-6 text-[#1A2B3C]/65">
-        Creates the organization and emails a welcome from
-        joe@daedalushealth.org with a one-time sign-in link. They will create
-        a login and password, then complete setup.
+        Creates the organization and emails a welcome from {fromEmail} with a
+        one-time sign-in link. They will create a login and password, then
+        complete setup.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -180,7 +180,7 @@ export function NewCustomerForm() {
         <div className="mt-6 rounded-sm border border-[#1F6A64]/30 bg-[#1F6A64]/10 p-5">
           <p className="text-sm font-medium text-[#1A2B3C]">
             {result.emailSent
-              ? `${result.orgSlug} is ready. A welcome email was sent to ${result.emailedTo} from joe@daedalushealth.org.`
+              ? `${result.orgSlug} is ready. A welcome email was sent to ${result.emailedTo} from ${fromEmail}.`
               : `${result.orgSlug} is ready, but the welcome email did not send.`}
           </p>
           {result.emailSent ? (

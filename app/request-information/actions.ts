@@ -1,6 +1,6 @@
 "use server";
 
-import { sendInformationRequestEmail } from "@/lib/mail";
+import { mailInboxAddress, sendInformationRequestEmail } from "@/lib/mail";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export interface InformationRequestResult {
@@ -85,7 +85,7 @@ export async function submitInformationRequest(
     return {
       ok: false,
       error:
-        "Your request was received, but we could not notify the Daedalus team by email. Try again or email joe@daedalushealth.org.",
+        `Your request was received, but we could not notify the Daedalus team by email. Try again or email ${mailInboxAddress()}.`,
     };
   }
 

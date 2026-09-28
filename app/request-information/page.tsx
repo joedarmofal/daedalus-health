@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { mailInboxAddress } from "@/lib/mail";
 import type { Metadata } from "next";
 import { RequestInformationForm } from "./request-form";
 
@@ -23,7 +24,7 @@ export default function RequestInformationPage() {
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
             A few details help us follow up with the right conversation. Joe
-            receives this directly at joe@daedalushealth.org.
+            receives this directly at {mailInboxAddress()}.
           </p>
           <div className="mt-8">
             <RequestInformationForm />

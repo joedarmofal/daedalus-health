@@ -16,7 +16,13 @@ export interface OrganizationRowData {
   intakeCompleted: boolean;
 }
 
-export function OrganizationRow({ org }: { org: OrganizationRowData }) {
+export function OrganizationRow({
+  org,
+  fromEmail,
+}: {
+  org: OrganizationRowData;
+  fromEmail: string;
+}) {
   const [expanded, setExpanded] = useState(false);
   const [email, setEmail] = useState(org.primaryContactEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading">("idle");
@@ -133,7 +139,7 @@ export function OrganizationRow({ org }: { org: OrganizationRowData }) {
 
           {emailSent ? (
             <p className="mt-3 text-xs leading-5 text-[#1A2B3C]/55">
-              Welcome email sent to {emailedTo} from joe@daedalushealth.org.
+              Welcome email sent to {emailedTo} from {fromEmail}.
             </p>
           ) : null}
           {inviteLink && !emailSent ? (
