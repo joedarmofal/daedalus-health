@@ -19,6 +19,16 @@ const nextConfig: NextConfig = {
         destination: "/emergency-services/:path*",
         permanent: true,
       },
+      {
+        source: "/security",
+        destination: "/trust",
+        permanent: true,
+      },
+      {
+        source: "/security/:path*",
+        destination: "/trust/:path*",
+        permanent: true,
+      },
     ];
   },
 };

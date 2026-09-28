@@ -1,4 +1,8 @@
 import { publicAppUrl } from "@/lib/public-url";
+import {
+  trustRequestKindLabel,
+  type TrustRequestKind,
+} from "@/lib/trust-request";
 import nodemailer from "nodemailer";
 
 const CUSTOMER_FROM_NAME = "Daedalus Health";
@@ -209,6 +213,71 @@ export async function sendInformationRequestEmail(
     fromName: JOE_FROM_NAME,
     replyTo: input.email,
     subject: `Information request — ${input.organizationName}`,
+    text,
+    html,
+  });
+}
+
+export interface TrustRequestEmailInput {
+  fullName: string;
+  email: string;
+  title: string | null;
+  organizationName: string;
+  kind: TrustRequestKind;
+  notes: string | null;
+}
+
+export async function sendTrustRequestEmail(
+  input: TrustRequestEmailInput,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const inbox = customerMailFromAddress();
+  const kindLabel = trustRequestKindLabel(input.kind);
+  const rows: Array<[string, string]> = [
+    ["Name", input.fullName],
+    ["Email", input.email],
+    ["Title", input.title ?? ""],
+    ["Organization", input.organizationName],
+    ["Request", kindLabel],
+    ["Notes", input.notes ?? ""],
+  ];
+
+  const text = [
+    "An IT / security contact submitted a BAA or security-packet request on daedalushealth.ai/trust.",
+    "",
+    ...rows.map(([label, value]) => `${label}: ${value || "—"}`),
+    "",
+    "This is not a PHI submission. Follow up from welcome@daedalushealth.ai.",
+  ].join("\n");
+
+  const htmlRows = rows
+    .map(
+      ([label, value]) =>
+        `<tr>
+          <td style="padding:8px 12px 8px 0;font-family:Arial,sans-serif;font-size:13px;color:rgba(26,43,60,0.6);vertical-align:top;">${escapeHtml(label)}</td>
+          <td style="padding:8px 0;font-family:Arial,sans-serif;font-size:14px;color:#1A2B3C;">${escapeHtml(value || "—")}</td>
+        </tr>`,
+    )
+    .join("");
+
+  const html = `
+    <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
+      <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#1F6A64;font-family:Arial,sans-serif;">Daedalus Health · Trust</p>
+        <h1 style="margin:16px 0 0;font-size:26px;font-weight:500;line-height:1.2;">${escapeHtml(kindLabel)}</h1>
+        <p style="margin:16px 0 20px;font-size:15px;line-height:1.7;font-family:Arial,sans-serif;">
+          ${escapeHtml(input.fullName)} submitted a request on daedalushealth.ai/trust.
+        </p>
+        <table style="width:100%;border-collapse:collapse;">${htmlRows}</table>
+      </div>
+    </div>
+  `;
+
+  return sendTransactionalEmail({
+    to: inbox,
+    from: inbox,
+    fromName: CUSTOMER_FROM_NAME,
+    replyTo: input.email,
+    subject: `${kindLabel} — ${input.organizationName}`,
     text,
     html,
   });

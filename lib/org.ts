@@ -12,6 +12,8 @@ const RESERVED_SLUGS = new Set([
   "request-information",
   "accreditation",
   "emergency-services",
+  "trust",
+  "security",
 ]);
 
 export function isReservedOrgSlug(slug: string): boolean {

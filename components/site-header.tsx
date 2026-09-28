@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/#governance", label: "AI Governance Framework" },
   { href: "/emergency-services", label: "Emergency Services" },
   { href: "/#about", label: "About" },
+  { href: "/trust", label: "Trust" },
 ];
 
 export function SiteHeader() {
