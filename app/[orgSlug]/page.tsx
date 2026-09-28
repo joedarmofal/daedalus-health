@@ -1,4 +1,5 @@
 import { TopographicPattern } from "@/components/topographic-pattern";
+import { portalDisplayName } from "@/lib/demo-credentials";
 import { getOrgAccess } from "@/lib/org-access";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
@@ -79,7 +80,7 @@ export default async function OrgPortalPage({ params }: PageProps) {
           {org.name}
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
-          Welcome back, {user.email}. Your executive workspace covers AI
+          Welcome back, {portalDisplayName(user)}. Your executive workspace covers AI
           governance, clinical validation, and program transparency for{" "}
           {org.name}.
         </p>

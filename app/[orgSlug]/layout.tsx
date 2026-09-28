@@ -3,6 +3,7 @@ import { PortalNav } from "@/components/portal-nav";
 import { SignOutButton } from "@/components/sign-out-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { portalDisplayName } from "@/lib/demo-credentials";
 import { getOrgAccess } from "@/lib/org-access";
 import { needsPasswordSetup } from "@/lib/password-setup";
 import { headers } from "next/headers";
@@ -88,7 +89,9 @@ export default async function OrgLayout({ children, params }: LayoutProps) {
               </Link>
             ) : null}
             <div className="text-right text-xs leading-tight">
-              <div className="font-medium text-[#1A2B3C]">{user.email}</div>
+              <div className="font-medium text-[#1A2B3C]">
+                {portalDisplayName(user)}
+              </div>
               <div className="font-semibold uppercase tracking-[0.14em] text-[#1F6A64]">
                 {role}
               </div>

@@ -66,6 +66,12 @@ export default async function AdminLayout({
                   Organizations
                 </Link>
                 <Link
+                  href="/admin/demo-users"
+                  className="transition hover:text-[#C4A574]"
+                >
+                  Demo access
+                </Link>
+                <Link
                   href="/admin/vendors"
                   className="transition hover:text-[#C4A574]"
                 >

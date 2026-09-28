@@ -2,6 +2,10 @@
 
 import { requestMagicLink } from "@/app/login/actions";
 import { createClient } from "@/utils/supabase/client";
+import {
+  isUsernameLogin,
+  normalizeLoginIdentifier,
+} from "@/lib/demo-credentials";
 import { resolveOrgSlug } from "@/lib/org";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -53,7 +57,7 @@ export function LoginForm({
 
     const supabase = createClient();
     const { data, error: signInError } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizeLoginIdentifier(email),
       password,
     });
 
@@ -88,8 +92,14 @@ export function LoginForm({
       return;
     }
 
+    if (isUsernameLogin(email)) {
+      setStatus("idle");
+      setError("Demo accounts use a password. Magic links require a work email.");
+      return;
+    }
+
     const result = await requestMagicLink({
-      email,
+      email: normalizeLoginIdentifier(email),
       next: magicLinkNext,
     });
 
@@ -110,13 +120,13 @@ export function LoginForm({
           htmlFor="email"
           className="text-sm font-medium text-[#F9F8F3]/80"
         >
-          Work email
+          Work email or username
         </label>
         <input
           id="email"
           name="email"
-          type="email"
-          autoComplete="email"
+          type="text"
+          autoComplete="username"
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
@@ -133,7 +143,7 @@ export function LoginForm({
           Password
         </label>
         <p className="mt-1 text-xs text-[#F9F8F3]/40">
-          Use the password you created after your invite.
+          Use the password from your invite, or the demo password you were given.
         </p>
         <input
           id="password"

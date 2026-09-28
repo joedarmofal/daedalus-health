@@ -86,6 +86,21 @@ export default async function AdminHomePage({
           </p>
         </Link>
         <Link
+          href="/admin/demo-users"
+          className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] transition hover:border-[#C4A574]/60 hover:shadow-[0_24px_60px_-28px_rgba(26,43,60,0.45)]"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
+            Demos
+          </p>
+          <h2 className="mt-2 font-serif text-xl font-medium text-[#1A2B3C]">
+            Issue a demo login
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/65">
+            Manually add a user with a username and password so a guest can
+            walk the live site without an invite email.
+          </p>
+        </Link>
+        <Link
           href="/admin/vendors"
           className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] transition hover:border-[#C4A574]/60 hover:shadow-[0_24px_60px_-28px_rgba(26,43,60,0.45)]"
         >
