@@ -1,6 +1,5 @@
 import { CompassStar } from "@/components/compass-star";
 import { CoreValuesShield } from "@/components/core-values-shield";
-import { HeroFigure } from "@/components/hero-figure";
 import { MapLegend } from "@/components/map-legend";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -11,6 +10,7 @@ import {
   Scale,
   ShieldCheck,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const pillars = [
@@ -66,14 +66,22 @@ export default function Home() {
     <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
       <main className="flex-1">
-        <section className="relative overflow-x-hidden bg-[#1A2B3C]">
+        <section className="relative overflow-hidden bg-[#1A2B3C]">
           <TopographicPattern className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(249,248,243,0.08),_transparent_58%)]" />
 
           <MapLegend className="absolute top-6 right-4 z-10 hidden w-48 sm:right-8 lg:block" />
 
           <div className="relative mx-auto flex max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:py-32">
-            <HeroFigure />
+            <Image
+              src="/images/winged-figure.png"
+              alt="Classical winged figure, the emblem of Daedalus Health"
+              width={864}
+              height={1152}
+              priority
+              unoptimized
+              className="h-auto w-[160px] sm:w-[190px]"
+            />
             <CompassStar className="mt-6 mb-8 size-16 text-[#C4A574]" />
             <p className="font-serif text-3xl font-semibold tracking-[0.2em] text-[#C4A574] sm:text-4xl lg:text-5xl">
               DAEDALUS HEALTH
