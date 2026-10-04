@@ -155,20 +155,20 @@ export default function Home() {
 
         <section
           id="services"
-          className="relative scroll-mt-24 overflow-hidden border-t border-[#C9A24B]/20 bg-[#1A2B3C]"
+          className="relative scroll-mt-24 overflow-hidden border-t border-[#C4A574]/25 bg-[#F9F8F3]"
         >
           <TopographicPattern
             tone="gold"
-            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.07]"
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.14]"
           />
           <div className="relative mx-auto max-w-6xl px-4 py-32 sm:px-6">
-            <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#C9A24B]">
+            <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#C4A574]">
               THE FOUR PILLARS
             </p>
-            <h2 className="mt-4 max-w-[18ch] font-serif text-4xl font-normal leading-tight tracking-tight text-[#F3EEE0] sm:text-5xl">
+            <h2 className="mt-4 max-w-[18ch] font-serif text-4xl font-normal leading-tight tracking-tight text-[#1A2B3C] sm:text-5xl">
               Principles that keep AI in service of care.
             </h2>
-            <p className="mt-6 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
+            <p className="mt-6 max-w-[62ch] text-base font-normal leading-[1.7] text-[#1A2B3C]/70">
               Every pillar answers one question: at the human-machine
               interface, who is in command? These are the wings we help you
               build, and the discipline to fly them.
@@ -177,16 +177,16 @@ export default function Home() {
               {pillars.map((pillar) => (
                 <article
                   key={pillar.title}
-                  className="rounded-sm border border-[#C9A24B]/35 bg-[#1A2B3C]/40 p-10 transition-[border-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-[2px] hover:border-[#C9A24B] sm:p-12"
+                  className="rounded-sm border border-[#C4A574]/35 bg-[#F3EEE0]/60 p-10 transition-[border-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-[2px] hover:border-[#C4A574] sm:p-12"
                 >
                   <pillar.icon
-                    className="size-6 text-[#C9A24B]"
+                    className="size-6 text-[#C4A574]"
                     strokeWidth={1.25}
                   />
-                  <h3 className="mt-5 font-serif text-2xl font-normal text-[#F3EEE0]">
+                  <h3 className="mt-5 font-serif text-2xl font-normal text-[#1A2B3C]">
                     {pillar.title}
                   </h3>
-                  <p className="mt-3 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
+                  <p className="mt-3 max-w-[62ch] text-base font-normal leading-[1.7] text-[#1A2B3C]/70">
                     {pillar.description}
                   </p>
                 </article>
