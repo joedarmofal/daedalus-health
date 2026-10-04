@@ -52,7 +52,7 @@ body {
 }
 
 .news-ticker-track {
-  animation: news-ticker 90s linear infinite;
+  animation: news-ticker 126s linear infinite;
 }
 
 .news-ticker:hover .news-ticker-track,

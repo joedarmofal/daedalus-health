@@ -42,7 +42,7 @@ export function NewsTicker({
   return (
     <section
       id="news"
-      className="scroll-mt-24 border-t border-[#C4A574]/35 bg-[#1A2B3C]"
+      className="scroll-mt-24 border-b border-[#C4A574]/35 bg-[#1A2B3C]"
       aria-label="Healthcare AI news"
     >
       <div className="mx-auto flex max-w-6xl items-baseline justify-between gap-4 px-4 pt-4 sm:px-6">

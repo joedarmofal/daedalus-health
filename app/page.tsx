@@ -69,6 +69,7 @@ export default async function Home() {
   return (
     <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
+      <NewsTicker initialItems={headlines} />
       <main className="flex-1">
         <section className="relative overflow-hidden bg-[#1A2B3C]">
           <TopographicPattern className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]" />
@@ -132,8 +133,6 @@ export default async function Home() {
             </div>
           </div>
         </section>
-
-        <NewsTicker initialItems={headlines} />
 
         <section className="border-t border-[#C4A574]/35 bg-[#F9F8F3]">
           <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-24">
