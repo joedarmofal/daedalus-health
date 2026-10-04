@@ -48,6 +48,12 @@ export default async function AdminLayout({
                   Mission Control
                 </Link>
                 <Link
+                  href="/admin/quote"
+                  className="transition hover:text-[#C4A574]"
+                >
+                  Quotes
+                </Link>
+                <Link
                   href="/admin/proforma"
                   className="transition hover:text-[#C4A574]"
                 >
