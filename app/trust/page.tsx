@@ -127,16 +127,23 @@ export default function TrustPage() {
               Request a security packet
             </Link>
           </div>
+        </div>
 
-          <div className="mt-12 space-y-10">
+        <div className="border-t border-[#C4A574]/35 bg-[#F9F8F3]">
+          <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
+
+          <div className="space-y-5">
             {SECTIONS.map((section) => (
-              <section key={section.title}>
-                <h2 className="font-serif text-xl font-medium text-[#F9F8F3]">
+              <section
+                key={section.title}
+                className="rounded-sm border border-[#C4A574]/30 bg-[#F3EEE0]/55 px-6 py-6"
+              >
+                <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
                   {section.title}
                 </h2>
                 {section.title === "Subprocessors" ||
                 section.title === "What we store" ? (
-                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#F9F8F3]/70">
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#1A2B3C]/70">
                     {section.body.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
@@ -146,7 +153,7 @@ export default function TrustPage() {
                     {section.body.map((item) => (
                       <p
                         key={item}
-                        className="text-sm leading-7 text-[#F9F8F3]/70"
+                        className="text-sm leading-7 text-[#1A2B3C]/70"
                       >
                         {item}
                       </p>
@@ -157,15 +164,15 @@ export default function TrustPage() {
             ))}
           </div>
 
-          <section className="mt-12 border-t border-[#C4A574]/20 pt-8">
-            <h2 className="font-serif text-xl font-medium text-[#F9F8F3]">
+          <section className="mt-8 rounded-sm border border-[#C4A574]/30 bg-[#F3EEE0]/55 px-6 py-6">
+            <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
               Contact
             </h2>
-            <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">
+            <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
               BAA and security-packet requests go to{" "}
               <a
                 href={`mailto:${welcome}`}
-                className="text-[#C4A574] hover:text-[#F9F8F3]"
+                className="text-[#C4A574] hover:text-[#1A2B3C]"
               >
                 {welcome}
               </a>
@@ -173,14 +180,15 @@ export default function TrustPage() {
               involving this site, email the same address. Do not include PHI in
               that message.
             </p>
-            <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">
+            <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
               Privacy inquiries: see the{" "}
-              <Link href="/privacy" className="text-[#C4A574] hover:text-[#F9F8F3]">
+              <Link href="/privacy" className="text-[#C4A574] hover:text-[#1A2B3C]">
                 Privacy Policy
               </Link>
               .
             </p>
           </section>
+          </div>
         </div>
       </main>
       <SiteFooter />
