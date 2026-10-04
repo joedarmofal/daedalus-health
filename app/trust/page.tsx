@@ -33,7 +33,7 @@ const SECTIONS = [
       "Organization profile information you provide (for example program name, contacts, and high-level operational metadata).",
       "Workspace content you choose to enter: governance notes, policy drafts, PIF narratives, and uploaded program documents.",
       "Authentication sessions, needed so you can sign back in.",
-      "We do not sell personal data. See the Privacy Policy for how to reach us about privacy questions.",
+      "We do not sell personal data. See the Privacy Policy for what we collect and how the service is used.",
     ],
   },
   {
@@ -181,11 +181,8 @@ export default function TrustPage() {
               that message.
             </p>
             <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
-              Privacy inquiries: see the{" "}
-              <Link href="/privacy" className="text-[#C4A574] hover:text-[#1A2B3C]">
-                Privacy Policy
-              </Link>
-              .
+              Privacy questions can be sent through the same channel. Do not
+              include PHI.
             </p>
           </section>
           </div>

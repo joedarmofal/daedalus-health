@@ -26,8 +26,7 @@ export default function PrivacyPage() {
               do not sell personal data. This product does not create, receive,
               maintain, or transmit PHI — do not upload patient information to the
               site. Portal authentication is handled by Supabase. For privacy
-              inquiries, contact privacy@daedalus.health. Security and IT review
-              materials are on the{" "}
+              inquiries, or for security and IT review materials, visit the{" "}
               <Link href="/trust" className="text-[#C4A574] hover:text-[#1A2B3C]">
                 Trust Center
               </Link>
