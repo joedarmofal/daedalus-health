@@ -41,3 +41,189 @@ body {
 [class*="bg-[#F7F5F0]"] {
   color: #1a2b3c;
 }
+
+.hero-figure {
+  display: block;
+  width: 160px;
+  cursor: default;
+  outline: none;
+}
+
+@media (min-width: 640px) {
+  .hero-figure {
+    width: 190px;
+  }
+}
+
+.hero-figure:focus-visible {
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(196 165 116 / 0.7);
+}
+
+.hero-figure-stage {
+  position: relative;
+  width: 100%;
+  transform-origin: 58% 78%;
+  animation: hero-figure-breathe 7s ease-in-out infinite;
+}
+
+.hero-figure-body,
+.hero-figure-wing,
+.hero-figure-joint {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-figure-wing,
+.hero-figure-joint {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-figure-wing {
+  transform-origin: 49% 30%;
+  animation: hero-figure-wing-idle 9s ease-in-out infinite;
+}
+
+.hero-figure-joint {
+  pointer-events: none;
+}
+
+.hero-figure-body {
+  clip-path: polygon(
+    evenodd,
+    0% 0%,
+    100% 0%,
+    100% 100%,
+    0% 100%,
+    0% 0%,
+    3% 4%,
+    20% 3%,
+    38% 9%,
+    47% 17%,
+    46% 27%,
+    34% 33%,
+    12% 29%,
+    3% 16%,
+    3% 4%
+  );
+}
+
+.hero-figure-wing {
+  clip-path: polygon(
+    2% 3%,
+    22% 2%,
+    41% 8%,
+    52% 16%,
+    52% 28%,
+    46% 34%,
+    31% 37%,
+    9% 32%,
+    2% 16%
+  );
+}
+
+.hero-figure-joint {
+  clip-path: polygon(
+    44% 22%,
+    56% 20%,
+    58% 30%,
+    52% 36%,
+    44% 34%
+  );
+}
+
+.hero-figure.is-hovered .hero-figure-stage {
+  animation: hero-figure-hover 3.4s ease-in-out infinite;
+}
+
+.hero-figure.is-hovered .hero-figure-wing {
+  animation: hero-figure-flap 1.15s ease-in-out infinite;
+}
+
+.hero-figure.is-stirring .hero-figure-stage {
+  animation: hero-figure-stir 2.4s ease-in-out 1;
+}
+
+.hero-figure.is-stirring .hero-figure-wing {
+  animation: hero-figure-flap 0.7s ease-in-out 3;
+}
+
+@keyframes hero-figure-breathe {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-0.6deg);
+  }
+}
+
+@keyframes hero-figure-hover {
+  0%,
+  100% {
+    transform: translateY(-4px) rotate(-0.4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0.8deg);
+  }
+}
+
+@keyframes hero-figure-stir {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  22% {
+    transform: translate(3px, -9px) rotate(-2.2deg);
+  }
+  48% {
+    transform: translate(-2px, -4px) rotate(1.4deg);
+  }
+  74% {
+    transform: translate(2px, -7px) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes hero-figure-wing-idle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(-3deg);
+  }
+  70% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes hero-figure-flap {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  28% {
+    transform: rotate(-16deg);
+  }
+  58% {
+    transform: rotate(9deg);
+  }
+  80% {
+    transform: rotate(-7deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-figure-stage,
+  .hero-figure-wing,
+  .hero-figure.is-hovered .hero-figure-stage,
+  .hero-figure.is-hovered .hero-figure-wing,
+  .hero-figure.is-stirring .hero-figure-stage,
+  .hero-figure.is-stirring .hero-figure-wing {
+    animation: none;
+  }
+}

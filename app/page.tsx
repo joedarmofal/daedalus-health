@@ -1,5 +1,6 @@
 import { CompassStar } from "@/components/compass-star";
 import { CoreValuesShield } from "@/components/core-values-shield";
+import { HeroFigure } from "@/components/hero-figure";
 import { MapLegend } from "@/components/map-legend";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -10,7 +11,6 @@ import {
   Scale,
   ShieldCheck,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 const pillars = [
@@ -73,15 +73,7 @@ export default function Home() {
           <MapLegend className="absolute top-6 right-4 z-10 hidden w-48 sm:right-8 lg:block" />
 
           <div className="relative mx-auto flex max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:py-32">
-            <Image
-              src="/images/winged-figure.png"
-              alt="Classical winged figure, the emblem of Daedalus Health"
-              width={864}
-              height={1152}
-              priority
-              unoptimized
-              className="h-auto w-[160px] sm:w-[190px]"
-            />
+            <HeroFigure />
             <CompassStar className="mt-6 mb-8 size-16 text-[#C4A574]" />
             <p className="font-serif text-3xl font-semibold tracking-[0.2em] text-[#C4A574] sm:text-4xl lg:text-5xl">
               DAEDALUS HEALTH
