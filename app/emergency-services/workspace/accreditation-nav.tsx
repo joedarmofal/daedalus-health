@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/emergency-services/workspace", label: "Overview", exact: true },
   { href: "/emergency-services/workspace/policies", label: "Policies" },
-  { href: "/emergency-services/workspace/pif", label: "PIF builder" },
-  { href: "/emergency-services/workspace/standards", label: "Standards map" },
+  { href: "/emergency-services/workspace/pif", label: "PIF Builder" },
+  { href: "/emergency-services/workspace/standards", label: "Standards" },
   { href: "/emergency-services/workspace/gaps", label: "Gaps" },
-  { href: "/emergency-services/workspace/export", label: "PIF outline" },
+  { href: "/emergency-services/workspace/export", label: "Working Outline" },
 ];
 
 export function AccreditationNav() {
@@ -29,7 +29,7 @@ export function AccreditationNav() {
             className={`whitespace-nowrap rounded-sm px-4 py-2 text-sm font-medium tracking-wide transition ${
               isActive
                 ? "bg-[#C4A574] text-[#1A2B3C]"
-                : "text-[#F9F8F3]/70 hover:bg-[#C4A574]/10 hover:text-[#C4A574]"
+                : "text-[#1A2B3C]/65 hover:bg-[#C4A574]/10 hover:text-[#C4A574]"
             }`}
           >
             {link.label}

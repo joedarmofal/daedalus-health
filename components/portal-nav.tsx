@@ -9,7 +9,7 @@ const SECTIONS = [
   { href: "/policy", label: "Policy" },
   { href: "/governance", label: "Governance" },
   { href: "/toolkit", label: "Toolkit" },
-  { href: "/legal", label: "Legal / Compliance" },
+  { href: "/legal", label: "Legal" },
   { href: "/emergency-services/workspace", label: "Emergency Services", absolute: true },
 ];
 
@@ -35,7 +35,7 @@ export function PortalNav({ orgSlug }: { orgSlug: string }) {
             className={`whitespace-nowrap rounded-sm px-4 py-2 text-sm font-medium tracking-wide transition ${
               isActive
                 ? "bg-[#C4A574] text-[#1A2B3C]"
-                : "text-[#F9F8F3]/70 hover:bg-[#C4A574]/10 hover:text-[#C4A574]"
+                : "text-[#1A2B3C]/65 hover:bg-[#C4A574]/10 hover:text-[#C4A574]"
             }`}
           >
             {section.label}

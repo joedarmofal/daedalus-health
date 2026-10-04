@@ -65,17 +65,17 @@ export default async function OrgLayout({ children, params }: LayoutProps) {
 
   return (
     <div className="flex min-h-full flex-col bg-[#1A2B3C]">
-      <header className="sticky top-0 z-50 border-b border-[#C4A574]/20 bg-[#1A2B3C]/95 text-[#F9F8F3] backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[#C4A574]/40 bg-[#F9F8F3]/97 text-[#1A2B3C] backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <Link
             href={`/${org.slug}`}
-            className="flex items-center gap-2.5 font-serif text-[15px] font-semibold tracking-[0.22em] text-[#F9F8F3]"
+            className="flex items-center gap-2.5 font-serif text-[15px] font-semibold tracking-[0.22em] text-[#1A2B3C]"
           >
             <span className="flex size-9 items-center justify-center text-[#C4A574]">
               <CompassStar className="size-8" />
             </span>
             <span className="hidden sm:inline">DAEDALUS HEALTH</span>
-            <span className="text-[#F9F8F3]/30">/</span>
+            <span className="text-[#C4A574]/50">/</span>
             <span className="text-[#C4A574]">{org.name}</span>
           </Link>
 
@@ -83,20 +83,20 @@ export default async function OrgLayout({ children, params }: LayoutProps) {
             {user.app_metadata?.is_super_admin === true ? (
               <Link
                 href="/admin"
-                className="rounded-full border border-[#C4A574]/50 bg-[#C4A574]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-[#C4A574] transition hover:border-[#C4A574] hover:bg-[#C4A574]/20"
+                className="rounded-full border border-[#C4A574]/50 px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-[#C4A574] transition hover:border-[#C4A574] hover:bg-[#C4A574]/10"
               >
                 Admin
               </Link>
             ) : null}
             <div className="text-right text-xs leading-tight">
-              <div className="font-medium text-[#F9F8F3]">
+              <div className="font-medium text-[#1A2B3C]">
                 {portalDisplayName(user)}
               </div>
               <div className="font-semibold uppercase tracking-[0.14em] text-[#C4A574]">
                 {role}
               </div>
             </div>
-            <SignOutButton className="text-sm font-medium text-[#F9F8F3]/60 transition hover:text-[#C4A574] disabled:opacity-60" />
+            <SignOutButton className="text-sm font-medium text-[#1A2B3C]/65 transition hover:text-[#C4A574] disabled:opacity-60" />
           </div>
         </div>
 
