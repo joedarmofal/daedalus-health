@@ -66,7 +66,7 @@ export default function Home() {
     <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-[#1A2B3C]">
+        <section className="relative overflow-x-hidden bg-[#1A2B3C]">
           <TopographicPattern className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.16]" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(249,248,243,0.08),_transparent_58%)]" />
 
