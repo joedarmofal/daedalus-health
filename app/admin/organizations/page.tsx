@@ -1,10 +1,49 @@
 import { getAdminAccess } from "@/lib/admin-access";
 import { customerMailFromAddress } from "@/lib/mail";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import type { User } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { NewCustomerForm } from "./new-customer-form";
-import { OrganizationRow, type OrganizationRowData } from "./organization-row";
+import {
+  OrganizationRow,
+  type OrganizationMemberOption,
+  type OrganizationRowData,
+} from "./organization-row";
+
+async function loadAuthUsersById() {
+  const admin = createAdminClient();
+  const byId = new Map<string, User>();
+  let page = 1;
+  const perPage = 200;
+
+  while (page <= 10) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
+    if (error) break;
+    for (const user of data.users) {
+      byId.set(user.id, user);
+    }
+    if (data.users.length < perPage) break;
+    page += 1;
+  }
+
+  return byId;
+}
+
+function memberDisplayName(
+  fullName: string,
+  user: User | undefined,
+): string {
+  if (fullName) return fullName;
+  const metaName =
+    typeof user?.user_metadata?.full_name === "string"
+      ? user.user_metadata.full_name.trim()
+      : "";
+  if (metaName) return metaName;
+  if (user?.email) return user.email;
+  return "Name not recorded";
+}
 
 export const metadata: Metadata = {
   title: "Admin · Organizations",
@@ -18,49 +57,72 @@ export default async function AdminOrganizationsPage() {
   }
 
   const supabase = await createClient();
+  let admin = null;
+  try {
+    admin = createAdminClient();
+  } catch {
+    admin = null;
+  }
+  const membersClient = admin ?? supabase;
 
   const [{ data: orgs }, membersResult, { data: intakes }] = await Promise.all([
     supabase
       .from("organizations")
       .select("id, name, slug, primary_contact_email")
       .order("name", { ascending: true }),
-    supabase.from("organization_members").select("organization_id, full_name"),
+    membersClient
+      .from("organization_members")
+      .select("organization_id, user_id, full_name, role"),
     supabase.from("organization_intake").select("organization_id"),
   ]);
 
   const members = membersResult.error
-    ? (await supabase.from("organization_members").select("organization_id")).data
+    ? (
+        await membersClient
+          .from("organization_members")
+          .select("organization_id, user_id, role")
+      ).data
     : membersResult.data;
 
-  const memberCounts = new Map<string, number>();
-  const memberNames = new Map<string, string[]>();
+  const authUsers = admin ? await loadAuthUsersById() : new Map<string, User>();
+
+  const membersByOrg = new Map<string, OrganizationMemberOption[]>();
   for (const member of members ?? []) {
-    memberCounts.set(
-      member.organization_id,
-      (memberCounts.get(member.organization_id) ?? 0) + 1,
-    );
     const fullName =
       "full_name" in member && typeof member.full_name === "string"
         ? member.full_name.trim()
         : "";
-    if (fullName) {
-      const names = memberNames.get(member.organization_id) ?? [];
-      if (!names.includes(fullName)) names.push(fullName);
-      memberNames.set(member.organization_id, names);
-    }
+    const user = authUsers.get(member.user_id);
+    const list = membersByOrg.get(member.organization_id) ?? [];
+    list.push({
+      name: memberDisplayName(fullName, user),
+      email: user?.email ?? null,
+      role: typeof member.role === "string" ? member.role : null,
+    });
+    membersByOrg.set(member.organization_id, list);
+  }
+
+  for (const list of membersByOrg.values()) {
+    list.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   const intakeCompleted = new Set((intakes ?? []).map((i) => i.organization_id));
 
-  const rows: OrganizationRowData[] = (orgs ?? []).map((org) => ({
-    id: org.id,
-    name: org.name,
-    slug: org.slug,
-    primaryContactEmail: org.primary_contact_email ?? null,
-    memberNames: memberNames.get(org.id) ?? [],
-    memberCount: memberCounts.get(org.id) ?? 0,
-    intakeCompleted: intakeCompleted.has(org.id),
-  }));
+  const rows: OrganizationRowData[] = (orgs ?? []).map((org) => {
+    const orgMembers = membersByOrg.get(org.id) ?? [];
+    return {
+      id: org.id,
+      name: org.name,
+      slug: org.slug,
+      primaryContactEmail: org.primary_contact_email ?? null,
+      members: orgMembers,
+      memberNames: orgMembers
+        .map((member) => member.name)
+        .filter((name) => name !== "Name not recorded"),
+      memberCount: orgMembers.length,
+      intakeCompleted: intakeCompleted.has(org.id),
+    };
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">

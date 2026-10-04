@@ -6,11 +6,18 @@ import { useState } from "react";
 import { resendInviteLink } from "./actions";
 import { InviteLinkResult } from "./invite-link-result";
 
+export interface OrganizationMemberOption {
+  name: string;
+  email: string | null;
+  role: string | null;
+}
+
 export interface OrganizationRowData {
   id: string;
   name: string;
   slug: string;
   primaryContactEmail: string | null;
+  members: OrganizationMemberOption[];
   memberNames: string[];
   memberCount: number;
   intakeCompleted: boolean;
@@ -30,6 +37,7 @@ export function OrganizationRow({
   const [inviteLink, setInviteLink] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
   const [emailedTo, setEmailedTo] = useState<string | null>(null);
+  const [selectedMember, setSelectedMember] = useState("");
 
   async function handleGenerate() {
     setStatus("loading");
@@ -38,10 +46,14 @@ export function OrganizationRow({
     setEmailSent(false);
     setEmailedTo(null);
 
+    const selected = org.members[Number(selectedMember)];
+    const selectedName =
+      selected && selected.name !== "Name not recorded" ? selected.name : "";
+
     const response = await resendInviteLink(
       org.id,
       email,
-      org.memberNames[0] ?? "",
+      selectedName || org.memberNames[0] || "",
     );
     setStatus("idle");
 
@@ -86,9 +98,34 @@ export function OrganizationRow({
           <p className="mt-1 text-xs font-mono text-[#1A2B3C]/45">
             /{org.slug} · {org.memberCount}{" "}
             {org.memberCount === 1 ? "member" : "members"}
-            {org.memberNames.length > 0 ? ` · ${org.memberNames.join(", ")}` : ""}
             {org.primaryContactEmail ? ` · ${org.primaryContactEmail}` : ""}
           </p>
+          <label className="mt-3 block max-w-xs">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C4A574]">
+              Members
+            </span>
+            <select
+              value={selectedMember}
+              onChange={(event) => {
+                const next = event.target.value;
+                setSelectedMember(next);
+                const member = org.members[Number(next)];
+                if (member?.email) setEmail(member.email);
+              }}
+              className="mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3 py-2 text-sm text-[#1A2B3C] outline-none focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
+            >
+              <option value="">
+                {org.members.length === 0
+                  ? "No members yet"
+                  : `View ${org.members.length} ${org.members.length === 1 ? "member" : "members"}`}
+              </option>
+              {org.members.map((member, index) => (
+                <option key={`${member.name}-${index}`} value={String(index)}>
+                  {member.name}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <div className="flex items-center gap-3">
