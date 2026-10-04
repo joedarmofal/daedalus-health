@@ -159,7 +159,7 @@ export default function Home() {
         >
           <TopographicPattern
             tone="gold"
-            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.14]"
           />
           <div className="relative mx-auto max-w-6xl px-4 py-32 sm:px-6">
             <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#C4A574]">
@@ -201,7 +201,7 @@ export default function Home() {
         >
           <TopographicPattern
             tone="gold"
-            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.14]"
           />
           <div className="relative mx-auto grid max-w-6xl gap-14 px-4 py-32 sm:px-6 lg:grid-cols-2 lg:items-start">
             <div>
