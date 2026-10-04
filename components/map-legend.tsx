@@ -36,6 +36,41 @@ const legendItems = [
     ),
   },
   {
+    href: "/#news",
+    label: "Healthcare AI News",
+    symbol: (
+      <>
+        <line
+          x1="2"
+          y1="3"
+          x2="22"
+          y2="3"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+        />
+        <line
+          x1="2"
+          y1="6.5"
+          x2="16"
+          y2="6.5"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+        />
+        <line
+          x1="2"
+          y1="10"
+          x2="19"
+          y2="10"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+        />
+      </>
+    ),
+  },
+  {
     href: "/privacy",
     label: "Privacy Policy",
     symbol: (

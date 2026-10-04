@@ -41,3 +41,27 @@ body {
 [class*="bg-[#F7F5F0]"] {
   color: #1a2b3c;
 }
+
+@keyframes news-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.news-ticker-track {
+  animation: news-ticker 90s linear infinite;
+}
+
+.news-ticker:hover .news-ticker-track,
+.news-ticker:focus-within .news-ticker-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-ticker-track {
+    animation: none;
+  }
+}

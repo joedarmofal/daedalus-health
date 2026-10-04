@@ -1,9 +1,11 @@
 import { CompassStar } from "@/components/compass-star";
 import { CoreValuesShield } from "@/components/core-values-shield";
 import { MapLegend } from "@/components/map-legend";
+import { NewsTicker } from "@/components/news-ticker";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TopographicPattern } from "@/components/topographic-pattern";
+import { fetchHealthcareAiNews } from "@/lib/healthcare-news";
 import {
   Brain,
   HeartPulse,
@@ -61,7 +63,9 @@ const frameworkSteps = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const headlines = await fetchHealthcareAiNews();
+
   return (
     <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
@@ -128,6 +132,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <NewsTicker initialItems={headlines} />
 
         <section className="border-t border-[#C4A574]/35 bg-[#F9F8F3]">
           <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-24">
