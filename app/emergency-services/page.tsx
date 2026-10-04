@@ -66,7 +66,7 @@ export default async function AccreditationLoginPage({
             successMessage="Check your inbox for a secure magic link to the emergency services workspace."
           />
           <p className="mt-6 text-center text-sm leading-6 text-[#F9F8F3]/50">
-            Same login as the client portal.{" "}
+            Same login as the partner portal.{" "}
             <Link href="/login" className="text-[#C4A574] hover:text-[#F9F8F3]">
               AI governance portal
             </Link>

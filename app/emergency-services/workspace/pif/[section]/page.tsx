@@ -30,18 +30,18 @@ export default async function PifSectionPage({
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <Link
         href="/emergency-services/workspace/pif"
-        className="text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+        className="text-sm font-medium text-[#C4A574] hover:text-[#F9F8F3]"
       >
         ← All PIF sections
       </Link>
-      <p className="mt-6 text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="mt-6 text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         SECTION {section.number}
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         {section.title}
       </h1>
-      <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">{section.summary}</p>
-      <p className="mt-3 text-sm leading-6 text-[#1A2B3C]/60">
+      <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">{section.summary}</p>
+      <p className="mt-3 text-sm leading-6 text-[#F9F8F3]/60">
         Each item can draft from a short prompt or uploaded policies. Review
         every [TO CONFIRM] before you treat language as survey-ready. Do not
         upload patient records.

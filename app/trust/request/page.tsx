@@ -29,23 +29,23 @@ export default async function TrustRequestPage({
   const initialKind = parseKind(need);
 
   return (
-    <div className="flex min-h-full flex-col bg-[#F7F5F0]">
+    <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
       <main className="flex-1">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
             Trust Center
           </p>
-          <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C] sm:text-4xl">
+          <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3] sm:text-4xl">
             Request a BAA or security packet
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
             Short form for IT, privacy, and counsel. It is emailed to{" "}
             {customerMailFromAddress()}. This product does not process PHI —
             please do not include any in this form.
           </p>
-          <p className="mt-2 text-sm text-[#1A2B3C]/55">
-            <Link href="/trust" className="text-[#1F6A64] hover:text-[#1A2B3C]">
+          <p className="mt-2 text-sm text-[#F9F8F3]/55">
+            <Link href="/trust" className="text-[#C4A574] hover:text-[#F9F8F3]">
               ← Back to the Trust Center
             </Link>
           </p>

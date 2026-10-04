@@ -29,7 +29,7 @@ export function SignOutButton({
       disabled={loading}
       className={
         className ??
-        "text-sm font-medium text-[#1A2B3C]/60 transition hover:text-[#1F6A64] disabled:opacity-60"
+        "text-sm font-medium text-[#1A2B3C]/60 transition hover:text-[#C4A574] disabled:opacity-60"
       }
     >
       {loading ? "Signing out…" : "Sign out"}

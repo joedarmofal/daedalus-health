@@ -17,7 +17,7 @@ function slugify(value: string): string {
 }
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 export function NewCustomerForm({ fromEmail }: { fromEmail: string }) {
   const router = useRouter();
@@ -169,7 +169,7 @@ export function NewCustomerForm({ fromEmail }: { fromEmail: string }) {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-6 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574] disabled:opacity-60"
+            className="inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
           >
             {status === "loading" ? "Creating…" : "Create organization & send welcome"}
           </button>
@@ -177,7 +177,7 @@ export function NewCustomerForm({ fromEmail }: { fromEmail: string }) {
       </form>
 
       {result ? (
-        <div className="mt-6 rounded-sm border border-[#1F6A64]/30 bg-[#1F6A64]/10 p-5">
+        <div className="mt-6 rounded-sm border border-[#C4A574]/30 bg-[#C4A574]/10 p-5">
           <p className="text-sm font-medium text-[#1A2B3C]">
             {result.emailSent
               ? `${result.orgSlug} is ready. A welcome email was sent to ${result.emailedTo} from ${fromEmail}.`

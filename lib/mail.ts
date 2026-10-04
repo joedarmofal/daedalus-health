@@ -108,7 +108,7 @@ export async function sendWelcomeEmail(
   const html = `
     <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
       <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
-        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#1F6A64;font-family:Arial,sans-serif;">Daedalus Health</p>
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C4A574;font-family:Arial,sans-serif;">Daedalus Health</p>
         <h1 style="margin:16px 0 0;font-size:28px;font-weight:500;line-height:1.2;">Welcome to your workspace</h1>
         <p style="margin:20px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">Hi ${escapeHtml(greetingName)},</p>
         <p style="margin:16px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">
@@ -119,13 +119,13 @@ export async function sendWelcomeEmail(
           Use this secure one-time link to create your login and finish a short setup form.
         </p>
         <p style="margin:28px 0;text-align:center;">
-          <a href="${escapeHtml(input.inviteLink)}" style="display:inline-block;background:#1F6A64;color:#F9F8F3;text-decoration:none;padding:12px 22px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:0.04em;">
+          <a href="${escapeHtml(input.inviteLink)}" style="display:inline-block;background:#C4A574;color:#1A2B3C;text-decoration:none;padding:12px 22px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:0.04em;">
             Open your workspace
           </a>
         </p>
         <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(26,43,60,0.7);font-family:Arial,sans-serif;">
           After you choose a password, return anytime at
-          <a href="${escapeHtml(loginUrl)}" style="color:#1F6A64;">${escapeHtml(loginUrl.replace(/^https?:\/\//, ""))}</a>.
+          <a href="${escapeHtml(loginUrl)}" style="color:#C4A574;">${escapeHtml(loginUrl.replace(/^https?:\/\//, ""))}</a>.
         </p>
         <p style="margin:24px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">
           If anything looks off, reply to this email and I will help.
@@ -197,7 +197,7 @@ export async function sendInformationRequestEmail(
   const html = `
     <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
       <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
-        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#1F6A64;font-family:Arial,sans-serif;">Daedalus Health</p>
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C4A574;font-family:Arial,sans-serif;">Daedalus Health</p>
         <h1 style="margin:16px 0 0;font-size:26px;font-weight:500;line-height:1.2;">New information request</h1>
         <p style="margin:16px 0 20px;font-size:15px;line-height:1.7;font-family:Arial,sans-serif;">
           ${escapeHtml(input.fullName)} submitted a request on daedalushealth.ai.
@@ -262,7 +262,7 @@ export async function sendTrustRequestEmail(
   const html = `
     <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
       <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
-        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#1F6A64;font-family:Arial,sans-serif;">Daedalus Health · Trust</p>
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C4A574;font-family:Arial,sans-serif;">Daedalus Health · Trust</p>
         <h1 style="margin:16px 0 0;font-size:26px;font-weight:500;line-height:1.2;">${escapeHtml(kindLabel)}</h1>
         <p style="margin:16px 0 20px;font-size:15px;line-height:1.7;font-family:Arial,sans-serif;">
           ${escapeHtml(input.fullName)} submitted a request on daedalushealth.ai/trust.
@@ -372,11 +372,11 @@ function brandedAuthEmail(input: {
   return `
     <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
       <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
-        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#1F6A64;font-family:Arial,sans-serif;">Daedalus Health</p>
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C4A574;font-family:Arial,sans-serif;">Daedalus Health</p>
         <h1 style="margin:16px 0 0;font-size:28px;font-weight:500;line-height:1.2;">${escapeHtml(input.title)}</h1>
         <p style="margin:20px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">${escapeHtml(input.intro)}</p>
         <p style="margin:28px 0;text-align:center;">
-          <a href="${escapeHtml(input.buttonHref)}" style="display:inline-block;background:#1F6A64;color:#F9F8F3;text-decoration:none;padding:12px 22px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:0.04em;">
+          <a href="${escapeHtml(input.buttonHref)}" style="display:inline-block;background:#C4A574;color:#1A2B3C;text-decoration:none;padding:12px 22px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:0.04em;">
             ${escapeHtml(input.buttonLabel)}
           </a>
         </p>

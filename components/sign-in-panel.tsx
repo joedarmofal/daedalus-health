@@ -38,7 +38,9 @@ export function SignInPanel({
         <p className="mx-auto mt-3 mb-8 max-w-md text-center text-sm leading-6 text-[#F9F8F3]/65">
           {description}
         </p>
-        {children}
+        <div className="rounded-sm border border-[#C4A574]/35 bg-[#12202e] p-6 shadow-[0_24px_60px_-32px_rgba(0,0,0,0.55)] sm:p-8">
+          {children}
+        </div>
       </section>
     </div>
   );

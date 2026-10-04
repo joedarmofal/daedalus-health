@@ -34,17 +34,17 @@ export default async function SetPasswordPage({
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F5F0] px-4 py-16">
-      <span className="mb-6 flex size-12 items-center justify-center text-[#1F6A64]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#1A2B3C] px-4 py-16">
+      <span className="mb-6 flex size-12 items-center justify-center text-[#C4A574]">
         <CompassStar className="size-11" />
       </span>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Create your login
       </p>
-      <h1 className="mt-3 text-center font-serif text-2xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-3 text-center font-serif text-2xl font-medium text-[#F9F8F3]">
         Choose a password for the portal
       </h1>
-      <p className="mt-3 max-w-md text-center text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-md text-center text-sm leading-6 text-[#F9F8F3]/70">
         {org
           ? `This is how you will sign in to ${org} after today. Use your work email and a password only you know.`
           : "This is how you will sign in after today. Use your work email and a password only you know."}

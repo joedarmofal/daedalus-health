@@ -22,15 +22,15 @@ export default async function AdminDemoUsersPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Mission Control
       </span>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Demo access
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
         Manually add a user with a username and password so someone can walk
-        the live site. They can use the client portal or Emergency Services
+        the live site. They can use the partner portal or Emergency Services
         login with those credentials.
       </p>
 

@@ -15,34 +15,55 @@ import Link from "next/link";
 
 const pillars = [
   {
-    title: "Ethical AI Governance & Safety",
+    title: "Governance & Safety",
     description:
-      "Board-ready policies, risk registers, and decision rights that keep clinical AI accountable from procurement through production, with meaningful human control preserved at every decision point.",
+      "Board-ready policy, risk registers, and decision rights that keep clinical AI accountable from procurement to production. Human control at every decision point.",
     icon: ShieldCheck,
   },
   {
-    title: "Augmented Intelligence Integration",
+    title: "Augmented Intelligence",
     description:
-      "Engineer the human-machine interface so clinicians remain the pilot—models as copilots offering augmented intelligence, never silent substitutes for professional judgment.",
+      "We engineer the interface so clinicians remain the pilot. Models serve as copilots, never silent substitutes for professional judgment.",
     icon: Brain,
   },
   {
-    title: "Clinical Excellence & Validation",
+    title: "Clinical Validation",
     description:
-      "Evidence standards, local performance testing, and bias and drift surveillance so every deployment earns its place at the bedside instead of quietly eroding trust in it.",
+      "Evidence standards, local performance testing, and continuous bias and drift surveillance. Every deployment earns its place at the bedside.",
     icon: HeartPulse,
   },
   {
-    title: "Transparency, Trust & Integrity",
+    title: "Transparency & Trust",
     description:
-      "Clear documentation, patient-facing disclosure, and independent counsel that vendors cannot provide for themselves—so the humans accountable for care can see what the system actually did.",
+      "Clear documentation, patient-facing disclosure, and independent counsel your vendors cannot provide for themselves.",
     icon: Scale,
+  },
+];
+
+const frameworkSteps = [
+  {
+    numeral: "01",
+    name: "Map",
+    description:
+      "Inventory every model touching patients or operations, and name the accountable human for each.",
+  },
+  {
+    numeral: "02",
+    name: "Assign",
+    description:
+      "Establish clinical, legal, and technical owners before go-live, with explicit authority to override.",
+  },
+  {
+    numeral: "03",
+    name: "Sustain",
+    description:
+      "Validate locally, monitor continuously, and retire any model the moment the interface fails.",
   },
 ];
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-col bg-[#F7F5F0]">
+    <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
       <main className="flex-1">
         <section className="relative overflow-hidden bg-[#1A2B3C]">
@@ -85,9 +106,9 @@ export default function Home() {
             <div className="mt-10 flex w-full flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-7 py-3 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#164f4b] hover:shadow-[inset_0_0_0_1px_#C4A574]"
+                className="inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-7 py-3 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] hover:shadow-[inset_0_0_0_1px_#C4A574]"
               >
-                Client Portal Access
+                Partner Access
               </Link>
               <Link
                 href="/request-information"
@@ -108,7 +129,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t border-[#1A2B3C]/10 bg-[#1A2B3C]">
+        <section className="border-t border-[#C4A574]/15 bg-[#1A2B3C]">
           <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 sm:py-20">
             <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
               TWO TRUTHS
@@ -132,39 +153,38 @@ export default function Home() {
 
         <section
           id="services"
-          className="relative scroll-mt-24 overflow-hidden border-t border-[#1A2B3C]/10"
+          className="relative scroll-mt-24 overflow-hidden border-t border-[#C9A24B]/20 bg-[#1A2B3C]"
         >
           <TopographicPattern
-            tone="slate"
-            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
+            tone="gold"
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.07]"
           />
-          <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6">
-            <p className="text-xs font-semibold tracking-[0.28em] text-[#1F6A64]">
-              STRATEGIC PILLARS
+          <div className="relative mx-auto max-w-6xl px-4 py-32 sm:px-6">
+            <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#C9A24B]">
+              THE FOUR PILLARS
             </p>
-            <h2 className="mt-3 max-w-2xl font-serif text-3xl font-medium tracking-tight text-[#1A2B3C] sm:text-4xl">
+            <h2 className="mt-4 max-w-[18ch] font-serif text-4xl font-normal leading-tight tracking-tight text-[#F3EEE0] sm:text-5xl">
               Principles that keep AI in service of care.
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-[#1A2B3C]/70">
-              Every one of these pillars answers the same question: at the
-              human-machine interface, who is actually in command? These are
-              the wings we help you engineer—and the discipline to fly them.
+            <p className="mt-6 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
+              Every pillar answers one question: at the human-machine
+              interface, who is in command? These are the wings we help you
+              build, and the discipline to fly them.
             </p>
-            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2">
               {pillars.map((pillar) => (
                 <article
                   key={pillar.title}
-                  className="relative overflow-hidden rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-7 shadow-[0_12px_40px_-28px_rgba(26,43,60,0.45)]"
+                  className="rounded-sm border border-[#C9A24B]/35 bg-[#1A2B3C]/40 p-10 transition-[border-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-[2px] hover:border-[#C9A24B] sm:p-12"
                 >
-                  <TopographicPattern
-                    tone="slate"
-                    className="pointer-events-none absolute -right-10 -top-16 h-48 w-64 opacity-[0.08]"
+                  <pillar.icon
+                    className="size-6 text-[#C9A24B]"
+                    strokeWidth={1.25}
                   />
-                  <pillar.icon className="relative size-6 text-[#1F6A64]" />
-                  <h3 className="relative mt-4 font-serif text-xl font-semibold text-[#1A2B3C]">
+                  <h3 className="mt-5 font-serif text-2xl font-normal text-[#F3EEE0]">
                     {pillar.title}
                   </h3>
-                  <p className="relative mt-2 text-sm leading-7 text-[#1A2B3C]/70">
+                  <p className="mt-3 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
                     {pillar.description}
                   </p>
                 </article>
@@ -175,44 +195,45 @@ export default function Home() {
 
         <section
           id="governance"
-          className="scroll-mt-24 border-t border-[#1A2B3C]/10 bg-[#F9F8F3]"
+          className="relative scroll-mt-24 overflow-hidden border-t border-[#C9A24B]/20 bg-[#1A2B3C]"
         >
-          <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2">
+          <TopographicPattern
+            tone="gold"
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.07]"
+          />
+          <div className="relative mx-auto grid max-w-6xl gap-14 px-4 py-32 sm:px-6 lg:grid-cols-2 lg:items-start">
             <div>
-              <p className="text-xs font-semibold tracking-[0.28em] text-[#1F6A64]">
-                AI GOVERNANCE FRAMEWORK
+              <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#C9A24B]">
+                THE DAEDALUS FRAMEWORK
               </p>
-              <h2 className="mt-3 font-serif text-3xl font-medium tracking-tight text-[#1A2B3C] sm:text-4xl">
+              <h2 className="mt-4 max-w-[18ch] font-serif text-4xl font-normal leading-tight tracking-tight text-[#F3EEE0] sm:text-5xl">
                 A durable operating system for clinical AI.
               </h2>
-              <p className="mt-4 text-base leading-7 text-[#1A2B3C]/70">
-                Every AI system is a human-machine interface before it is
-                anything else—the instrument panel where a clinician&apos;s
-                judgment meets a model&apos;s inference. We calibrate that
-                interface the way Daedalus calibrated his wings: enough lift
-                to reach real altitude, enough restraint that a human hand
-                never leaves the controls.
+              <p className="mt-6 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
+                Every AI system is first a human-machine interface: the
+                instrument panel where clinical judgment meets machine
+                inference. We calibrate it as Daedalus calibrated his wings,
+                with enough lift to reach real altitude and enough restraint
+                that a human hand never leaves the controls.
               </p>
-              <p className="mt-4 text-base leading-7 text-[#1A2B3C]/70">
-                We install the committees, evidence bars, and escalation paths
-                that survive vendor turnover and model generations. Your
-                framework becomes an institutional asset—not a slide deck.
+              <p className="mt-5 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
+                We install the committees, evidence standards, and escalation
+                paths that outlast vendor turnover and model generations. Your
+                framework becomes an institutional asset, not a slide deck.
               </p>
             </div>
-            <ol className="space-y-4 text-sm text-[#1A2B3C]/80">
-              {[
-                "Inventory and classify every model touching patients or operations, and name the human accountable for each one.",
-                "Assign clinical, legal, and technical owners before go-live, with explicit authority to override the machine.",
-                "Validate locally, monitor for bias and drift continuously, and retire without delay the moment the interface fails.",
-              ].map((item, index) => (
-                <li
-                  key={item}
-                  className="flex gap-4 rounded-sm border border-[#1A2B3C]/12 bg-[#F7F5F0] p-4"
-                >
-                  <span className="font-serif text-[#C4A574]">
-                    0{index + 1}
-                  </span>
-                  {item}
+            <ol className="divide-y divide-[#C9A24B]/35">
+              {frameworkSteps.map((step) => (
+                <li key={step.numeral} className="py-8 first:pt-0 last:pb-0">
+                  <p className="font-serif text-4xl font-normal leading-none text-[#C9A24B] sm:text-5xl">
+                    {step.numeral}
+                  </p>
+                  <h3 className="mt-3 font-serif text-2xl font-normal text-[#F3EEE0]">
+                    {step.name}
+                  </h3>
+                  <p className="mt-2 max-w-[62ch] text-base font-normal leading-[1.7] text-[#F3EEE0]/75">
+                    {step.description}
+                  </p>
                 </li>
               ))}
             </ol>
@@ -221,18 +242,18 @@ export default function Home() {
 
         <section
           id="about"
-          className="scroll-mt-24 border-t border-[#1A2B3C]/10"
+          className="scroll-mt-24 border-t border-[#C4A574]/15"
         >
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-            <p className="text-xs font-semibold tracking-[0.28em] text-[#1F6A64]">
+            <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
               ABOUT
             </p>
-            <h2 className="mt-3 max-w-3xl font-serif text-3xl font-medium tracking-tight text-[#1A2B3C] sm:text-4xl">
+            <h2 className="mt-3 max-w-3xl font-serif text-3xl font-medium tracking-tight text-[#F9F8F3] sm:text-4xl">
               Named for the craftsman who built the labyrinth, the wings, and
               the discipline to fly them.
             </h2>
 
-            <p className="mt-6 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[#F9F8F3]/70">
               Daedalus was Crete&apos;s master engineer, commissioned to build
               the Labyrinth—a structure so intricate that even its architect
               could barely find his way through it. It is an old story with a
@@ -240,7 +261,7 @@ export default function Home() {
               labyrinths, engineered by brilliant minds, yet increasingly
               opaque even to the people who built them.
             </p>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[#F9F8F3]/70">
               When the king who depended on his genius imprisoned him on the
               island instead of freeing him, Daedalus didn&apos;t escape by
               force. He engineered wings—feathers set in wax—and gave a
@@ -248,14 +269,14 @@ export default function Home() {
               middle course. Not so low that the sea dampens your feathers.
               Not so high that the sun melts your wax.
             </p>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[#F9F8F3]/70">
               Icarus, dazzled by the altitude ambition made possible, ignored
               the boundary and fell. Daedalus, flying the very same
               invention with the same discipline, landed safely. Same wings.
               Same human-machine interface. The only difference was who kept
               a hand on the controls.
             </p>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[#F9F8F3]/70">
               This is the paradox at the center of medical AI, and it is why
               we say two truths, not one. The same model that catches a
               missed diagnosis can just as easily encode bias into a
@@ -276,7 +297,7 @@ export default function Home() {
                   it doesn&apos;t.
                 </p>
               </div>
-              <div className="rounded-sm border border-[#1F6A64]/40 bg-[#1A2B3C] p-6">
+              <div className="rounded-sm border border-[#C4A574]/40 bg-[#12202e] p-6">
                 <p className="text-xs font-semibold tracking-[0.28em] text-[#C4A574]">
                   THE DAEDALUS PATH
                 </p>
@@ -288,7 +309,7 @@ export default function Home() {
               </div>
             </div>
 
-            <p className="mt-8 max-w-3xl text-base leading-8 text-[#1A2B3C]/70">
+            <p className="mt-8 max-w-3xl text-base leading-8 text-[#F9F8F3]/70">
               Daedalus Health exists to build that discipline into your
               organization—the wings, the boundaries, and the human judgment
               to fly the middle course—so your health system gains every bit

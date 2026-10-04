@@ -14,13 +14,13 @@ export default async function AccreditationWorkspacePage() {
   if (access.status === "no_organization") {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-        <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+        <p className="text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
           EMERGENCY SERVICES
         </p>
-        <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+        <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
           No program is linked yet
         </h1>
-        <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
+        <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">
           This login works, but the account is not assigned to an organization.
           Ask Joe to add you as a member so PIF work can be saved.
         </p>
@@ -46,13 +46,13 @@ export default async function AccreditationWorkspacePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         EMERGENCY SERVICES
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C] sm:text-4xl">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3] sm:text-4xl">
         {program?.program_name ?? `${access.org.name} Medical Transport`}
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
         Tools for EMS and HEMS programs. Start with the CAMTS Program
         Information Form: assign owners, capture evidence, and close gaps
         before survey. Use your licensed CAMTS edition for official standard
@@ -60,7 +60,7 @@ export default async function AccreditationWorkspacePage() {
       </p>
 
       {tableMissing ? (
-        <p className="mt-6 rounded-sm border border-[#C4A574]/50 bg-[#C4A574]/10 px-4 py-3 text-sm text-[#1A2B3C]">
+        <p className="mt-6 rounded-sm border border-[#C4A574]/50 bg-[#12202e] px-4 py-3 text-sm text-[#F9F8F3]">
           PIF saves need the accreditation tables. Run{" "}
           <code className="font-mono text-xs">007_accreditation.sql</code> in
           the Supabase SQL Editor.
@@ -92,7 +92,7 @@ export default async function AccreditationWorkspacePage() {
           href="/emergency-services/workspace/policies"
           className="block rounded-sm border border-[#C4A574]/40 bg-[#F9F8F3] p-5 transition hover:border-[#C4A574]"
         >
-          <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
+          <p className="text-xs font-semibold tracking-[0.16em] text-[#C4A574]">
             POLICY LIBRARY
           </p>
           <h2 className="mt-1 font-serif text-lg text-[#1A2B3C]">
@@ -118,7 +118,7 @@ export default async function AccreditationWorkspacePage() {
               href={`/emergency-services/workspace/pif/${section.id}`}
               className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-5 transition hover:border-[#C4A574]/60"
             >
-              <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
+              <p className="text-xs font-semibold tracking-[0.16em] text-[#C4A574]">
                 SECTION {section.number}
               </p>
               <h2 className="mt-1 font-serif text-lg text-[#1A2B3C]">

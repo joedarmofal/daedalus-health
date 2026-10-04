@@ -140,15 +140,15 @@ export default function InviteCallbackPage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F5F0] px-4 text-center">
-      <span className="mb-6 flex size-12 items-center justify-center text-[#1F6A64]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#1A2B3C] px-4 text-center">
+      <span className="mb-6 flex size-12 items-center justify-center text-[#C4A574]">
         <CompassStar className="size-11" />
       </span>
-      <p className="max-w-sm text-sm leading-6 text-[#1A2B3C]/70">{message}</p>
+      <p className="max-w-sm text-sm leading-6 text-[#F9F8F3]/70">{message}</p>
       {status === "error" ? (
         <Link
           href="/login"
-          className="mt-6 text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+          className="mt-6 text-sm font-medium text-[#C4A574] hover:text-[#F9F8F3]"
         >
           Return to sign in
         </Link>

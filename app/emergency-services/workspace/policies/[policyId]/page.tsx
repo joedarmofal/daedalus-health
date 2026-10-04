@@ -22,14 +22,14 @@ export default async function PolicyDetailPage({
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <Link
         href="/emergency-services/workspace/policies"
-        className="text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+        className="text-sm font-medium text-[#C4A574] hover:text-[#F9F8F3]"
       >
         ← Policy library
       </Link>
-      <p className="mt-6 text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="mt-6 text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         POLICY
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         {policy.title}
       </h1>
       <div className="mt-8">

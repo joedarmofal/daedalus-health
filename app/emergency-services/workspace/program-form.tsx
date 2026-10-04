@@ -8,7 +8,7 @@ import { useState, type FormEvent } from "react";
 import { saveAccreditationProgram } from "./actions";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 export function ProgramForm({
   program,
@@ -181,13 +181,13 @@ export function ProgramForm({
         </p>
       ) : null}
       {status === "saved" ? (
-        <p className="mt-4 text-sm text-[#1F6A64]">Program profile saved.</p>
+        <p className="mt-4 text-sm text-[#C4A574]">Program profile saved.</p>
       ) : null}
 
       <button
         type="submit"
         disabled={status === "loading"}
-        className="mt-5 rounded-sm bg-[#1F6A64] px-5 py-2.5 text-sm font-medium text-[#F9F8F3] transition hover:bg-[#1A2B3C] disabled:opacity-60"
+        className="mt-5 rounded-sm bg-[#C4A574] px-5 py-2.5 text-sm font-medium text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
       >
         {status === "loading" ? "Saving…" : "Save program profile"}
       </button>

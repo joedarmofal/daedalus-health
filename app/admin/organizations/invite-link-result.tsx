@@ -39,7 +39,7 @@ export function InviteLinkResult({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex shrink-0 items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-4 py-2 text-sm font-medium text-[#1A2B3C] transition hover:border-[#1F6A64] hover:text-[#1F6A64]"
+          className="inline-flex shrink-0 items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-4 py-2 text-sm font-medium text-[#1A2B3C] transition hover:border-[#C4A574] hover:text-[#C4A574]"
         >
           {copied ? "Copied" : "Copy link"}
         </button>

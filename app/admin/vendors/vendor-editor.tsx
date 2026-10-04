@@ -6,7 +6,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { addVendor, importStarterVendors, removeVendor } from "./actions";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 export function VendorEditor({
   categories,
@@ -82,7 +82,7 @@ export function VendorEditor({
 
   if (!tableReady) {
     return (
-      <div className="rounded-sm border border-[#C4A574]/50 bg-[#C4A574]/10 p-6 text-sm leading-6 text-[#1A2B3C]/80">
+      <div className="rounded-sm border border-[#C4A574]/50 bg-[#12202e] p-6 text-sm leading-6 text-[#F9F8F3]/80">
         The <code className="font-mono text-xs">ai_vendors</code> table is not
         available yet. Run{" "}
         <code className="font-mono text-xs">
@@ -101,7 +101,7 @@ export function VendorEditor({
         </p>
       ) : null}
       {message ? (
-        <p className="rounded-sm border border-[#1F6A64]/25 bg-[#1F6A64]/10 px-3 py-2 text-sm text-[#1F6A64]">
+        <p className="rounded-sm border border-[#C4A574]/25 bg-[#C4A574]/10 px-3 py-2 text-sm text-[#C4A574]">
           {message}
         </p>
       ) : null}
@@ -156,7 +156,7 @@ export function VendorEditor({
             <button
               type="submit"
               disabled={status === "loading"}
-              className="rounded-sm bg-[#1A2B3C] px-5 py-2.5 text-sm font-medium text-[#F9F8F3] transition hover:bg-[#1F6A64] disabled:opacity-60"
+              className="rounded-sm bg-[#1A2B3C] px-5 py-2.5 text-sm font-medium text-[#F9F8F3] transition hover:bg-[#C4A574] disabled:opacity-60"
             >
               {status === "loading" ? "Saving…" : "Add vendor"}
             </button>
@@ -201,7 +201,7 @@ export function VendorEditor({
                       href={vendor.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-2 inline-flex text-sm text-[#1F6A64] hover:text-[#1A2B3C]"
+                      className="mt-2 inline-flex text-sm text-[#C4A574] hover:text-[#1A2B3C]"
                     >
                       {vendor.url}
                     </a>

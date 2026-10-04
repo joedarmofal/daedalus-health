@@ -81,14 +81,14 @@ export function UpdatePasswordGate() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F5F0] px-4 text-center">
-        <span className="mb-6 flex size-12 items-center justify-center text-[#1F6A64]">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#1A2B3C] px-4 text-center">
+        <span className="mb-6 flex size-12 items-center justify-center text-[#C4A574]">
           <CompassStar className="size-11" />
         </span>
-        <p className="max-w-sm text-sm leading-6 text-[#1A2B3C]/70">{error}</p>
+        <p className="max-w-sm text-sm leading-6 text-[#F9F8F3]/70">{error}</p>
         <Link
           href="/auth/reset-password"
-          className="mt-6 text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+          className="mt-6 text-sm font-medium text-[#C4A574] hover:text-[#F9F8F3]"
         >
           Request a new reset link
         </Link>
@@ -98,11 +98,11 @@ export function UpdatePasswordGate() {
 
   if (email === null) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F5F0] px-4 text-center">
-        <span className="mb-6 flex size-12 items-center justify-center text-[#1F6A64]">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#1A2B3C] px-4 text-center">
+        <span className="mb-6 flex size-12 items-center justify-center text-[#C4A574]">
           <CompassStar className="size-11" />
         </span>
-        <p className="max-w-sm text-sm leading-6 text-[#1A2B3C]/70">
+        <p className="max-w-sm text-sm leading-6 text-[#F9F8F3]/70">
           Opening your password reset…
         </p>
       </div>
@@ -110,18 +110,18 @@ export function UpdatePasswordGate() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F5F0] px-4 py-16">
-      <span className="mb-6 flex size-12 items-center justify-center text-[#1F6A64]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#1A2B3C] px-4 py-16">
+      <span className="mb-6 flex size-12 items-center justify-center text-[#C4A574]">
         <CompassStar className="size-11" />
       </span>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Reset password
       </p>
-      <h1 className="mt-3 text-center font-serif text-2xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-3 text-center font-serif text-2xl font-medium text-[#F9F8F3]">
         Choose a new password
       </h1>
-      <p className="mt-3 max-w-md text-center text-sm leading-6 text-[#1A2B3C]/70">
-        This replaces the password on your client portal login.
+      <p className="mt-3 max-w-md text-center text-sm leading-6 text-[#F9F8F3]/70">
+        This replaces the password on your partner portal login.
       </p>
       <UpdatePasswordForm email={email} />
     </div>

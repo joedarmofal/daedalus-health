@@ -13,7 +13,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 const FIELD_META: {
   key: keyof RoiInputs;
@@ -110,7 +110,7 @@ export function RoiCalculator({ orgSlug }: { orgSlug: string }) {
 
   return (
     <section className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] sm:p-8">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         ROI tool
       </span>
       <h2 className="mt-2 font-serif text-2xl font-medium text-[#1A2B3C]">
@@ -217,7 +217,7 @@ function ResultCard({
 }) {
   const valueClass =
     emphasis === "positive"
-      ? "text-[#1F6A64]"
+      ? "text-[#C4A574]"
       : emphasis === "caution"
         ? "text-[#8a6d3d]"
         : "text-[#1A2B3C]";

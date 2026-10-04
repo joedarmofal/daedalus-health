@@ -16,7 +16,7 @@ const AUTH_ERRORS: Record<string, string> = {
   "auth-failed": "We could not complete sign in. Request a new magic link.",
   missing_code: "This sign-in link is incomplete. Request a new magic link.",
   no_organization:
-    "Your account is not assigned to a client organization. Contact your Daedalus administrator.",
+    "Your account is not assigned to a partner organization. Contact your Daedalus administrator.",
 };
 
 export function LoginForm({
@@ -25,7 +25,7 @@ export function LoginForm({
   magicLinkNext,
   submitLabel = "Enter portal",
   magicLinkLabel = "Send Magic Link",
-  successMessage = "Check your inbox for a secure magic link to the client portal.",
+  successMessage = "Check your inbox for a secure magic link to the partner portal.",
 }: {
   initialError?: string;
   afterSignIn?: string;
@@ -72,7 +72,7 @@ export function LoginForm({
 
     if (!orgSlug) {
       setError(
-        "Signed in, but this account is not assigned to a client organization. Contact your Daedalus administrator.",
+        "Signed in, but this account is not assigned to a partner organization. Contact your Daedalus administrator.",
       );
       return;
     }

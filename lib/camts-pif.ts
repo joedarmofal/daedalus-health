@@ -9,7 +9,7 @@ export const PIF_STATUSES: Array<{
 }> = [
   { id: "not_started", label: "Not started", tone: "text-[#1A2B3C]/55" },
   { id: "in_progress", label: "In progress", tone: "text-[#8a6d3d]" },
-  { id: "ready", label: "Ready for PIF", tone: "text-[#1F6A64]" },
+  { id: "ready", label: "Ready for PIF", tone: "text-[#C4A574]" },
   { id: "gap", label: "Gap / action needed", tone: "text-red-800" },
 ];
 

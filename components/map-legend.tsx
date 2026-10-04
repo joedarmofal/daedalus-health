@@ -53,7 +53,7 @@ const legendItems = [
   },
   {
     href: "/login",
-    label: "Client Portal",
+    label: "Partner Portal",
     symbol: (
       <path
         d="M12 1 17.5 6 12 11 6.5 6Z"

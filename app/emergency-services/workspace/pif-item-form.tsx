@@ -5,7 +5,7 @@ import { useState, type FormEvent } from "react";
 import { draftPifItem, savePifItem } from "./actions";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 export function PifItemForm({
   item,
@@ -78,7 +78,7 @@ export function PifItemForm({
     <div className="rounded-sm border border-[#1A2B3C]/12 bg-[#F9F8F3] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
+          <p className="text-xs font-semibold tracking-[0.16em] text-[#C4A574]">
             {item.id}
           </p>
           <h3 className="mt-1 font-serif text-lg text-[#1A2B3C]">{item.title}</h3>
@@ -126,7 +126,7 @@ export function PifItemForm({
           <p className="mt-3 text-sm text-red-800">{aiError}</p>
         ) : null}
         {aiNotice ? (
-          <p className="mt-3 text-sm text-[#1F6A64]">{aiNotice}</p>
+          <p className="mt-3 text-sm text-[#C4A574]">{aiNotice}</p>
         ) : null}
         <button
           type="submit"
@@ -190,13 +190,13 @@ export function PifItemForm({
           <p className="mt-3 text-sm text-red-800">{error}</p>
         ) : null}
         {status === "saved" ? (
-          <p className="mt-3 text-sm text-[#1F6A64]">Saved.</p>
+          <p className="mt-3 text-sm text-[#C4A574]">Saved.</p>
         ) : null}
 
         <button
           type="submit"
           disabled={status === "loading"}
-          className="mt-4 rounded-sm bg-[#1F6A64] px-4 py-2 text-sm font-medium text-[#F9F8F3] disabled:opacity-60"
+          className="mt-4 rounded-sm bg-[#C4A574] px-4 py-2 text-sm font-medium text-[#1A2B3C] disabled:opacity-60"
         >
           {status === "loading" ? "Saving…" : "Save item"}
         </button>

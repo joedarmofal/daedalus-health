@@ -4,13 +4,13 @@ import Link from "next/link";
 export default function StandardsMapPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         STANDARDS MAP
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         How this workspace is organized
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
         These work areas follow the way CAMTS programs typically assemble a
         PIF: mission and scope, medical direction, people, machines,
         communications, administration, infection control, education, safety,
@@ -26,7 +26,7 @@ export default function StandardsMapPage() {
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
+                <p className="text-xs font-semibold tracking-[0.16em] text-[#C4A574]">
                   SECTION {section.number}
                 </p>
                 <h2 className="mt-1 font-serif text-xl text-[#1A2B3C]">
@@ -35,7 +35,7 @@ export default function StandardsMapPage() {
               </div>
               <Link
                 href={`/emergency-services/workspace/pif/${section.id}`}
-                className="text-sm font-medium text-[#1F6A64]"
+                className="text-sm font-medium text-[#C4A574]"
               >
                 Open in PIF builder →
               </Link>

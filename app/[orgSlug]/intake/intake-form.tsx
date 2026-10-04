@@ -20,7 +20,7 @@ export interface IntakeFormData {
 }
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 const USE_CASES = [
   "Clinical decision support",
@@ -78,17 +78,17 @@ export function IntakeForm({
 
   if (status === "done") {
     return (
-      <div className="rounded-sm border border-[#1F6A64]/30 bg-[#1F6A64]/10 p-6 text-center">
-        <p className="font-serif text-lg font-medium text-[#1A2B3C]">
+      <div className="rounded-sm border border-[#C4A574]/35 bg-[#12202e] p-6 text-center">
+        <p className="font-serif text-lg font-medium text-[#F9F8F3]">
           Thanks — you&rsquo;re all set.
         </p>
-        <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/70">
+        <p className="mt-2 text-sm leading-6 text-[#F9F8F3]/70">
           We&rsquo;ve saved your organization&rsquo;s setup details. Your
           Daedalus Health team will follow up shortly.
         </p>
         <a
           href={`/${orgSlug}`}
-          className="mt-5 inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-6 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C]"
+          className="mt-5 inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888]"
         >
           Go to your portal
         </a>
@@ -102,8 +102,8 @@ export function IntakeForm({
       className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-6 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)] sm:p-8"
     >
       {requirePassword ? (
-        <div className="mb-8 rounded-sm border border-[#1F6A64]/25 bg-[#1F6A64]/5 p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1F6A64]">
+        <div className="mb-8 rounded-sm border border-[#C4A574]/25 bg-[#C4A574]/5 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
             Create your login
           </p>
           <h3 className="mt-2 font-serif text-lg font-medium text-[#1A2B3C]">
@@ -256,7 +256,7 @@ export function IntakeForm({
                 value={useCase}
                 checked={selectedUseCases.includes(useCase)}
                 onChange={() => toggleUseCase(useCase)}
-                className="size-4 accent-[#1F6A64]"
+                className="size-4 accent-[#C4A574]"
               />
               {useCase}
             </label>
@@ -340,7 +340,7 @@ export function IntakeForm({
       <button
         type="submit"
         disabled={status === "loading"}
-        className="mt-6 inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-6 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574] disabled:opacity-60"
+        className="mt-6 inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
       >
         {status === "loading" ? "Saving…" : "Save"}
       </button>

@@ -15,7 +15,7 @@ const SECTIONS = [
     title: "This product does not process PHI",
     body: [
       "Daedalus Health is an advisory and program-operations workspace. It is not an EHR, not a clinical data repository, and not a patient-care system of record.",
-      "The site and client portal do not connect to electronic health records, do not ingest claims, ADT, imaging, or lab feeds, and are not designed to create, receive, maintain, or transmit protected health information (PHI).",
+      "The site and partner portal do not connect to electronic health records, do not ingest claims, ADT, imaging, or lab feeds, and are not designed to create, receive, maintain, or transmit protected health information (PHI).",
       "Do not upload patient names, medical record numbers, PCRs, encounter notes, or other PHI. If something looks like PHI, do not paste it here — use your organization’s clinical systems instead.",
     ],
   },
@@ -84,30 +84,30 @@ export default function TrustPage() {
   const welcome = customerMailFromAddress();
 
   return (
-    <div className="flex min-h-full flex-col bg-[#F7F5F0]">
+    <div className="flex min-h-full flex-col bg-[#1A2B3C]">
       <SiteHeader />
       <main className="flex-1">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
             Trust Center
           </span>
-          <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C] sm:text-4xl">
+          <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3] sm:text-4xl">
             Security and IT review
           </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
             Written for information-security, privacy, and IT teams evaluating
             Daedalus Health. This page describes how the live product actually
             works. We do not claim certifications we do not hold.
           </p>
 
-          <div className="mt-8 rounded-sm border border-[#1F6A64]/35 bg-[#1F6A64]/10 px-5 py-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1F6A64]">
+          <div className="mt-8 rounded-sm border border-[#C4A574]/40 bg-[#12202e] px-5 py-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
               PHI
             </p>
-            <p className="mt-2 font-serif text-xl text-[#1A2B3C]">
+            <p className="mt-2 font-serif text-xl text-[#F9F8F3]">
               Daedalus Health does not touch or process PHI.
             </p>
-            <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/70">
+            <p className="mt-2 text-sm leading-6 text-[#F9F8F3]/70">
               No EHR connection. No patient records. Do not upload protected
               health information to this site.
             </p>
@@ -116,13 +116,13 @@ export default function TrustPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/trust/request?need=baa"
-              className="inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-5 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C]"
+              className="inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-5 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888]"
             >
               Request a BAA
             </Link>
             <Link
               href="/trust/request?need=security-packet"
-              className="inline-flex items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-5 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:border-[#1F6A64] hover:text-[#1F6A64]"
+              className="inline-flex items-center justify-center rounded-sm border border-[#C4A574]/50 px-5 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:border-[#C4A574] hover:text-[#C4A574]"
             >
               Request a security packet
             </Link>
@@ -131,12 +131,12 @@ export default function TrustPage() {
           <div className="mt-12 space-y-10">
             {SECTIONS.map((section) => (
               <section key={section.title}>
-                <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
+                <h2 className="font-serif text-xl font-medium text-[#F9F8F3]">
                   {section.title}
                 </h2>
                 {section.title === "Subprocessors" ||
                 section.title === "What we store" ? (
-                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#1A2B3C]/70">
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#F9F8F3]/70">
                     {section.body.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
@@ -146,7 +146,7 @@ export default function TrustPage() {
                     {section.body.map((item) => (
                       <p
                         key={item}
-                        className="text-sm leading-7 text-[#1A2B3C]/70"
+                        className="text-sm leading-7 text-[#F9F8F3]/70"
                       >
                         {item}
                       </p>
@@ -157,15 +157,15 @@ export default function TrustPage() {
             ))}
           </div>
 
-          <section className="mt-12 border-t border-[#1A2B3C]/10 pt-8">
-            <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
+          <section className="mt-12 border-t border-[#C4A574]/20 pt-8">
+            <h2 className="font-serif text-xl font-medium text-[#F9F8F3]">
               Contact
             </h2>
-            <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
+            <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">
               BAA and security-packet requests go to{" "}
               <a
                 href={`mailto:${welcome}`}
-                className="text-[#1F6A64] hover:text-[#1A2B3C]"
+                className="text-[#C4A574] hover:text-[#F9F8F3]"
               >
                 {welcome}
               </a>
@@ -173,9 +173,9 @@ export default function TrustPage() {
               involving this site, email the same address. Do not include PHI in
               that message.
             </p>
-            <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
+            <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">
               Privacy inquiries: see the{" "}
-              <Link href="/privacy" className="text-[#1F6A64] hover:text-[#1A2B3C]">
+              <Link href="/privacy" className="text-[#C4A574] hover:text-[#F9F8F3]">
                 Privacy Policy
               </Link>
               .

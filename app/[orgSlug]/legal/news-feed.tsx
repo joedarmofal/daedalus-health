@@ -45,7 +45,7 @@ export function LegalNewsFeed() {
 
   if (loading) {
     return (
-      <p className="text-sm text-[#1A2B3C]/55">Loading recent headlines…</p>
+      <p className="text-sm text-[#F9F8F3]/55">Loading recent headlines…</p>
     );
   }
 
@@ -59,7 +59,7 @@ export function LegalNewsFeed() {
 
   if (items.length === 0) {
     return (
-      <p className="text-sm text-[#1A2B3C]/55">
+      <p className="text-sm text-[#F9F8F3]/55">
         No recent headlines were returned. Try again in a few minutes.
       </p>
     );
@@ -72,7 +72,7 @@ export function LegalNewsFeed() {
           key={`${item.source}-${item.url}`}
           className="rounded-sm border border-[#1A2B3C]/12 bg-white/70 p-4"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1F6A64]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C4A574]">
             {item.source}
             {item.publishedAt
               ? ` · ${new Date(item.publishedAt).toLocaleDateString()}`
@@ -82,7 +82,7 @@ export function LegalNewsFeed() {
             href={item.url}
             target="_blank"
             rel="noreferrer"
-            className="mt-1 block font-medium text-[#1A2B3C] hover:text-[#1F6A64]"
+            className="mt-1 block font-medium text-[#1A2B3C] hover:text-[#C4A574]"
           >
             {item.title}
           </a>

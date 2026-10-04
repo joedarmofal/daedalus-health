@@ -50,7 +50,7 @@ export default async function TenantDashboardPage({ params }: PageProps) {
       />
       <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-8 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.4)]">
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
             Ethical Governance Dashboard
           </span>
           <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
@@ -78,7 +78,7 @@ export default async function TenantDashboardPage({ params }: PageProps) {
               >
                 {stat.value}
               </div>
-              <div className="mt-1 text-xs text-[#1F6A64]">{stat.note}</div>
+              <div className="mt-1 text-xs text-[#C4A574]">{stat.note}</div>
             </div>
           ))}
         </div>

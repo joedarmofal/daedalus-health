@@ -16,7 +16,7 @@ export default async function AdminLayout({
   return (
     <div
       className={`relative flex min-h-screen flex-col ${
-        isAdmin ? "bg-[#F7F5F0]" : "bg-[#1A2B3C] text-[#F9F8F3]"
+        isAdmin ? "bg-[#1A2B3C]" : "bg-[#1A2B3C] text-[#F9F8F3]"
       }`}
     >
       {isAdmin ? (
@@ -108,14 +108,14 @@ export default async function AdminLayout({
       <footer
         className={`relative z-10 border-t px-4 py-4 text-center text-xs tracking-wide ${
           isAdmin
-            ? "border-[#1A2B3C]/10 text-[#1A2B3C]/45"
+            ? "border-[#C4A574]/15 text-[#F9F8F3]/45"
             : "border-[#C4A574]/15 text-[#F9F8F3]/40"
         }`}
       >
         <Link
           href="/"
           className={
-            isAdmin ? "transition hover:text-[#1A2B3C]" : "transition hover:text-[#C4A574]"
+            "transition hover:text-[#C4A574]"
           }
         >
           Daedalus Health

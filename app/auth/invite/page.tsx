@@ -31,13 +31,13 @@ export default async function InvitePage({
   if (!tokenHash) {
     return (
       <InviteShell>
-        <p className="max-w-sm text-sm leading-6 text-[#1A2B3C]/70">
+        <p className="max-w-sm text-sm leading-6 text-[#F9F8F3]/70">
           This invite link is incomplete. Ask your administrator to send a new
           one.
         </p>
         <Link
           href="/login"
-          className="mt-6 text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+          className="mt-6 text-sm font-medium text-[#C4A574] hover:text-[#F9F8F3]"
         >
           Return to sign in
         </Link>
@@ -47,13 +47,13 @@ export default async function InvitePage({
 
   return (
     <InviteShell>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
-        Client invite
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
+        Partner invite
       </p>
-      <h1 className="mt-3 font-serif text-2xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-3 font-serif text-2xl font-medium text-[#F9F8F3]">
         {org ? `Welcome to ${org}` : "Welcome to Daedalus Health"}
       </h1>
-      <p className="mt-3 max-w-sm text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-sm text-sm leading-6 text-[#F9F8F3]/70">
         {org
           ? `You have been invited to the ${org} workspace. Continue to create your login, then a short setup form.`
           : "You have been invited to a Daedalus Health workspace. Continue to create your login."}
@@ -70,8 +70,8 @@ export default async function InvitePage({
 
 function InviteShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F7F5F0] px-4 text-center">
-      <span className="mb-6 flex size-12 items-center justify-center text-[#1F6A64]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#1A2B3C] px-4 text-center">
+      <span className="mb-6 flex size-12 items-center justify-center text-[#C4A574]">
         <CompassStar className="size-11" />
       </span>
       {children}

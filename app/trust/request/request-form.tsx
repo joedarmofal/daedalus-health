@@ -8,7 +8,7 @@ import { useState, type FormEvent } from "react";
 import { submitTrustRequest } from "./actions";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 export function TrustRequestForm({
   initialKind,
@@ -35,11 +35,11 @@ export function TrustRequestForm({
 
   if (status === "done") {
     return (
-      <div className="rounded-sm border border-[#1F6A64]/30 bg-[#1F6A64]/10 p-6 text-center">
-        <p className="font-serif text-lg font-medium text-[#1A2B3C]">
+      <div className="rounded-sm border border-[#C4A574]/35 bg-[#12202e] p-6 text-center">
+        <p className="font-serif text-lg font-medium text-[#F9F8F3]">
           Request received
         </p>
-        <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/70">
+        <p className="mt-2 text-sm leading-6 text-[#F9F8F3]/70">
           We will follow up at the work email you provided. Do not send PHI
           while we complete the paperwork.
         </p>
@@ -148,7 +148,7 @@ export function TrustRequestForm({
       <button
         type="submit"
         disabled={status === "loading"}
-        className="mt-6 inline-flex items-center justify-center rounded-sm bg-[#1F6A64] px-6 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] hover:shadow-[inset_0_0_0_1px_#C4A574] disabled:opacity-60"
+        className="mt-6 inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
       >
         {status === "loading" ? "Sending…" : "Submit request"}
       </button>

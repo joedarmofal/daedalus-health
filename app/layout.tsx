@@ -49,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${sourceSans.variable} ${cormorant.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[#F7F5F0] text-[#1A2B3C]">
+      <body className="flex min-h-full flex-col bg-[#1A2B3C] text-[#F9F8F3]">
         {children}
       </body>
     </html>

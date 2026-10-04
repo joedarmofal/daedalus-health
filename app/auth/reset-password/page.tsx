@@ -6,7 +6,7 @@ import { ResetPasswordForm } from "./reset-password-form";
 
 export const metadata: Metadata = {
   title: "Reset password",
-  description: "Request a password reset for the Daedalus Health client portal.",
+  description: "Request a password reset for the Daedalus Health partner portal.",
 };
 
 export default function ResetPasswordPage() {
@@ -24,14 +24,14 @@ export default function ResetPasswordPage() {
             </span>
             <span>DAEDALUS HEALTH</span>
             <span className="text-[#F9F8F3]/30">/</span>
-            <span className="text-[#C4A574]">CLIENT PORTAL</span>
+            <span className="text-[#C4A574]">PARTNER PORTAL</span>
           </Link>
         </div>
       </header>
 
       <main className="flex flex-1 flex-col">
         <SignInPanel
-          eyebrow="CLIENT PORTAL"
+          eyebrow="PARTNER PORTAL"
           title="Reset your password"
           description="Enter the work email on your account. We will send a one-time link to choose a new password."
         >

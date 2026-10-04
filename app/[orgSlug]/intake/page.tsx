@@ -32,13 +32,13 @@ export default async function IntakePage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Organization Setup
       </span>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Tell us about {access.org.name}
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
         {!existing || needsPasswordSetup(access.user)
           ? "Create your portal password, then a few details to set up your governance program."
           : "A few details to set up your governance program correctly — takes about three minutes. You can come back and update this later."}

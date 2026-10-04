@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f5f0;
-  --foreground: #1a2b3c;
+  --background: #1a2b3c;
+  --foreground: #f9f8f3;
   --slate: #1a2b3c;
   --parchment: #f9f8f3;
-  --teal: #1f6a64;
+  --gold: #c4a574;
   --bronze: #c4a574;
 }
 
@@ -14,7 +14,7 @@
   --color-foreground: var(--foreground);
   --color-slate: var(--slate);
   --color-parchment: var(--parchment);
-  --color-teal: var(--teal);
+  --color-gold: var(--gold);
   --color-bronze: var(--bronze);
   --font-sans: var(--font-sans-body);
   --font-serif: var(--font-serif-display);
@@ -32,6 +32,12 @@ body {
 }
 
 ::selection {
-  background: rgb(31 106 100 / 0.22);
+  background: rgb(196 165 116 / 0.35);
+  color: #1a2b3c;
+}
+
+/* Ivory and parchment surfaces keep navy type on the navy canvas. */
+[class*="bg-[#F9F8F3]"],
+[class*="bg-[#F7F5F0]"] {
   color: #1a2b3c;
 }

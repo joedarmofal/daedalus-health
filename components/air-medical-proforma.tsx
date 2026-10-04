@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 const DEFAULT_STORAGE_KEY = "daedalus-air-medical-proforma";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 function parseStored(raw: string | null): AirMedicalProformaInputs | null {
   if (!raw) return null;
@@ -258,7 +258,7 @@ export function AirMedicalProforma({
                               Number(event.target.value) || 0,
                             )
                           }
-                          className="w-24 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-2.5 py-1.5 text-sm outline-none focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20"
+                          className="w-24 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-2.5 py-1.5 text-sm outline-none focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
                         />
                       </td>
                       <td className="py-3 pr-4">
@@ -274,7 +274,7 @@ export function AirMedicalProforma({
                               Number(event.target.value) || 0,
                             )
                           }
-                          className="w-36 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-2.5 py-1.5 text-sm outline-none focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20"
+                          className="w-36 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-2.5 py-1.5 text-sm outline-none focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
                         />
                       </td>
                       <td className="py-3 tabular-nums text-[#1A2B3C]">
@@ -453,7 +453,7 @@ export function AirMedicalProforma({
             <p className="text-xs text-[#1A2B3C]/55">Operating income</p>
             <p
               className={`mt-1 font-serif text-2xl ${
-                result.operatingIncome >= 0 ? "text-[#1F6A64]" : "text-[#8a6d3d]"
+                result.operatingIncome >= 0 ? "text-[#C4A574]" : "text-[#8a6d3d]"
               }`}
             >
               {formatProformaCurrency(result.operatingIncome)}

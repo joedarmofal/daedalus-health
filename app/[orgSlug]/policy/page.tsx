@@ -70,7 +70,7 @@ const POLICIES: Policy[] = [
 ];
 
 const STATUS_STYLES: Record<Policy["status"], string> = {
-  Active: "border-[#1F6A64]/40 bg-[#1F6A64]/10 text-[#1F6A64]",
+  Active: "border-[#C4A574]/40 bg-[#C4A574]/10 text-[#C4A574]",
   "Under Review": "border-[#C4A574]/50 bg-[#C4A574]/15 text-[#8a6d3d]",
   Draft: "border-[#1A2B3C]/20 bg-[#1A2B3C]/5 text-[#1A2B3C]/70",
 };
@@ -87,13 +87,13 @@ export default async function PolicyPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Policy Library
       </span>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Governing policies for {org.name}
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
         The active policy set governing AI use, data handling, and vendor
         risk across your organization. Full policy documents are issued to
         designated administrators; request a copy below.
@@ -134,7 +134,7 @@ export default async function PolicyPage({ params }: PageProps) {
               href={`mailto:briefings@daedalus.health?subject=${encodeURIComponent(
                 `Policy Document Request: ${policy.name} (${org.name})`,
               )}`}
-              className="inline-flex shrink-0 items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-4 py-2 text-sm font-medium text-[#1A2B3C] transition hover:border-[#1F6A64] hover:text-[#1F6A64]"
+              className="inline-flex shrink-0 items-center justify-center rounded-sm border border-[#1A2B3C]/25 px-4 py-2 text-sm font-medium text-[#1A2B3C] transition hover:border-[#C4A574] hover:text-[#C4A574]"
             >
               Request document
             </a>

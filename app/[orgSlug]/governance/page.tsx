@@ -73,13 +73,13 @@ export default async function GovernancePage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Governance Oversight
       </span>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         How {org.name} keeps humans at the controls
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
         The oversight structure, review cadence, and escalation pathways that
         govern every AI system deployed within your organization.
       </p>
@@ -100,7 +100,7 @@ export default async function GovernancePage({ params }: PageProps) {
         ))}
       </div>
 
-      <h2 className="mt-12 font-serif text-xl font-medium text-[#1A2B3C]">
+      <h2 className="mt-12 font-serif text-xl font-medium text-[#F9F8F3]">
         Oversight bodies
       </h2>
       <div className="mt-5 space-y-4">
@@ -124,7 +124,7 @@ export default async function GovernancePage({ params }: PageProps) {
         ))}
       </div>
 
-      <h2 className="mt-12 font-serif text-xl font-medium text-[#1A2B3C]">
+      <h2 className="mt-12 font-serif text-xl font-medium text-[#F9F8F3]">
         Model lifecycle
       </h2>
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -133,7 +133,7 @@ export default async function GovernancePage({ params }: PageProps) {
             key={step.stage}
             className="rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-5 shadow-[0_24px_60px_-36px_rgba(26,43,60,0.35)]"
           >
-            <div className="text-xs font-semibold text-[#1F6A64]">
+            <div className="text-xs font-semibold text-[#C4A574]">
               {String(index + 1).padStart(2, "0")}
             </div>
             <div className="mt-1 font-serif text-base font-medium text-[#1A2B3C]">

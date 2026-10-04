@@ -13,17 +13,17 @@ export default async function NewPolicyPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <Link
         href="/emergency-services/workspace/policies"
-        className="text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+        className="text-sm font-medium text-[#C4A574] hover:text-[#F9F8F3]"
       >
         ← Policy library
       </Link>
-      <p className="mt-6 text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="mt-6 text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         DEVELOP A POLICY
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Clinical or administrative draft
       </h1>
-      <p className="mt-3 text-sm leading-7 text-[#1A2B3C]/70">
+      <p className="mt-3 text-sm leading-7 text-[#F9F8F3]/70">
         Use the assistant to write a first draft from a prompt or uploaded
         materials, then save it to the {access.org.name} library.
       </p>

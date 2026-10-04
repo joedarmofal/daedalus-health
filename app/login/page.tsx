@@ -5,8 +5,8 @@ import Link from "next/link";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
-  title: "Client Login",
-  description: "Secure client portal access for Daedalus Health executives.",
+  title: "Partner Login",
+  description: "Secure partner portal access for Daedalus Health executives.",
 };
 
 export default async function LoginPage({
@@ -30,7 +30,7 @@ export default async function LoginPage({
             </span>
             <span>DAEDALUS HEALTH</span>
             <span className="text-[#F9F8F3]/30">/</span>
-            <span className="text-[#C4A574]">CLIENT PORTAL</span>
+            <span className="text-[#C4A574]">PARTNER PORTAL</span>
           </Link>
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C4A574]/80">
             Executive access
@@ -40,16 +40,16 @@ export default async function LoginPage({
 
       <main className="flex flex-1 flex-col">
         <SignInPanel
-          eyebrow="CLIENT PORTAL"
+          eyebrow="PARTNER PORTAL"
           title="Executive sign in"
-          description="Access is reserved for Daedalus Health client organizations."
+          description="Access is reserved for Daedalus Health partner organizations."
         >
           <LoginForm initialError={error} />
         </SignInPanel>
       </main>
 
       <footer className="border-t border-[#C4A574]/15 px-4 py-4 text-center text-xs tracking-wide text-[#F9F8F3]/40">
-        Daedalus Health · Client portal
+        Daedalus Health · Partner portal
       </footer>
     </div>
   );

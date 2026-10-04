@@ -19,13 +19,13 @@ export default async function PifIndexPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         PIF BUILDER
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Build the Program Information Form
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
         Work section by section. Each item holds the narrative you will paste
         into the official PIF, plus evidence still to collect. You can draft
         from a short prompt or uploaded policies — then review and save.
@@ -41,7 +41,7 @@ export default async function PifIndexPage() {
               className="flex flex-col justify-between gap-3 rounded-sm border border-[#1A2B3C]/15 bg-[#F9F8F3] p-5 sm:flex-row sm:items-center"
             >
               <div>
-                <p className="text-xs font-semibold tracking-[0.16em] text-[#1F6A64]">
+                <p className="text-xs font-semibold tracking-[0.16em] text-[#C4A574]">
                   SECTION {section.number}
                 </p>
                 <h2 className="mt-1 font-serif text-lg text-[#1A2B3C]">

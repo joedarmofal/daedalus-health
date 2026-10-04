@@ -34,8 +34,8 @@ export function PortalNav({ orgSlug }: { orgSlug: string }) {
             href={href}
             className={`whitespace-nowrap rounded-sm px-4 py-2 text-sm font-medium tracking-wide transition ${
               isActive
-                ? "bg-[#1F6A64] text-[#F9F8F3]"
-                : "text-[#1A2B3C]/70 hover:bg-[#1A2B3C]/5 hover:text-[#1A2B3C]"
+                ? "bg-[#C4A574] text-[#1A2B3C]"
+                : "text-[#F9F8F3]/70 hover:bg-[#C4A574]/10 hover:text-[#C4A574]"
             }`}
           >
             {section.label}

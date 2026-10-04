@@ -24,23 +24,23 @@ export default async function LegalCompliancePage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
-        Client Portal
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
+        Partner Portal
       </span>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Legal & Compliance
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
         A working reference for AI laws and common healthcare compliance
         situations, plus recent public headlines. This is not legal advice.
         Confirm requirements with counsel before acting.
       </p>
 
       <section className="mt-10">
-        <h2 className="font-serif text-2xl font-medium text-[#1A2B3C]">
+        <h2 className="font-serif text-2xl font-medium text-[#F9F8F3]">
           Laws and situations
         </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#1A2B3C]/65">
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#F9F8F3]/65">
           Pick a situation your program is in — ambient scribing, clinical
           decision support, patient-facing chat, or cross-border vendors — to
           see the frameworks that usually apply.
@@ -51,10 +51,10 @@ export default async function LegalCompliancePage({
       </section>
 
       <section className="mt-12">
-        <h2 className="font-serif text-2xl font-medium text-[#1A2B3C]">
+        <h2 className="font-serif text-2xl font-medium text-[#F9F8F3]">
           AI legal and compliance news
         </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#1A2B3C]/65">
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#F9F8F3]/65">
           Headlines from public RSS sources, refreshed about every 30 minutes.
           Open the original article for the full story.
         </p>

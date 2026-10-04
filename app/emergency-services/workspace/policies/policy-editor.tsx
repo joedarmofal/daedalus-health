@@ -15,7 +15,7 @@ import {
 } from "./actions";
 
 const inputClass =
-  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20";
+  "mt-1.5 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20";
 
 const STARTERS = [
   {
@@ -178,7 +178,7 @@ export function PolicyEditor({ policy }: { policy?: EmergencyPolicy }) {
           />
         </label>
         {aiError ? <p className="mt-3 text-sm text-red-800">{aiError}</p> : null}
-        {aiNotice ? <p className="mt-3 text-sm text-[#1F6A64]">{aiNotice}</p> : null}
+        {aiNotice ? <p className="mt-3 text-sm text-[#C4A574]">{aiNotice}</p> : null}
         <button
           type="submit"
           disabled={aiState === "loading"}
@@ -290,13 +290,13 @@ export function PolicyEditor({ policy }: { policy?: EmergencyPolicy }) {
 
         {error ? <p className="mt-4 text-sm text-red-800">{error}</p> : null}
         {saveState === "saved" ? (
-          <p className="mt-4 text-sm text-[#1F6A64]">Saved to this organization’s library.</p>
+          <p className="mt-4 text-sm text-[#C4A574]">Saved to this organization’s library.</p>
         ) : null}
 
         <button
           type="submit"
           disabled={saveState === "loading"}
-          className="mt-5 rounded-sm bg-[#1F6A64] px-4 py-2.5 text-sm font-medium text-[#F9F8F3] disabled:opacity-60"
+          className="mt-5 rounded-sm bg-[#C4A574] px-4 py-2.5 text-sm font-medium text-[#1A2B3C] disabled:opacity-60"
         >
           {saveState === "loading"
             ? "Saving…"

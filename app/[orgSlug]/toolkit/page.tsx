@@ -66,7 +66,7 @@ const TOOLKIT: ToolkitItem[] = [
 const PHASES: ToolkitItem["phase"][] = ["Assess", "Validate", "Monitor", "Respond"];
 
 const PHASE_STYLES: Record<ToolkitItem["phase"], string> = {
-  Assess: "border-[#1F6A64]/40 bg-[#1F6A64]/10 text-[#1F6A64]",
+  Assess: "border-[#C4A574]/40 bg-[#C4A574]/10 text-[#C4A574]",
   Validate: "border-[#C4A574]/50 bg-[#C4A574]/15 text-[#8a6d3d]",
   Monitor: "border-[#1A2B3C]/25 bg-[#1A2B3C]/5 text-[#1A2B3C]/75",
   Respond: "border-red-800/25 bg-red-50 text-red-800",
@@ -88,31 +88,31 @@ export default async function ToolkitPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1F6A64]">
+      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C4A574]">
         Governance Toolkit
       </span>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         Operational templates for {org.name}
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
         Practical templates and checklists that turn policy into practice
         across each stage of the model lifecycle, plus a directory of
         enterprise AI tools to evaluate.
       </p>
 
       <section className="mt-10">
-        <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
+        <h2 className="font-serif text-xl font-medium text-[#F9F8F3]">
           AI Tools
         </h2>
         <Link
           href={`/${org.slug}/toolkit/ai-tools`}
-          className="mt-5 flex flex-col gap-3 rounded-sm border border-[#C4A574]/50 bg-[#C4A574]/10 p-6 transition hover:border-[#C4A574] sm:flex-row sm:items-center sm:justify-between"
+          className="mt-5 flex flex-col gap-3 rounded-sm border border-[#C4A574]/50 bg-[#12202e] p-6 transition hover:border-[#C4A574] sm:flex-row sm:items-center sm:justify-between"
         >
           <div>
-            <p className="font-serif text-lg font-medium text-[#1A2B3C]">
+            <p className="font-serif text-lg font-medium text-[#F9F8F3]">
               Enterprise AI directory
             </p>
-            <p className="mt-2 text-sm leading-6 text-[#1A2B3C]/70">
+            <p className="mt-2 text-sm leading-6 text-[#F9F8F3]/70">
               {vendorCount} respected vendors, grouped by ambient scribes,
               imaging, research, HR, legal, revenue cycle, and more — a
               shopping list for {org.name} to explore enterprise-wide.
@@ -130,7 +130,7 @@ export default async function ToolkitPage({ params }: PageProps) {
 
         return (
           <section key={phase} className="mt-10">
-            <h2 className="font-serif text-xl font-medium text-[#1A2B3C]">
+            <h2 className="font-serif text-xl font-medium text-[#F9F8F3]">
               {phase}
             </h2>
             <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -154,7 +154,7 @@ export default async function ToolkitPage({ params }: PageProps) {
                     href={`mailto:briefings@daedalus.health?subject=${encodeURIComponent(
                       `Toolkit Template Request: ${item.name} (${org.name})`,
                     )}`}
-                    className="mt-4 inline-flex w-fit items-center text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+                    className="mt-4 inline-flex w-fit items-center text-sm font-medium text-[#C4A574] hover:text-[#1A2B3C]"
                   >
                     Request template
                     <span aria-hidden="true" className="ml-1.5">

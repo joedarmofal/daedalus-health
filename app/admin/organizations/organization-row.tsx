@@ -76,7 +76,7 @@ export function OrganizationRow({
             <span
               className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide ${
                 org.intakeCompleted
-                  ? "border-[#1F6A64]/40 bg-[#1F6A64]/10 text-[#1F6A64]"
+                  ? "border-[#C4A574]/40 bg-[#C4A574]/10 text-[#C4A574]"
                   : "border-[#C4A574]/50 bg-[#C4A574]/15 text-[#8a6d3d]"
               }`}
             >
@@ -94,7 +94,7 @@ export function OrganizationRow({
         <div className="flex items-center gap-3">
           <Link
             href={`/${org.slug}`}
-            className="text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+            className="text-sm font-medium text-[#C4A574] hover:text-[#1A2B3C]"
           >
             View portal →
           </Link>
@@ -119,13 +119,13 @@ export function OrganizationRow({
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="jordan@meridian-health.org"
-              className="flex-1 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20"
+              className="flex-1 rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
             />
             <button
               type="button"
               onClick={handleGenerate}
               disabled={status === "loading" || !email}
-              className="inline-flex shrink-0 items-center justify-center rounded-sm bg-[#1F6A64] px-5 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:bg-[#1A2B3C] disabled:opacity-60"
+              className="inline-flex shrink-0 items-center justify-center rounded-sm bg-[#C4A574] px-5 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
             >
               {status === "loading" ? "Sending…" : "Send welcome email"}
             </button>

@@ -28,27 +28,27 @@ export default async function PolicyLibraryPage() {
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+          <p className="text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
             POLICY LIBRARY
           </p>
-          <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+          <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
             {access.org.name} policies
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
             Draft clinical or administrative policies with the AI assistant,
             then keep the adopted versions here for this organization only.
           </p>
         </div>
         <Link
           href="/emergency-services/workspace/policies/new"
-          className="rounded-sm bg-[#1F6A64] px-4 py-2.5 text-sm font-medium text-[#F9F8F3] hover:bg-[#1A2B3C]"
+          className="rounded-sm bg-[#C4A574] px-4 py-2.5 text-sm font-medium text-[#1A2B3C] hover:bg-[#d4b888]"
         >
           Develop a policy
         </Link>
       </div>
 
       {tableMissing ? (
-        <p className="mt-6 rounded-sm border border-[#C4A574]/50 bg-[#C4A574]/10 px-4 py-3 text-sm text-[#1A2B3C]">
+        <p className="mt-6 rounded-sm border border-[#C4A574]/50 bg-[#12202e] px-4 py-3 text-sm text-[#F9F8F3]">
           Policy saves need the library table. Run{" "}
           <code className="font-mono text-xs">008_emergency_policies.sql</code>{" "}
           in the Supabase SQL Editor.
@@ -78,7 +78,7 @@ export default async function PolicyLibraryPage() {
                   <td className="px-4 py-3">
                     <Link
                       href={`/emergency-services/workspace/policies/${policy.id}`}
-                      className="font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+                      className="font-medium text-[#C4A574] hover:text-[#1A2B3C]"
                     >
                       {policy.title}
                     </Link>

@@ -48,7 +48,7 @@ export function AiToolsDirectory({
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Abridge, coding, legal, imaging…"
-          className="mt-2 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#1F6A64] focus:ring-2 focus:ring-[#1F6A64]/20"
+          className="mt-2 w-full rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
         />
         <div className="mt-4 flex flex-wrap gap-2">
           <FilterChip
@@ -99,7 +99,7 @@ function FilterChip({
       onClick={onClick}
       className={`rounded-full border px-3 py-1 text-xs font-medium tracking-wide transition ${
         active
-          ? "border-[#1F6A64] bg-[#1F6A64] text-[#F9F8F3]"
+          ? "border-[#C4A574] bg-[#C4A574] text-[#1A2B3C]"
           : "border-[#1A2B3C]/20 bg-[#F7F5F0] text-[#1A2B3C]/75 hover:border-[#C4A574] hover:text-[#1A2B3C]"
       }`}
     >
@@ -133,7 +133,7 @@ function CategorySection({ category }: { category: AiToolCategory }) {
               href={tool.url}
               target="_blank"
               rel="noreferrer"
-              className="mt-4 inline-flex w-fit items-center text-sm font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+              className="mt-4 inline-flex w-fit items-center text-sm font-medium text-[#C4A574] hover:text-[#1A2B3C]"
             >
               Visit site
               <span aria-hidden="true" className="ml-1.5">

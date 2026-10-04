@@ -30,19 +30,19 @@ export default async function GapsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <p className="text-xs font-semibold tracking-[0.22em] text-[#1F6A64]">
+      <p className="text-xs font-semibold tracking-[0.22em] text-[#C4A574]">
         GAP TRACKER
       </p>
-      <h1 className="mt-2 font-serif text-3xl font-medium text-[#1A2B3C]">
+      <h1 className="mt-2 font-serif text-3xl font-medium text-[#F9F8F3]">
         What still blocks a complete PIF
       </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A2B3C]/70">
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-[#F9F8F3]/70">
         Items marked as a gap, plus work that has not been started. Assign an
         owner and close these before you lock the self-study.
       </p>
 
       {rows.length === 0 ? (
-        <p className="mt-8 rounded-sm border border-[#1F6A64]/30 bg-[#1F6A64]/10 px-4 py-4 text-sm text-[#1A2B3C]">
+        <p className="mt-8 rounded-sm border border-[#C4A574]/30 bg-[#12202e] px-4 py-4 text-sm text-[#F9F8F3]">
           No open gaps. Every item is in progress or marked ready.
         </p>
       ) : (
@@ -62,7 +62,7 @@ export default async function GapsPage() {
                   <td className="px-4 py-3">
                     <Link
                       href={`/emergency-services/workspace/pif/${row.section.id}`}
-                      className="font-medium text-[#1F6A64] hover:text-[#1A2B3C]"
+                      className="font-medium text-[#C4A574] hover:text-[#1A2B3C]"
                     >
                       {row.item.id} {row.item.title}
                     </Link>
