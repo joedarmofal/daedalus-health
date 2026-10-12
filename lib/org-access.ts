@@ -31,24 +31,32 @@ export const getOrgAccess = cache(
       return { status: "unauthenticated" };
     }
 
-    const { data: org, error } = await supabase
+    const { data: org } = await supabase
       .from("organizations")
-      .select("id, name, slug, organization_members!inner(role, user_id)")
+      .select("id, name, slug")
       .eq("slug", orgSlug)
-      .eq("organization_members.user_id", user.id)
-      .single();
+      .maybeSingle();
 
-    if (error || !org) {
+    if (!org) {
       return { status: "denied" };
     }
 
-    const role = org.organization_members[0]?.role ?? "member";
+    const { data: membership } = await supabase
+      .from("organization_members")
+      .select("role")
+      .eq("organization_id", org.id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!membership) {
+      return { status: "denied" };
+    }
 
     return {
       status: "ok",
       user,
       org: { id: org.id, name: org.name, slug: org.slug },
-      role,
+      role: membership.role ?? "member",
     };
   },
 );

@@ -76,14 +76,22 @@ export async function destinationAfterInvite(
   }
 
   for (const slug of candidates) {
+    if (!user) continue;
+
     const { data: org } = await supabase
       .from("organizations")
-      .select("id, slug, organization_members!inner(user_id)")
+      .select("id, slug")
       .eq("slug", slug)
-      .eq("organization_members.user_id", user?.id ?? "")
       .maybeSingle();
+    if (!org?.id || !org.slug) continue;
 
-    if (!org?.slug) continue;
+    const { data: membership } = await supabase
+      .from("organization_members")
+      .select("user_id")
+      .eq("organization_id", org.id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (!membership) continue;
 
     const { data: intake } = await supabase
       .from("organization_intake")

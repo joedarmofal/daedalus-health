@@ -3,7 +3,7 @@
 import { isCustomerFacingUrl } from "@/lib/public-url";
 import Link from "next/link";
 import { useState } from "react";
-import { resendInviteLink } from "./actions";
+import { addOrganizationMember, resendInviteLink } from "./actions";
 import { InviteLinkResult } from "./invite-link-result";
 
 export interface OrganizationMemberOption {
@@ -38,6 +38,12 @@ export function OrganizationRow({
   const [emailSent, setEmailSent] = useState(false);
   const [emailedTo, setEmailedTo] = useState<string | null>(null);
   const [selectedMember, setSelectedMember] = useState("");
+  const [addingTeammate, setAddingTeammate] = useState(false);
+  const [teammateName, setTeammateName] = useState("");
+  const [teammateEmail, setTeammateEmail] = useState("");
+  const [teammateStatus, setTeammateStatus] = useState<"idle" | "loading">("idle");
+  const [teammateError, setTeammateError] = useState<string | null>(null);
+  const [teammateSuccess, setTeammateSuccess] = useState<string | null>(null);
 
   async function handleGenerate() {
     setStatus("loading");
@@ -75,6 +81,32 @@ export function OrganizationRow({
     if (!response.emailSent) {
       setError(response.error ?? "The welcome email could not be sent.");
     }
+  }
+
+  async function handleAddTeammate() {
+    setTeammateStatus("loading");
+    setTeammateError(null);
+    setTeammateSuccess(null);
+
+    const response = await addOrganizationMember(
+      org.id,
+      teammateEmail,
+      teammateName,
+    );
+    setTeammateStatus("idle");
+
+    if (!response.ok) {
+      setTeammateError(response.error ?? "Could not add that teammate.");
+      return;
+    }
+
+    setTeammateName("");
+    setTeammateEmail("");
+    setTeammateSuccess(
+      response.emailSent
+        ? `Invite sent to ${response.emailedTo}. They now have access to ${org.name}.`
+        : `${response.emailedTo} was added. ${response.error ?? "The invite email could not be sent."}`,
+    );
   }
 
   return (
@@ -137,6 +169,13 @@ export function OrganizationRow({
           </Link>
           <button
             type="button"
+            onClick={() => setAddingTeammate((value) => !value)}
+            className="text-sm font-medium text-[#1A2B3C]/60 hover:text-[#1A2B3C]"
+          >
+            {addingTeammate ? "Close" : "Add teammate"}
+          </button>
+          <button
+            type="button"
             onClick={() => setExpanded((value) => !value)}
             className="text-sm font-medium text-[#1A2B3C]/60 hover:text-[#1A2B3C]"
           >
@@ -144,6 +183,52 @@ export function OrganizationRow({
           </button>
         </div>
       </div>
+
+      {addingTeammate ? (
+        <div className="mt-5 border-t border-[#1A2B3C]/10 pt-5">
+          <p className="text-sm font-medium text-[#1A2B3C]">Add a teammate</p>
+          <p className="mt-1 text-xs leading-5 text-[#1A2B3C]/55">
+            Grants access to this organization. Existing Daedalus users keep
+            access to any other organizations they already belong to.
+          </p>
+          <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto]">
+            <input
+              type="text"
+              value={teammateName}
+              onChange={(event) => setTeammateName(event.target.value)}
+              placeholder="Full name"
+              className="rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
+            />
+            <input
+              type="email"
+              value={teammateEmail}
+              onChange={(event) => setTeammateEmail(event.target.value)}
+              placeholder="work@healthsystem.org"
+              className="rounded-sm border border-[#1A2B3C]/20 bg-[#F7F5F0] px-3.5 py-2.5 text-sm text-[#1A2B3C] outline-none placeholder:text-[#1A2B3C]/40 focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/20"
+            />
+            <button
+              type="button"
+              onClick={handleAddTeammate}
+              disabled={
+                teammateStatus === "loading" || !teammateName || !teammateEmail
+              }
+              className="inline-flex shrink-0 items-center justify-center rounded-sm bg-[#C4A574] px-5 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
+            >
+              {teammateStatus === "loading" ? "Adding…" : "Add teammate"}
+            </button>
+          </div>
+          {teammateError ? (
+            <p className="mt-3 rounded-sm border border-red-800/30 bg-red-50 px-3 py-2 text-sm text-red-800">
+              {teammateError}
+            </p>
+          ) : null}
+          {teammateSuccess ? (
+            <p className="mt-3 text-xs leading-5 text-[#1A2B3C]/55">
+              {teammateSuccess}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       {expanded ? (
         <div className="mt-5 border-t border-[#1A2B3C]/10 pt-5">

@@ -10,6 +10,7 @@ const SECTIONS = [
   { href: "/governance", label: "Governance" },
   { href: "/toolkit", label: "Toolkit" },
   { href: "/legal", label: "Legal" },
+  { href: "/team", label: "Team" },
   { href: "/emergency-services/workspace", label: "Emergency Services", absolute: true },
 ];
 

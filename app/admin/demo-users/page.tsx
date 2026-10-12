@@ -2,6 +2,11 @@ import { getAdminAccess } from "@/lib/admin-access";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  ensureTestDemoOrganizations,
+  repairDemoMembershipsFromMetadata,
+} from "./actions";
 import { DemoUserForm } from "./demo-user-form";
 
 export const metadata: Metadata = {
@@ -12,6 +17,14 @@ export default async function AdminDemoUsersPage() {
   const access = await getAdminAccess();
   if (access.status !== "ok") {
     redirect("/admin");
+  }
+
+  try {
+    const admin = createAdminClient();
+    await ensureTestDemoOrganizations(admin, access.user.id);
+    await repairDemoMembershipsFromMetadata(admin);
+  } catch {
+    // Demo sandbox seed is best-effort; the form still works.
   }
 
   const supabase = await createClient();
@@ -29,9 +42,9 @@ export default async function AdminDemoUsersPage() {
         Demo access
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
-        Manually add a user with a username and password so someone can walk
-        the live site. They can use the partner portal or Emergency Services
-        login with those credentials.
+        Issue a username and password for a walkthrough, or attach an existing
+        demo login to another test organization. They can use the partner
+        portal or Emergency Services with those credentials.
       </p>
 
       <div className="mt-8">

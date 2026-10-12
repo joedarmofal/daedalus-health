@@ -41,6 +41,12 @@ const SECTION_CARDS = [
       "AI laws, common compliance situations, and a live feed of legal and regulatory news.",
   },
   {
+    href: "team",
+    label: "Team",
+    description:
+      "See who has access to this organization and invite colleagues after intake.",
+  },
+  {
     href: "/emergency-services/workspace",
     label: "Emergency Services",
     description:

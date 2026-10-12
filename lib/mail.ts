@@ -148,6 +148,85 @@ export async function sendWelcomeEmail(
   });
 }
 
+export async function sendTeammateInviteEmail(
+  input: WelcomeEmailInput,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const fromEmail = customerMailFromAddress();
+  const replyTo = mailInboxAddress();
+  const fromPassword = smtpPassword();
+
+  if (!fromPassword) {
+    return {
+      ok: false,
+      error:
+        "Invite email is not configured on this server. Add SMTP_PASSWORD in Vercel Project Settings → Environment Variables (Production), then redeploy.",
+    };
+  }
+
+  const greetingName = input.contactName.trim() || "there";
+  const portalUrl = `${publicAppUrl()}/${input.orgSlug}`;
+  const loginUrl = `${publicAppUrl()}/login`;
+
+  const text = [
+    `Hi ${greetingName},`,
+    "",
+    `You have been added to the ${input.orgName} workspace on Daedalus Health.`,
+    "",
+    "Use this secure one-time link to open the workspace. If you already have a Daedalus login, you can also sign in with your existing password:",
+    input.inviteLink,
+    "",
+    `After you are in, return anytime at ${loginUrl}. The ${input.orgName} portal is ${portalUrl}.`,
+    "",
+    "If anything looks off, reply to this email and I will help.",
+    "",
+    "Joe",
+    "Daedalus Health",
+    fromEmail,
+  ].join("\n");
+
+  const html = `
+    <div style="margin:0;padding:32px 16px;background:#F7F5F0;font-family:Georgia,Times,serif;color:#1A2B3C;">
+      <div style="max-width:560px;margin:0 auto;background:#F9F8F3;border:1px solid rgba(26,43,60,0.12);padding:36px 32px;">
+        <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#C4A574;font-family:Arial,sans-serif;">Daedalus Health</p>
+        <h1 style="margin:16px 0 0;font-size:28px;font-weight:500;line-height:1.2;">You have been added to a workspace</h1>
+        <p style="margin:20px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">Hi ${escapeHtml(greetingName)},</p>
+        <p style="margin:16px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">
+          You have been added to the
+          <strong>${escapeHtml(input.orgName)}</strong> workspace on Daedalus Health.
+        </p>
+        <p style="margin:16px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">
+          Use this secure one-time link to open the workspace. If you already have a Daedalus login, you can also sign in with your existing password.
+        </p>
+        <p style="margin:28px 0;text-align:center;">
+          <a href="${escapeHtml(input.inviteLink)}" style="display:inline-block;background:#C4A574;color:#1A2B3C;text-decoration:none;padding:12px 22px;font-family:Arial,sans-serif;font-size:14px;letter-spacing:0.04em;">
+            Open your workspace
+          </a>
+        </p>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(26,43,60,0.7);font-family:Arial,sans-serif;">
+          After you are in, return anytime at
+          <a href="${escapeHtml(loginUrl)}" style="color:#C4A574;">${escapeHtml(loginUrl.replace(/^https?:\/\//, ""))}</a>.
+        </p>
+        <p style="margin:24px 0 0;font-size:16px;line-height:1.7;font-family:Arial,sans-serif;">
+          If anything looks off, reply to this email and I will help.
+        </p>
+        <p style="margin:28px 0 0;font-size:16px;line-height:1.6;">
+          Joe<br />
+          <span style="font-family:Arial,sans-serif;font-size:13px;color:rgba(26,43,60,0.65);">Daedalus Health · ${escapeHtml(fromEmail)}</span>
+        </p>
+      </div>
+    </div>
+  `;
+
+  return sendTransactionalEmail({
+    to: input.to,
+    from: fromEmail,
+    replyTo,
+    subject: `You have been added to ${input.orgName} on Daedalus Health`,
+    text,
+    html,
+  });
+}
+
 export interface InformationRequestEmailInput {
   fullName: string;
   email: string;

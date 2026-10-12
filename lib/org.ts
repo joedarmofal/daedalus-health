@@ -54,9 +54,29 @@ export async function resolveOrgSlug(
     return null;
   }
 
+  const { data: memberships } = await supabase
+    .from("organization_members")
+    .select("organizations(slug)")
+    .eq("user_id", user.id);
+
+  const slugs = (memberships ?? [])
+    .map((row) => {
+      const organization = row.organizations as
+        | { slug?: unknown }
+        | { slug?: unknown }[]
+        | null;
+      const nested = Array.isArray(organization) ? organization[0] : organization;
+      return asSlug(nested?.slug);
+    })
+    .filter((slug): slug is string => Boolean(slug));
+
   const fromMetadata = slugFromUser(user);
-  if (fromMetadata) {
+  if (fromMetadata && slugs.includes(fromMetadata)) {
     return fromMetadata;
+  }
+
+  if (slugs[0]) {
+    return slugs[0];
   }
 
   const { data: profile } = await supabase
@@ -65,19 +85,5 @@ export async function resolveOrgSlug(
     .eq("id", user.id)
     .maybeSingle();
 
-  const fromProfile = asSlug(profile?.org_slug);
-  if (fromProfile) {
-    return fromProfile;
-  }
-
-  const { data: membership } = await supabase
-    .from("organization_members")
-    .select("organizations(slug)")
-    .eq("user_id", user.id)
-    .limit(1)
-    .maybeSingle();
-
-  const organization = membership?.organizations as { slug?: unknown } | { slug?: unknown }[] | null;
-  const nested = Array.isArray(organization) ? organization[0] : organization;
-  return asSlug(nested?.slug);
+  return asSlug(profile?.org_slug);
 }

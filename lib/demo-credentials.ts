@@ -4,6 +4,14 @@ export const DEMO_EMAIL_DOMAIN = "demo.daedalushealth.ai";
 export const DEMO_ORG_SLUG = "demo";
 export const DEMO_ORG_NAME = "Demo Program";
 
+/** Named customer sandboxes used for walkthroughs. Created on demand. */
+export const TEST_DEMO_ORGANIZATIONS = [
+  {
+    name: "Children's Hospital Colorado",
+    slug: "childrens-hospital-colorado",
+  },
+] as const;
+
 const USERNAME_PATTERN = /^[a-z][a-z0-9_-]{2,31}$/;
 
 export function validateDemoUsername(username: string): string | null {

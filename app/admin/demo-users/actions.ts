@@ -5,9 +5,12 @@ import { ensureAccreditationProgram } from "@/lib/accreditation-data";
 import {
   DEMO_ORG_NAME,
   DEMO_ORG_SLUG,
+  TEST_DEMO_ORGANIZATIONS,
   demoEmailForUsername,
   validateDemoUsername,
 } from "@/lib/demo-credentials";
+import { parseOrgSlug } from "@/lib/org";
+import { ensureOrgMembership } from "@/lib/org-membership";
 import { MIN_PASSWORD_LENGTH, passwordSetMetadata } from "@/lib/password-setup";
 import { publicAppUrl } from "@/lib/public-url";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -26,6 +29,7 @@ export interface DemoUserResult {
   portalUrl?: string;
   emergencyUrl?: string;
   resetExisting?: boolean;
+  attachedExisting?: boolean;
 }
 
 async function findUserByEmail(
@@ -52,57 +56,90 @@ async function findUserByEmail(
   return { user: null };
 }
 
-async function ensureMembership(
+async function ensureDemoMembership(
   admin: SupabaseClient,
   orgId: string,
   userId: string,
   fullName: string,
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  const { data: existing, error: selectError } = await admin
-    .from("organization_members")
-    .select("id")
-    .eq("organization_id", orgId)
-    .eq("user_id", userId)
+) {
+  return ensureOrgMembership(admin, orgId, userId, fullName, "admin");
+}
+
+function canonicalDemoOrgSlug(value: string): string | null {
+  const normalized = value.trim().toLowerCase().replace(/['’]/g, "");
+  if (
+    normalized === "childrens" ||
+    normalized === "childrens-hospital" ||
+    normalized === "childrens-hospital-colorado" ||
+    normalized === "chco"
+  ) {
+    return "childrens-hospital-colorado";
+  }
+  return parseOrgSlug(normalized);
+}
+
+async function provisionDemoOrganization(
+  admin: SupabaseClient,
+  createdBy: string,
+  name: string,
+  slug: string,
+): Promise<{ id: string; slug: string; name: string } | null> {
+  const { data: existing } = await admin
+    .from("organizations")
+    .select("id, slug, name")
+    .eq("slug", slug)
     .maybeSingle();
+  if (existing) return existing;
 
-  if (selectError) {
-    return { ok: false, error: selectError.message };
-  }
+  const { data: created, error } = await admin
+    .from("organizations")
+    .insert({
+      name,
+      slug,
+      primary_contact_email: demoEmailForUsername("demo"),
+      created_by: createdBy,
+    })
+    .select("id, slug, name")
+    .single();
 
-  if (existing?.id) {
-    if (fullName) {
-      await admin
-        .from("organization_members")
-        .update({ full_name: fullName })
-        .eq("id", existing.id);
+  if (error || !created) {
+    if (error?.code === "23505") {
+      const { data: raced } = await admin
+        .from("organizations")
+        .select("id, slug, name")
+        .eq("slug", slug)
+        .maybeSingle();
+      return raced ?? null;
     }
-    return { ok: true };
+    return null;
   }
 
-  const { error } = await admin.from("organization_members").insert({
-    organization_id: orgId,
-    user_id: userId,
-    role: "admin",
-    ...(fullName ? { full_name: fullName } : {}),
-  });
+  await admin.from("organization_intake").upsert(
+    {
+      organization_id: created.id,
+      health_system_type: "Demo",
+      notes: "Created for site demonstrations.",
+      submitted_by: createdBy,
+    },
+    { onConflict: "organization_id" },
+  );
 
-  if (error && /full_name|schema cache|PGRST204/i.test(error.message)) {
-    const retry = await admin.from("organization_members").insert({
-      organization_id: orgId,
-      user_id: userId,
-      role: "admin",
-    });
-    if (retry.error && retry.error.code !== "23505") {
-      return { ok: false, error: retry.error.message };
-    }
-    return { ok: true };
+  try {
+    await ensureAccreditationProgram(created.id, created.name);
+  } catch {
+    // EMS tables may not exist yet; portal demo still works.
   }
 
-  if (error && error.code !== "23505") {
-    return { ok: false, error: error.message };
-  }
+  return created;
+}
 
-  return { ok: true };
+export async function ensureTestDemoOrganizations(
+  admin: SupabaseClient,
+  createdBy: string,
+) {
+  for (const org of TEST_DEMO_ORGANIZATIONS) {
+    await provisionDemoOrganization(admin, createdBy, org.name, org.slug);
+  }
 }
 
 async function resolveDemoOrganization(
@@ -125,54 +162,71 @@ async function resolveDemoOrganization(
     return { ok: true, org };
   }
 
-  const { data: existing } = await admin
-    .from("organizations")
-    .select("id, slug, name")
-    .eq("slug", DEMO_ORG_SLUG)
-    .maybeSingle();
-
-  if (existing) {
-    return { ok: true, org: existing };
-  }
-
-  const { data: created, error: createError } = await admin
-    .from("organizations")
-    .insert({
-      name: DEMO_ORG_NAME,
-      slug: DEMO_ORG_SLUG,
-      primary_contact_email: demoEmailForUsername("demo"),
-      created_by: createdBy,
-    })
-    .select("id, slug, name")
-    .single();
-
-  if (createError || !created) {
-    return {
-      ok: false,
-      error:
-        createError?.code === "23505"
-          ? "The demo organization slug is already in use."
-          : (createError?.message ?? "Could not create the demo organization."),
-    };
-  }
-
-  await admin.from("organization_intake").upsert(
-    {
-      organization_id: created.id,
-      health_system_type: "Demo",
-      notes: "Created for site demonstrations.",
-      submitted_by: createdBy,
-    },
-    { onConflict: "organization_id" },
+  const created = await provisionDemoOrganization(
+    admin,
+    createdBy,
+    DEMO_ORG_NAME,
+    DEMO_ORG_SLUG,
   );
+  if (!created) {
+    return { ok: false, error: "Could not create the demo organization." };
+  }
+  return { ok: true, org: created };
+}
 
-  try {
-    await ensureAccreditationProgram(created.id, created.name);
-  } catch {
-    // EMS tables may not exist yet; portal demo still works.
+export async function repairDemoMembershipsFromMetadata(
+  admin?: SupabaseClient,
+): Promise<number> {
+  let client = admin;
+  if (!client) {
+    try {
+      client = createAdminClient();
+    } catch {
+      return 0;
+    }
   }
 
-  return { ok: true, org: created };
+  const { data: orgs } = await client.from("organizations").select("id, slug");
+  const orgBySlug = new Map((orgs ?? []).map((org) => [org.slug, org.id]));
+  let attached = 0;
+  let page = 1;
+  const perPage = 200;
+
+  while (page <= 10) {
+    const { data, error } = await client.auth.admin.listUsers({ page, perPage });
+    if (error) break;
+
+    for (const user of data.users) {
+      if (user.user_metadata?.is_demo !== true) continue;
+      const rawSlug =
+        typeof user.user_metadata?.org_slug === "string"
+          ? user.user_metadata.org_slug
+          : "";
+      const slug = canonicalDemoOrgSlug(rawSlug);
+      const orgId = slug ? orgBySlug.get(slug) : undefined;
+      if (!orgId) continue;
+      const fullName =
+        typeof user.user_metadata?.full_name === "string"
+          ? user.user_metadata.full_name
+          : "";
+      const result = await ensureDemoMembership(client, orgId, user.id, fullName);
+      if (!result.ok) continue;
+      attached += 1;
+      if (rawSlug !== slug) {
+        await client.auth.admin.updateUserById(user.id, {
+          user_metadata: {
+            ...user.user_metadata,
+            org_slug: slug,
+          },
+        });
+      }
+    }
+
+    if (data.users.length < perPage) break;
+    page += 1;
+  }
+
+  return attached;
 }
 
 export async function createDemoUser(
@@ -220,6 +274,7 @@ export async function createDemoUser(
     };
   }
 
+  await ensureTestDemoOrganizations(admin, access.user.id);
   const orgResult = await resolveDemoOrganization(admin, access.user.id, orgId);
   if (!orgResult.ok) {
     return orgResult;
@@ -242,6 +297,7 @@ export async function createDemoUser(
 
   let user = created.data.user;
   let didReset = false;
+  let attachedExisting = false;
 
   if (created.error || !user) {
     const alreadyExists = /already been registered|already exists|already registered/i.test(
@@ -271,30 +327,38 @@ export async function createDemoUser(
           "That username already belongs to a non-demo account. Choose a different username.",
       };
     }
-    if (!resetExisting) {
-      return {
-        ok: false,
-        error:
-          "That demo username already exists. Check “reset password if the username exists” to re-issue credentials.",
-      };
-    }
 
-    const updated = await admin.auth.admin.updateUserById(existing.user.id, {
-      password,
-      email_confirm: true,
-      user_metadata: metadata,
-    });
-    if (updated.error || !updated.data.user) {
-      return {
-        ok: false,
-        error: updated.error?.message ?? "Could not update the existing demo user.",
-      };
+    attachedExisting = true;
+
+    if (resetExisting) {
+      const updated = await admin.auth.admin.updateUserById(existing.user.id, {
+        password,
+        email_confirm: true,
+        user_metadata: metadata,
+      });
+      if (updated.error || !updated.data.user) {
+        return {
+          ok: false,
+          error: updated.error?.message ?? "Could not update the existing demo user.",
+        };
+      }
+      user = updated.data.user;
+      didReset = true;
+    } else {
+      const updated = await admin.auth.admin.updateUserById(existing.user.id, {
+        user_metadata: {
+          ...existing.user.user_metadata,
+          full_name: displayName,
+          username,
+          is_demo: true,
+          org_slug: orgResult.org.slug,
+        },
+      });
+      user = updated.data.user ?? existing.user;
     }
-    user = updated.data.user;
-    didReset = true;
   }
 
-  const membership = await ensureMembership(
+  const membership = await ensureDemoMembership(
     admin,
     orgResult.org.id,
     user.id,
@@ -306,12 +370,14 @@ export async function createDemoUser(
 
   revalidatePath("/admin/demo-users");
   revalidatePath("/admin/organizations");
+  revalidatePath(`/${orgResult.org.slug}`);
+  revalidatePath(`/${orgResult.org.slug}/team`);
 
   const origin = publicAppUrl();
   return {
     ok: true,
     username,
-    password,
+    password: didReset || !attachedExisting ? password : undefined,
     displayName,
     orgName: orgResult.org.name,
     orgSlug: orgResult.org.slug,
@@ -319,5 +385,6 @@ export async function createDemoUser(
     portalUrl: `${origin}/${orgResult.org.slug}`,
     emergencyUrl: `${origin}/emergency-services`,
     resetExisting: didReset,
+    attachedExisting,
   };
 }

@@ -86,12 +86,20 @@ export function IntakeForm({
           We&rsquo;ve saved your organization&rsquo;s setup details. Your
           Daedalus Health team will follow up shortly.
         </p>
-        <a
-          href={`/${orgSlug}`}
-          className="mt-5 inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888]"
-        >
-          Go to your portal
-        </a>
+        <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href={`/${orgSlug}`}
+            className="inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888]"
+          >
+            Go to your portal
+          </a>
+          <a
+            href={`/${orgSlug}/team`}
+            className="inline-flex items-center justify-center rounded-sm border border-[#C4A574]/50 px-6 py-2.5 text-sm font-medium tracking-wide text-[#F9F8F3] transition hover:border-[#C4A574] hover:text-[#C4A574]"
+          >
+            Add teammates
+          </a>
+        </div>
       </div>
     );
   }

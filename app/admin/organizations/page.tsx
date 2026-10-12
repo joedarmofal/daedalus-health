@@ -133,8 +133,9 @@ export default async function AdminOrganizationsPage() {
         Organizations
       </h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[#F9F8F3]/70">
-        Create new customer organizations. A welcome email goes out from{" "}
-        {customerMailFromAddress()} with their sign-in link.
+        Create customer organizations and attach teammates. A person can belong
+        to more than one organization. Welcome and teammate emails go out from{" "}
+        {customerMailFromAddress()}.
       </p>
 
       <div className="mt-8">

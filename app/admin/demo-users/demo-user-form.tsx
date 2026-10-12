@@ -135,8 +135,9 @@ export function DemoUserForm({
             ))}
           </select>
           <p className="mt-1.5 text-xs text-[#1A2B3C]/45">
-            Leave on Demo Program unless you want this login attached to a
-            specific customer organization.
+            Existing demo usernames can be attached to additional organizations
+            without resetting the password. Leave on Demo Program unless this
+            login should open a specific customer workspace.
           </p>
         </div>
 
@@ -161,7 +162,7 @@ export function DemoUserForm({
             disabled={status === "loading"}
             className="inline-flex items-center justify-center rounded-sm bg-[#C4A574] px-6 py-2.5 text-sm font-medium tracking-wide text-[#1A2B3C] transition hover:bg-[#d4b888] disabled:opacity-60"
           >
-            {status === "loading" ? "Creating…" : "Create demo login"}
+            {status === "loading" ? "Saving…" : "Save demo login"}
           </button>
         </div>
       </form>
@@ -174,8 +175,11 @@ export function DemoUserForm({
 function DemoCredentials({ result }: { result: DemoUserResult }) {
   const lines = [
     `Username: ${result.username}`,
-    `Password: ${result.password}`,
+    result.password
+      ? `Password: ${result.password}`
+      : "Password: unchanged",
     `Partner portal: ${result.loginUrl}`,
+    `Organization: ${result.orgName} (${result.portalUrl})`,
     `Emergency services: ${result.emergencyUrl}`,
   ].join("\n");
 
@@ -184,14 +188,23 @@ function DemoCredentials({ result }: { result: DemoUserResult }) {
       <p className="text-sm font-medium text-[#1A2B3C]">
         {result.resetExisting
           ? `Password reset for ${result.username}. They can sign in now.`
-          : `${result.username} is ready. Hand them these credentials.`}
+          : result.attachedExisting
+            ? `${result.username} already existed and is now attached to this organization. Their current password is unchanged.`
+            : `${result.username} is ready. Hand them these credentials.`}
       </p>
       <p className="mt-1 text-sm text-[#1A2B3C]/70">
         Attached to {result.orgName} · daedalushealth.ai/{result.orgSlug}
       </p>
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
         <Credential label="Username" value={result.username ?? ""} />
-        <Credential label="Password" value={result.password ?? ""} />
+        {result.password ? (
+          <Credential label="Password" value={result.password} />
+        ) : (
+          <Credential
+            label="Password"
+            value="Unchanged — use the password already issued"
+          />
+        )}
         <Credential label="Partner sign-in" value={result.loginUrl ?? ""} />
         <Credential
           label="Emergency services"
